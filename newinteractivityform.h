@@ -6,6 +6,7 @@
 #include <QDir>
 #include <QJsonArray>
 #include <QJsonObject>
+#include <QJsonDocument>
 
 namespace Ui {
 class NewInterActivityForm;
@@ -40,12 +41,10 @@ public:
     void setComponentTableDate(QList<QStringList>);
     QJsonArray getTemplateJSON();
     void createFiles();
-
+    void createLocAccFile();
     void createHandleBars();
     bool createHandleBarFile(QStringList tableEntry);
-
     void createJSs();
-
     void createCSS();
     ~NewInterActivityForm();
     

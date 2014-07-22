@@ -13,6 +13,7 @@ LOCACC::LOCACC(QString strPath)
 void LOCACC::changeBasePath(QString strPath)
 {
     str_basePath  = strPath;
+    readFile();
 }
 
 void LOCACC::addScreen(QString screenID , QString screenName)

@@ -84,7 +84,7 @@ bool NewInterActivityForm::createDirStructure(){
     baseDir.mkpath(currentPath + "/" + CSS_FOLDER);
     baseDir.mkpath(currentPath + "/" + MEDIA_FOLDER);
     baseDir.mkpath(currentPath +  "/" + LANG_FOLDER);
-    baseDir.mkpath(currentPath + "/" +  LANG_FOLDER + "/" + EN_FOLDER);
+    baseDir.mkpath(currentPath + "/" +  LANG_FOLDER + "/" + EN_FOLDER + "/" + DATA_FOLDER);
     baseDir.mkpath(currentPath + "/" + TEMPLATE_FOLDER);
     createFiles();
     return true;
@@ -95,6 +95,52 @@ void NewInterActivityForm::createFiles()
     createHandleBars();
     createCSS();
     createJSs();
+    createLocAccFile();
+}
+
+void NewInterActivityForm::createLocAccFile()
+{
+    QString filePath = currentFolderPath() + "/" +  LANG_FOLDER + "/" + EN_FOLDER + "/" + DATA_FOLDER
+            + "/" + "loc-acc.json";
+    QFile file(filePath);
+    if(file.exists())
+    {
+        return;
+    }
+    QJsonObject masterAccObj;
+    QJsonObject tabContentObj;
+    QJsonArray tempArray;
+    masterAccObj["id"] = ui->idPrefixText->text();
+    QList<QStringList> tabData = getTemplateTableData();
+    tabContentObj["id"] = QString("tab-contents");
+    tabContentObj["name"] = QString("tab-contents");
+    for(int i = 0 ; i < tabData.length() ; i++)
+    {
+        QJsonObject tabObject;
+        tabObject["id"] = QString("player-tab-" + QString::number(i));
+        tabObject["accId"] = QString("player-tab-" + QString::number(i));
+        tabObject["type"] = QString("text");
+        tabObject["tabIndex"] = 1002;
+
+        QJsonArray msgArray;
+        QJsonObject msgObj;
+        msgObj["id"] = 0;
+        msgObj["isAccTextSame"] = true;
+
+        QJsonObject msgTextObj;
+        msgTextObj["loc"] = tabData.at(i).at(0);
+        msgObj["message"] = msgTextObj;
+        msgArray.append(msgObj);
+        tabObject["messages"] = msgArray;
+        tempArray.append(tabObject);
+    }
+    tabContentObj["elements"] = tempArray;
+    masterAccObj["locAccData"] = tabContentObj;
+
+    QJsonDocument doc(masterAccObj);
+    file.open(QIODevice::ReadWrite | QIODevice::Text);
+    file.write(doc.toJson());
+    file.close();
 }
 
 void NewInterActivityForm::createCSS()
@@ -259,6 +305,12 @@ QList<QStringList> NewInterActivityForm::getTemplateTableData()
 {
     QList<QStringList> tableData;
     int rowCount = ui->tableWidget->rowCount();
+
+    QStringList overViewTab;
+    overViewTab << "Overview" << ui->overViewTabTemplateText->text()
+                << ui->overViewTabClass->text() << ui->overViewTabEL->text();
+    tableData.append(overViewTab);
+
     for(int i = 0 ; i < rowCount ; i++){
         QStringList currentRow ;
         currentRow <<  ui->tableWidget->item(i,0)->text() <<  ui->tableWidget->item(i,1)->text() <<
