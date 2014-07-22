@@ -135,7 +135,9 @@ void NewInterActivityForm::createLocAccFile()
         tempArray.append(tabObject);
     }
     tabContentObj["elements"] = tempArray;
-    masterAccObj["locAccData"] = tabContentObj;
+    QJsonArray masterLocArray;
+    masterLocArray.append(tabContentObj);
+    masterAccObj["locAccData"] = masterLocArray;
 
     QJsonDocument doc(masterAccObj);
     file.open(QIODevice::ReadWrite | QIODevice::Text);
@@ -316,7 +318,7 @@ QList<QStringList> NewInterActivityForm::getTemplateTableData()
         currentRow <<  ui->tableWidget->item(i,0)->text() <<  ui->tableWidget->item(i,1)->text() <<
                        ui->tableWidget->item(i,2)->text() << ui->tableWidget->item(i,3)->text();
         qDebug() << currentRow;
-        tableData.insert(i,currentRow);
+        tableData.append(currentRow);
     }
     return tableData;
 }

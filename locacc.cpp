@@ -20,7 +20,7 @@ void LOCACC::addScreen(QString screenID , QString screenName)
 {
     QJsonObject newJObjScreen;
     newJObjScreen["id"] = screenID;
-    newJObjScreen[" name"] = screenName;
+    newJObjScreen["name"] = screenName;
     QJsonArray tempJArray;
     newJObjScreen["elements"] = tempJArray;
     QJsonArray locDataJArray = masterJObj["locAccData"].toArray();
@@ -109,8 +109,8 @@ void LOCACC::addMessage(QString parentScreen, QString eleName, QString msgId, QS
 
 QString LOCACC :: getLocAccFilePath()
 {
-    return str_basePath + "/" + LOC_DATA_FOLDER + "/" + LOC_LANG_FOLDER
-            + "/" + LOC_EN_FOLDER + "/" + LOC_FILE_NAME;
+    return str_basePath + "/" + LOC_LANG_FOLDER
+            + "/" + LOC_EN_FOLDER +  + "/" + LOC_DATA_FOLDER  + "/" + LOC_FILE_NAME;
 }
 
 void LOCACC::readFile()
