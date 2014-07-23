@@ -41,12 +41,12 @@ public:
 
 private :
     void initialize();
+    void initTrayIcon();
 
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
     void resetAll();
-    void scanChanges();
     void registerWatcher();
     void deregisterWatcher();
     void loadSavedSettings();
@@ -63,6 +63,7 @@ private slots:
     void on_jsViewNextLoadCheckBox_clicked();
     void on_createNewInter_clicked();
 
+    void scanChanges();
     void on_cssNextLoadCheckBox_clicked();
 
     void on_addScreenBtn_clicked();

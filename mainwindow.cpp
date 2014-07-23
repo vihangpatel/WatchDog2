@@ -33,11 +33,28 @@ void MainWindow::initialize(){
     config = new ConfigHandler(str_basePath);
     css = new CSS(str_basePath);
     locAcc = new LOCACC(str_basePath);
+    initTrayIcon();
+    connectSignals();
+}
+
+void MainWindow::initTrayIcon()
+{
     trayIcon = new QSystemTrayIcon(this);
     QIcon icon("C:/Users/Vihang/Desktop/tray_icon.ico");
     trayIcon->setIcon(icon);
+    QMenu *menu = new QMenu(this);
+    menu->addAction("Show",this,SLOT(show()));
+    menu->addAction("Hide",this,SLOT(hide()));
+    QMenu *minifyMenu = new QMenu("Minify",this);
+    minifyMenu->addAction("Common");
+    minifyMenu->addAction("Interactive");
+    minifyMenu->addAction("Preloader");
+    menu->addMenu(minifyMenu);
+    menu->addAction("Compile Handlebars");
+    menu->addAction("Refresh",this,SLOT(scanChanges()));
+    menu->addAction("Exit",this,SLOT(close()));
+    trayIcon->setContextMenu(menu);
     trayIcon->show();
-    connectSignals();
 }
 
 void MainWindow::connectSignals(){
@@ -60,7 +77,7 @@ MainWindow::~MainWindow()
 }
 
 void MainWindow::scanChanges(){
-
+    changeBasePath(str_basePath);
 }
 
 void MainWindow::registerWatcher(){
