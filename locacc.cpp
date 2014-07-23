@@ -7,6 +7,9 @@ QString LOC_FILE_NAME = "loc-acc.json";
 
 LOCACC::LOCACC(QString strPath)
 {
+    QStringList treeList;
+    treeList << "locAccData";
+    root = new QTreeWidgetItem(treeList);
     changeBasePath(strPath);
 }
 
@@ -14,6 +17,20 @@ void LOCACC::changeBasePath(QString strPath)
 {
     str_basePath  = strPath;
     readFile();
+    emptyTreeWidget(root);
+    getLocAccTree();
+}
+
+void LOCACC::emptyTreeWidget(QTreeWidgetItem *parent)
+{
+    QTreeWidgetItem *child;
+    for(int i = 0 ; i < parent->childCount(); i++)
+    {
+        child = parent->child(i);
+        emptyTreeWidget(child);
+        parent->removeChild(child);
+        delete child;
+    }
 }
 
 void LOCACC::addScreen(QString screenID , QString screenName)
@@ -26,37 +43,42 @@ void LOCACC::addScreen(QString screenID , QString screenName)
     QJsonArray locDataJArray = masterJObj["locAccData"].toArray();
     locDataJArray.append(newJObjScreen);
     masterJObj["locAccData"] = locDataJArray;
+    QStringList newScreen;
+    newScreen << screenID ;
+    QTreeWidgetItem *newScreenWidget = new QTreeWidgetItem(newScreen);
+    root->addChild(newScreenWidget);
     writeFile();
 }
 
-QTreeWidgetItem* LOCACC::getLocAccTree()
+QTreeWidgetItem * LOCACC::getLocAccTree()
 {
-    QStringList treeList;
-    treeList << "locAccData";
-    QTreeWidgetItem *root = new QTreeWidgetItem(treeList);
     QJsonArray locAccArray = masterJObj["locAccData"].toArray();
-    QJsonObject screenJObj;
-    for(int i = 0 ; i < locAccArray.count() ; i++)
-    {
-        screenJObj = locAccArray.at(i).toObject();
-        root->addChild(getScreenTree(screenJObj));
-    }
+        QJsonObject screenJObj;
+        for(int i = 0 ; i < locAccArray.count() ; i++)
+        {
+            screenJObj = locAccArray.at(i).toObject();
+            root->addChild(getScreenTree(screenJObj));
+        }
     return root;
 }
 
 QTreeWidgetItem* LOCACC::getScreenTree(QJsonObject screenJObj)
 {
+    QJsonDocument doc(screenJObj);
+    QString str_toolTip(doc.toJson());
     QStringList treeList;
     treeList << screenJObj["id"].toString();
-    QTreeWidgetItem *screenItem = new QTreeWidgetItem(treeList);
-    screenItem->addChildren(getElementsTree(screenJObj));
-    return screenItem;
+    QTreeWidgetItem *screenItemWidget = new QTreeWidgetItem(treeList);
+    screenItemWidget->addChildren(getElementsTree(screenJObj));
+    screenItemWidget->setToolTip(0,str_toolTip);
+    return screenItemWidget;
 }
 
 QList<QTreeWidgetItem *> LOCACC::getElementsTree(QJsonObject screenJObj)
 {
     QStringList treeList;
     QJsonObject eleJObject;
+    QJsonDocument doc;
     QList<QTreeWidgetItem *> eleTreeItemlist;
     QJsonArray eleJArray = screenJObj["elements"].toArray();
     for(int i = 0 ; i < eleJArray.count(); i++)
@@ -65,7 +87,12 @@ QList<QTreeWidgetItem *> LOCACC::getElementsTree(QJsonObject screenJObj)
         eleJObject = eleJArray.at(i).toObject();
         treeList << eleJObject["id"].toString();
         QTreeWidgetItem *ele = new QTreeWidgetItem(treeList);
+        qDebug() << eleJArray.at(i).toString();
         eleTreeItemlist.append(ele);
+
+        doc.setObject(eleJObject);
+        QString str_toolTip(doc.toJson());
+        ele->setToolTip(0,str_toolTip);
     }
     return eleTreeItemlist;
 }

@@ -1,3 +1,4 @@
+
 #include "configHandler.h"
 #include <QDebug>
 #include "templates.h"

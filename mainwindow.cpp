@@ -33,6 +33,7 @@ void MainWindow::initialize(){
     config = new ConfigHandler(str_basePath);
     css = new CSS(str_basePath);
     locAcc = new LOCACC(str_basePath);
+    ui->locTreeWidget->addTopLevelItem(locAcc->getLocAccTree());
     initTrayIcon();
     connectSignals();
 }
@@ -113,13 +114,7 @@ void MainWindow::on_openDialog_clicked()
 {
     deregisterWatcher();
     str_basePath = QFileDialog::getExistingDirectory (this, tr("Directory"),str_rootPath);
-    config->changeBasePath(str_basePath);
-    tmplt->changeBasePath(str_basePath);
-    js->changeBasePath(str_basePath);
-    css->changeBasePath(str_basePath);
-    locAcc->changeBasePath(str_basePath);
-    updateDirTree();
-    setWindowTitle("DE-Interactives " + str_basePath);
+    changeBasePath(str_basePath);
 }
 
 void MainWindow::updateDirTree(){
@@ -390,17 +385,42 @@ void MainWindow::on_addScreenBtn_clicked()
 {
     QString screenName = ui->screenNameText->text();
     locAcc->addScreen(screenName,screenName);
-    ui->locTreeWidget->clear();
-    ui->locTreeWidget->addTopLevelItem(locAcc->getLocAccTree());
+}
+
+void MainWindow::on_locTreeWidget_itemClicked(QTreeWidgetItem *item, int column)
+{
+    int indentationCount =  getTreeItemIndentationLevel(item);
+    qDebug() << "LOC TREE CLICKED : " << item->text(column) << " col : " << column << " Heirarchy : "
+             <<  indentationCount;
+    manageLocAccItemsVIsibility(indentationCount);
 }
 
 void MainWindow::on_addEleBtn_clicked()
 {
-    QString eleName = ui->eleName->text();
+    QString eleName = ui->eleNameText->text();
     QString currentScreen = ui->screenNameText->text();
     locAcc->addElement(currentScreen,eleName);
-    ui->locTreeWidget->clear();
-    ui->locTreeWidget->addTopLevelItem(locAcc->getLocAccTree());
+}
+
+void MainWindow::manageLocAccItemsVIsibility(int indentationLevel)
+{
+    ui->addScreenBtn->setVisible(indentationLevel == 0 );
+    ui->addEleBtn->setVisible(indentationLevel == 1 );
+    ui->addMsgBtn->setVisible(indentationLevel == 2 );
+
+    ui->screenNameText->setVisible(indentationLevel == 0);
+    ui->eleNameText->setVisible(indentationLevel == 1);
+    ui->msgIdText->setVisible(indentationLevel == 2);
+}
+
+int MainWindow::getTreeItemIndentationLevel(QTreeWidgetItem *currentItem,int count)
+{
+    QTreeWidgetItem *parent = currentItem->parent();
+    if(parent != NULL)
+    {
+        count = getTreeItemIndentationLevel(parent,count + 1);
+    }
+    return count;
 }
 
 
@@ -412,3 +432,4 @@ void MainWindow::on_createNewInter_clicked()
     form->clearAllFormData();
     form->show();
 }
+

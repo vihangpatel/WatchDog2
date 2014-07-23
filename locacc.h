@@ -20,6 +20,7 @@ public:
     QFile locAccFile;
     QJsonObject masterJObj;
     QJsonArray masterArray;
+    QTreeWidgetItem *root;
 
     void changeBasePath(QString strPath);
     QString getLocAccFilePath();
@@ -28,7 +29,8 @@ public:
     void addMessage(QString parentScreen,QString eleName,QString msgId , QString locMessage,QString accMessage,bool isAccTextSame);
     void readFile();
     void writeFile();
-    QTreeWidgetItem *getLocAccTree();
+    void emptyTreeWidget(QTreeWidgetItem* parent);
+    QTreeWidgetItem * getLocAccTree();
     QTreeWidgetItem *getScreenTree(QJsonObject screenId);
     QList<QTreeWidgetItem *>getElementsTree(QJsonObject screenId);
     QJsonObject getElementJson(QString screenName);
