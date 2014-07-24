@@ -36,6 +36,7 @@ void MainWindow::initialize(){
     ui->locTreeWidget->addTopLevelItem(locAcc->getLocAccTree());
     initTrayIcon();
     connectSignals();
+    manageLocAccItemsVIsibility(-1);
 }
 
 void MainWindow::initTrayIcon()
@@ -383,8 +384,14 @@ void MainWindow::on_cssNextLoadCheckBox_clicked()
  ***************************************************************/
 void MainWindow::on_addScreenBtn_clicked()
 {
-    QString screenName = ui->screenNameText->text();
-    locAcc->addScreen(screenName,screenName);
+    QString screenId = ui->screenNameText->text();
+    QString screenName = ui->screenNameText_2->text();
+    QStringList screenData;
+    screenData << screenId << screenName;
+    if(!locAcc->addScreen(screenData))
+    {
+        QMessageBox::critical(this,"Same screen Id exists","Same screen Id exists .Please use another Id.",QMessageBox::Cancel);
+    }
 }
 
 void MainWindow::on_locTreeWidget_itemClicked(QTreeWidgetItem *item, int column)
@@ -398,19 +405,24 @@ void MainWindow::on_locTreeWidget_itemClicked(QTreeWidgetItem *item, int column)
 void MainWindow::on_addEleBtn_clicked()
 {
     QString eleName = ui->eleNameText->text();
-    QString currentScreen = ui->screenNameText->text();
-    locAcc->addElement(currentScreen,eleName);
+    QString eleAccId = ui->eleAccIdText->text();
+    QString eleRole = ui->eleRoleText->text();
+    QString eleType = ui->eleTypeText->text();
+    QString eleTabIndex = ui->eleTabIndexText->text();
+    QStringList eleData;
+    eleData << eleName << eleAccId << eleType << eleRole << eleTabIndex;
+    if(!locAcc->addElement(eleData,ui->locTreeWidget->currentItem()))
+    {
+        QMessageBox::critical(this,"Same element Id exists in screen.","Same element Id exists .Please use another Id.",QMessageBox::Cancel);
+    }
+
 }
 
 void MainWindow::manageLocAccItemsVIsibility(int indentationLevel)
 {
-    ui->addScreenBtn->setVisible(indentationLevel == 0 );
-    ui->addEleBtn->setVisible(indentationLevel == 1 );
-    ui->addMsgBtn->setVisible(indentationLevel == 2 );
-
-    ui->screenNameText->setVisible(indentationLevel == 0);
-    ui->eleNameText->setVisible(indentationLevel == 1);
-    ui->msgIdText->setVisible(indentationLevel == 2);
+    ui->groupBox_addScreen->setVisible(indentationLevel == 0 );
+    ui->groupBox_addElement->setVisible(indentationLevel == 1 );
+    ui->groupBox_addMessage->setVisible(indentationLevel == 2 );
 }
 
 int MainWindow::getTreeItemIndentationLevel(QTreeWidgetItem *currentItem,int count)
@@ -423,6 +435,10 @@ int MainWindow::getTreeItemIndentationLevel(QTreeWidgetItem *currentItem,int cou
     return count;
 }
 
+void MainWindow::on_locTreeWidget_itemSelectionChanged()
+{
+    on_locTreeWidget_itemClicked(ui->locTreeWidget->currentItem(),0);
+}
 
 /***************************************************************
  *                          C R E A T E S    N E W    I N T E R A C T I V I T Y

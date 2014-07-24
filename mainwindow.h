@@ -74,6 +74,8 @@ private slots:
 
     void on_locTreeWidget_itemClicked(QTreeWidgetItem *item, int column);
 
+    void on_locTreeWidget_itemSelectionChanged();
+
 public slots:
     void updateTemplateList(QFileInfoList);
     void templateFileListClicked(QListWidgetItem *);

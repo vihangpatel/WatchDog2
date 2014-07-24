@@ -6,6 +6,7 @@
 #include <QTreeWidgetItem>
 #include <QJsonArray>
 #include <QJsonDocument>
+#include <QMessageBox>
 #include <QDebug>
 #include <QIODevice>
 #include <QFile>
@@ -24,16 +25,20 @@ public:
 
     void changeBasePath(QString strPath);
     QString getLocAccFilePath();
-    void addScreen(QString screenID ,QString screenName);
-    void addElement(QString parentScreen,QString elementName);
-    void addMessage(QString parentScreen,QString eleName,QString msgId , QString locMessage,QString accMessage,bool isAccTextSame);
+    bool addScreen(QStringList screenData);
+    bool addElement(QStringList elementData,QTreeWidgetItem *parent);
+    bool addMessage(QStringList msgData,bool isAccTextSame,QTreeWidgetItem *parent);
     void readFile();
     void writeFile();
     void emptyTreeWidget(QTreeWidgetItem* parent);
     QTreeWidgetItem * getLocAccTree();
     QTreeWidgetItem *getScreenTree(QJsonObject screenId);
     QList<QTreeWidgetItem *>getElementsTree(QJsonObject screenId);
-    QJsonObject getElementJson(QString screenName);
+    QJsonObject getElementJson(QStringList screenName);
+
+    bool screenExists(QStringList screenData);
+    bool elementExists(QStringList elementData,QJsonArray parenScreenJObj);
+    bool messageExists(QStringList messageData);
 
  signals:
     void treeUpdated(QTreeWidgetItem *);

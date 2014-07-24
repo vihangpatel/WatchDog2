@@ -33,22 +33,101 @@ void LOCACC::emptyTreeWidget(QTreeWidgetItem *parent)
     }
 }
 
-void LOCACC::addScreen(QString screenID , QString screenName)
+bool LOCACC::addScreen(QStringList screenData)
 {
     QJsonObject newJObjScreen;
-    newJObjScreen["id"] = screenID;
-    newJObjScreen["name"] = screenName;
+    if(screenExists(screenData))
+    {
+        return false;
+    }
+    newJObjScreen["id"] = screenData.at(0);
+    newJObjScreen["name"] = screenData.at(1);
     QJsonArray tempJArray;
     newJObjScreen["elements"] = tempJArray;
     QJsonArray locDataJArray = masterJObj["locAccData"].toArray();
     locDataJArray.append(newJObjScreen);
     masterJObj["locAccData"] = locDataJArray;
     QStringList newScreen;
-    newScreen << screenID ;
+    newScreen << screenData.at(0); ;
     QTreeWidgetItem *newScreenWidget = new QTreeWidgetItem(newScreen);
     root->addChild(newScreenWidget);
     writeFile();
+    return true;
 }
+
+bool LOCACC::addElement(QStringList elementData, QTreeWidgetItem *parent)
+{
+    QJsonArray jArray = masterJObj["locAccData"].toArray();
+    QString parentScreen = parent->text(0);
+    QJsonObject tempObj ;
+    for(int i = 0 ; i < jArray.count() ; i++ )
+    {
+        tempObj = jArray.at(i).toObject();
+        if(tempObj["id"] == parentScreen)
+        {
+            QJsonArray eleJArray = tempObj["elements"].toArray();
+            if(elementExists(elementData,eleJArray))
+            {
+                return false;
+            }
+            QJsonObject newEleObj = getElementJson(elementData);
+            eleJArray.append(newEleObj);
+            tempObj["elements"] = eleJArray;
+            jArray.replace(i,tempObj);
+
+            QStringList strList;
+            strList << elementData;
+            QTreeWidgetItem *newEleWidget = new QTreeWidgetItem(strList);
+            parent->addChild(newEleWidget);
+            break;
+        }
+    }
+    masterJObj["locAccData"] = jArray;
+    writeFile();
+    return true;
+}
+
+bool LOCACC::addMessage(QStringList msgData, bool isAccTextSame, QTreeWidgetItem *parent)
+{
+    return false;
+}
+
+bool LOCACC::screenExists(QStringList screenData)
+{
+    QString screenId = screenData.at(0);
+    QJsonArray locArray = masterJObj["locAccData"].toArray();
+    QJsonObject tempObj;
+    for(int i = 0 ; i < locArray.count() ; i++)
+    {
+        tempObj = locArray.at(i).toObject();
+        if(tempObj["id"] == screenId)
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
+bool LOCACC::elementExists(QStringList elementData, QJsonArray parentScreenJArray)
+{
+    QString eleId = elementData.at(0);
+    QJsonObject tempObj;
+    for(int i = 0 ; i < parentScreenJArray.count(); i++)
+    {
+        tempObj = parentScreenJArray.at(i).toObject();
+        if(tempObj["id"] == eleId)
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
+bool LOCACC::messageExists(QStringList messageData)
+{
+
+}
+
 
 QTreeWidgetItem * LOCACC::getLocAccTree()
 {
@@ -64,13 +143,10 @@ QTreeWidgetItem * LOCACC::getLocAccTree()
 
 QTreeWidgetItem* LOCACC::getScreenTree(QJsonObject screenJObj)
 {
-    QJsonDocument doc(screenJObj);
-    QString str_toolTip(doc.toJson());
     QStringList treeList;
     treeList << screenJObj["id"].toString();
     QTreeWidgetItem *screenItemWidget = new QTreeWidgetItem(treeList);
     screenItemWidget->addChildren(getElementsTree(screenJObj));
-    screenItemWidget->setToolTip(0,str_toolTip);
     return screenItemWidget;
 }
 
@@ -78,7 +154,6 @@ QList<QTreeWidgetItem *> LOCACC::getElementsTree(QJsonObject screenJObj)
 {
     QStringList treeList;
     QJsonObject eleJObject;
-    QJsonDocument doc;
     QList<QTreeWidgetItem *> eleTreeItemlist;
     QJsonArray eleJArray = screenJObj["elements"].toArray();
     for(int i = 0 ; i < eleJArray.count(); i++)
@@ -89,49 +164,21 @@ QList<QTreeWidgetItem *> LOCACC::getElementsTree(QJsonObject screenJObj)
         QTreeWidgetItem *ele = new QTreeWidgetItem(treeList);
         qDebug() << eleJArray.at(i).toString();
         eleTreeItemlist.append(ele);
-
-        doc.setObject(eleJObject);
-        QString str_toolTip(doc.toJson());
-        ele->setToolTip(0,str_toolTip);
     }
     return eleTreeItemlist;
 }
 
-void LOCACC::addElement(QString parentScreen, QString elementName)
-{
-    QJsonArray jArray = masterJObj["locAccData"].toArray();
-    QJsonObject tempObj ;
-    for(int i = 0 ; i < jArray.count() ; i++ )
-    {
-        tempObj = jArray.at(i).toObject();
-        if(tempObj["id"] == parentScreen)
-        {
-            QJsonArray eleJArray = tempObj["elements"].toArray();
-            eleJArray.append(getElementJson(elementName));
-            tempObj["elements"] = eleJArray;
-            jArray.replace(i,tempObj);
-            break;
-        }
-    }
-    masterJObj["locAccData"] = jArray;
-    writeFile();
-}
-
-QJsonObject LOCACC::getElementJson(QString elementName)
+QJsonObject LOCACC::getElementJson(QStringList elementData)
 {
     QJsonArray tempMsgArray;
     QJsonObject eleObj ;
-    eleObj["id"] = elementName;
-    eleObj["accId"] = elementName;
-    eleObj["type"] = QString("text");
-    eleObj["tabIndex"] = QString("-1") ;
+    eleObj["id"] = elementData.at(0);
+    eleObj["accId"] =  elementData.at(1);
+    eleObj["type"] = elementData.at(2);
+    eleObj["role"] =  elementData.at(3);
+    eleObj["tabIndex"] =  elementData.at(4);
     eleObj["messages"] = tempMsgArray;
     return eleObj;
-}
-
-void LOCACC::addMessage(QString parentScreen, QString eleName, QString msgId, QString locMessage, QString accMessage , bool isAccTextSame)
-{
-
 }
 
 QString LOCACC :: getLocAccFilePath()
@@ -147,6 +194,7 @@ void LOCACC::readFile()
     if(!locAccFile.exists())
     {
         qDebug() << " LOC ACC READING FAILED :" << getLocAccFilePath();
+        return;
     }
     QByteArray rawData = locAccFile.readAll();
     QJsonDocument doc(QJsonDocument::fromJson(rawData));
@@ -162,7 +210,7 @@ void LOCACC :: writeFile()
     locAccFile.open(QIODevice::ReadWrite | QIODevice::Text);
     if(!locAccFile.exists())
     {
-        qDebug() << " LOC ACC FAILED :" << getLocAccFilePath();
+        qDebug() << " LOC ACC DO NOT EXIST . NEW WILL BE CREATED :" << getLocAccFilePath();
     }
     qDebug() << "WRITE : \n" << masterJObj;
     QJsonDocument doc(masterJObj);
