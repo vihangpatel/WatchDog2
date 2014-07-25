@@ -42,7 +42,7 @@ void MainWindow::initialize(){
 void MainWindow::initTrayIcon()
 {
     trayIcon = new QSystemTrayIcon(this);
-    QIcon icon("C:/Users/Vihang/Desktop/tray_icon.ico");
+    QIcon icon(":/images/tray_icon.ico");
     trayIcon->setIcon(icon);
     QMenu *menu = new QMenu(this);
     menu->addAction("Show",this,SLOT(show()));
