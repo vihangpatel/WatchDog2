@@ -36,7 +36,7 @@ void MainWindow::initialize(){
     ui->locTreeWidget->addTopLevelItem(locAcc->getLocAccTree());
     initTrayIcon();
     connectSignals();
-    manageLocAccItemsVIsibility(-1);
+    manageLocAccItemsVisibility(-1);
 }
 
 void MainWindow::initTrayIcon()
@@ -176,10 +176,12 @@ void MainWindow::templateFileListClicked(QListWidgetItem *item){
         return;
     }
     QJsonArray tmpltJArray = config->getTemplateJArray();
+    QString itemText = item->text();
     for(int i = 0; i < tmpltJArray.count() ; i++){
         QJsonObject obj = tmpltJArray.at(i).toObject();
-        if(obj["url"] == item->text()){
+        if(obj["url"] == itemText){
             ui->templateNextLoadCheckBox->setChecked(obj["isNextStepLoad"].toBool());
+            ui->label_TemplateFileName->setText(itemText);
             break;
         }
     }
@@ -213,14 +215,21 @@ void MainWindow::jsFileListClicked(QListWidgetItem *item){
         return;
     }
     QJsonArray jsViewJArray = config->getJSJArray();
+    QString itemText = item->text();
     for(int i = 0; i < jsViewJArray.count() ; i++){
         QJsonObject obj = jsViewJArray.at(i).toObject();
-        if(obj["url"] == item->text())
+        if(obj["url"] == itemText)
         {
             ui->jsViewNextLoadCheckBox->setChecked(obj["isNextStepLoad"].toBool());
+            ui->label_JSFileName->setText(itemText);
             break;
         }
     }
+}
+
+void MainWindow::on_jsViewList_itemSelectionChanged()
+{
+    jsFileListClicked(ui->jsViewList->currentItem());
 }
 
 void MainWindow::updateJSList(QFileInfoList fileList){
@@ -303,6 +312,11 @@ QJsonArray MainWindow::syncJSList(QJsonArray newArray)
     return newArray;
 }
 
+void MainWindow::on_templateList_itemSelectionChanged()
+{
+    templateFileListClicked(ui->templateList->currentItem());
+}
+
 /****************************************************************
                                                 C S S        H A N D  L I N G
 ******************************************************************/
@@ -352,10 +366,12 @@ void MainWindow::cssFileListClicked(QListWidgetItem *item){
         return;
     }
     QJsonArray cssJArray = config->getCssJArray();
+    QString itemText = item->text();
     for(int i = 0; i < cssJArray.count() ; i++){
         QJsonObject obj = cssJArray.at(i).toObject();
-        if(obj["url"] == item->text()){
+        if(obj["url"] == itemText){
             ui->cssNextLoadCheckBox->setChecked(obj["isNextStepLoad"].toBool());
+            ui->label_CSSFileName->setText(itemText);
             break;
         }
     }
@@ -379,6 +395,11 @@ void MainWindow::on_cssNextLoadCheckBox_clicked()
     qDebug() << "ON CHECK BOX CLICKED CSS: " << cssJArray;
 }
 
+void MainWindow::on_cssList_itemSelectionChanged()
+{
+    cssFileListClicked(ui->cssList->currentItem());
+}
+
 /***************************************************************
  *                         L O C - A C C     J S O N     H A N D L I N G
  ***************************************************************/
@@ -399,7 +420,7 @@ void MainWindow::on_locTreeWidget_itemClicked(QTreeWidgetItem *item, int column)
     int indentationCount =  getTreeItemIndentationLevel(item);
     qDebug() << "LOC TREE CLICKED : " << item->text(column) << " col : " << column << " Heirarchy : "
              <<  indentationCount;
-    manageLocAccItemsVIsibility(indentationCount);
+    manageLocAccItemsVisibility(indentationCount);
 }
 
 void MainWindow::on_addEleBtn_clicked()
@@ -418,11 +439,15 @@ void MainWindow::on_addEleBtn_clicked()
 
 }
 
-void MainWindow::manageLocAccItemsVIsibility(int indentationLevel)
+void MainWindow::manageLocAccItemsVisibility(int indentationLevel)
 {
     ui->groupBox_addScreen->setVisible(indentationLevel == 0 );
     ui->groupBox_addElement->setVisible(indentationLevel == 1 );
     ui->groupBox_addMessage->setVisible(indentationLevel == 2 );
+
+    ui->groupBox_optScr->setVisible(indentationLevel == 1);
+    ui->groupBox_optEle->setVisible(indentationLevel == 2);
+    ui->groupBox_optMsg->setVisible(indentationLevel == 3);
 }
 
 int MainWindow::getTreeItemIndentationLevel(QTreeWidgetItem *currentItem,int count)
@@ -435,9 +460,27 @@ int MainWindow::getTreeItemIndentationLevel(QTreeWidgetItem *currentItem,int cou
     return count;
 }
 
+void MainWindow::on_cb_isAccTextSame_clicked()
+{
+    bool cb_status = ui->cb_isAccTextSame->isChecked();
+    ui->accMsgText->setDisabled(cb_status);
+    if(cb_status)
+    {
+        ui->accMsgText->setText(ui->locMsgText->text());
+    }
+}
+
 void MainWindow::on_locTreeWidget_itemSelectionChanged()
 {
     on_locTreeWidget_itemClicked(ui->locTreeWidget->currentItem(),0);
+}
+
+void MainWindow::on_locMsgText_textChanged(const QString &arg1)
+{
+    if(ui->cb_isAccTextSame->isChecked())
+    {
+        ui->accMsgText->setText(ui->locMsgText->text());
+    }
 }
 
 /***************************************************************

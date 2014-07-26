@@ -53,7 +53,7 @@ public:
     void updateDirTree();
     void connectSignals();
     int getTreeItemIndentationLevel(QTreeWidgetItem *,int count=0);
-    void manageLocAccItemsVIsibility(int indentationLevel = 0);
+    void manageLocAccItemsVisibility(int indentationLevel = 0);
 
     QJsonArray syncTmpltList(QJsonArray jTemplateArray);
     QJsonArray syncJSList(QJsonArray jJSArray);
@@ -75,6 +75,16 @@ private slots:
     void on_locTreeWidget_itemClicked(QTreeWidgetItem *item, int column);
 
     void on_locTreeWidget_itemSelectionChanged();
+
+    void on_cb_isAccTextSame_clicked();
+
+    void on_locMsgText_textChanged(const QString &arg1);
+
+    void on_jsViewList_itemSelectionChanged();
+
+    void on_templateList_itemSelectionChanged();
+
+    void on_cssList_itemSelectionChanged();
 
 public slots:
     void updateTemplateList(QFileInfoList);
