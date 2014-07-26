@@ -86,6 +86,8 @@ private slots:
 
     void on_cssList_itemSelectionChanged();
 
+    void on_addMsgBtn_clicked();
+
 public slots:
     void updateTemplateList(QFileInfoList);
     void templateFileListClicked(QListWidgetItem *);

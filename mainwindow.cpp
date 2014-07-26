@@ -436,7 +436,16 @@ void MainWindow::on_addEleBtn_clicked()
     {
         QMessageBox::critical(this,"Same element Id exists in screen.","Same element Id exists .Please use another Id.",QMessageBox::Cancel);
     }
+}
 
+void MainWindow::on_addMsgBtn_clicked()
+{
+    QStringList msgData;
+    msgData << ui->msgIdText->text() << ui->locMsgText->text() << ui->accMsgText->text();
+    if(!locAcc->addMessage(msgData,ui->cb_isAccTextSame->isChecked(),ui->locTreeWidget->currentItem()))
+    {
+         QMessageBox::critical(this,"Same message Id exists in element.","Same message Id exists .Please use another Id.",QMessageBox::Cancel);
+    }
 }
 
 void MainWindow::manageLocAccItemsVisibility(int indentationLevel)

@@ -482,7 +482,7 @@ font-weight:bold;</string>
        </rect>
       </property>
       <property name="currentIndex">
-       <number>2</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="tab_9">
        <attribute name="title">
@@ -604,15 +604,6 @@ font-weight:bold;</string>
           <string>Acc :</string>
          </property>
         </widget>
-        <zorder>label_12</zorder>
-        <zorder>msgIdText</zorder>
-        <zorder>addMsgBtn</zorder>
-        <zorder>cb_isAccTextSame</zorder>
-        <zorder>locMsgText</zorder>
-        <zorder>accMsgText</zorder>
-        <zorder>label_13</zorder>
-        <zorder>label_14</zorder>
-        <zorder>groupBox_addElement</zorder>
        </widget>
        <widget class="QGroupBox" name="groupBox_addElement">
         <property name="geometry">

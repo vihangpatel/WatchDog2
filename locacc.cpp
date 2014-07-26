@@ -89,7 +89,56 @@ bool LOCACC::addElement(QStringList elementData, QTreeWidgetItem *parent)
 
 bool LOCACC::addMessage(QStringList msgData, bool isAccTextSame, QTreeWidgetItem *parent)
 {
-    return false;
+    QString eleId = parent->text(0);
+    QJsonArray jArray = masterJObj["locAccData"].toArray();
+    QString parentScreen = parent->parent()->text(0);
+    QJsonObject tempObj ;
+    for(int i = 0 ; i < jArray.count() ; i++ )
+    {
+        tempObj = jArray.at(i).toObject();
+        if(tempObj["id"] == parentScreen)
+        {
+            QJsonArray eleJArray = tempObj["elements"].toArray();
+            QJsonObject tempEleObj;
+            for(int j = 0 ; j < eleJArray.count(); j++)
+            {
+                tempEleObj = eleJArray.at(j).toObject();
+                if(tempEleObj["id"] == eleId)
+                {
+                    QJsonArray msgsArray = tempEleObj["messages"].toArray();
+                    if(messageExists(msgData,msgsArray))
+                    {
+                        return false;
+                    }
+                   msgsArray.append(getMessageJson(msgData,isAccTextSame));
+                   QStringList msgList;
+                   msgList << msgData.at(0);
+                   QTreeWidgetItem *newMsg = new QTreeWidgetItem(msgList);
+                   parent->addChild(newMsg);
+                   tempEleObj["messages"] = msgsArray;
+                   eleJArray.replace(j,tempEleObj);
+                   tempObj["elements"] = eleJArray;
+                   jArray.replace(i,tempObj);
+                   break;
+                }
+            }
+        }
+    }
+    masterJObj["locAccData"] = jArray;
+    writeFile();
+    return true;
+}
+
+QJsonObject LOCACC::getMessageJson(QStringList msgData,bool isAccTextSame)
+{
+    QJsonObject newMsgObj;
+    newMsgObj["id"] = msgData.at(0);
+    newMsgObj["isAccTextSame"] = isAccTextSame;
+    QJsonObject locAccObj;
+    locAccObj["loc"] = msgData.at(1);
+    locAccObj["acc"] = msgData.at(2);
+    newMsgObj["message"] = locAccObj;
+    return newMsgObj;
 }
 
 bool LOCACC::screenExists(QStringList screenData)
@@ -123,9 +172,19 @@ bool LOCACC::elementExists(QStringList elementData, QJsonArray parentScreenJArra
     return false;
 }
 
-bool LOCACC::messageExists(QStringList messageData)
+bool LOCACC::messageExists(QStringList messageData,QJsonArray msgsArray)
 {
-
+    QString msgId = messageData.at(0);
+    QJsonObject tempObj;
+    for(int i = 0 ; i < msgsArray.count(); i++)
+    {
+        tempObj = msgsArray.at(i).toObject();
+        if(tempObj["id"] == msgId)
+        {
+            return true;
+        }
+    }
+    return false;
 }
 
 
@@ -164,8 +223,27 @@ QList<QTreeWidgetItem *> LOCACC::getElementsTree(QJsonObject screenJObj)
         QTreeWidgetItem *ele = new QTreeWidgetItem(treeList);
         qDebug() << eleJArray.at(i).toString();
         eleTreeItemlist.append(ele);
+        ele->addChildren(getMessageTree(eleJObject["messages"].toArray()));
     }
     return eleTreeItemlist;
+}
+
+QList<QTreeWidgetItem *> LOCACC::getMessageTree(QJsonArray  msgArray)
+{
+    QList<QTreeWidgetItem *> msgChildWidgetList;
+    QJsonObject msgObj;
+    QStringList msgList;
+    qDebug() << " in  message generation : " << msgArray;
+    for(int i = 0 ; i < msgArray.count() ; i++)
+    {
+        msgList.clear();
+        msgObj = msgArray.at(i).toObject();
+        qDebug() << " in  message generation : loop  " << msgObj["id"].toDouble();
+        msgList << QString::number( msgObj["id"].toDouble());
+        QTreeWidgetItem *msgChild = new QTreeWidgetItem(msgList);
+        msgChildWidgetList.append(msgChild);
+    }
+    return msgChildWidgetList;
 }
 
 QJsonObject LOCACC::getElementJson(QStringList elementData)

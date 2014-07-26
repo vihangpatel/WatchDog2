@@ -34,11 +34,13 @@ public:
     QTreeWidgetItem * getLocAccTree();
     QTreeWidgetItem *getScreenTree(QJsonObject screenId);
     QList<QTreeWidgetItem *>getElementsTree(QJsonObject screenId);
-    QJsonObject getElementJson(QStringList screenName);
+    QList<QTreeWidgetItem *>getMessageTree(QJsonArray eleId);
+    QJsonObject getElementJson(QStringList screenData);
+    QJsonObject getMessageJson(QStringList msgData,bool isAccTextSame);
 
     bool screenExists(QStringList screenData);
     bool elementExists(QStringList elementData,QJsonArray parenScreenJObj);
-    bool messageExists(QStringList messageData);
+    bool messageExists(QStringList messageData,QJsonArray parentEleJArray);
 
  signals:
     void treeUpdated(QTreeWidgetItem *);
