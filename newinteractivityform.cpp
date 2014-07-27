@@ -120,11 +120,11 @@ void NewInterActivityForm::createLocAccFile()
         tabObject["id"] = QString("player-tab-" + QString::number(i));
         tabObject["accId"] = QString("player-tab-" + QString::number(i));
         tabObject["type"] = QString("text");
-        tabObject["tabIndex"] = 1002;
+        tabObject["tabIndex"] = QString("1002");
 
         QJsonArray msgArray;
         QJsonObject msgObj;
-        msgObj["id"] = 0;
+        msgObj["id"] = QString("0");
         msgObj["isAccTextSame"] = true;
 
         QJsonObject msgTextObj;

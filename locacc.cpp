@@ -238,8 +238,8 @@ QList<QTreeWidgetItem *> LOCACC::getMessageTree(QJsonArray  msgArray)
     {
         msgList.clear();
         msgObj = msgArray.at(i).toObject();
-        qDebug() << " in  message generation : loop  " << msgObj["id"].toDouble();
-        msgList << QString::number( msgObj["id"].toDouble());
+        qDebug() << " in  message generation : loop  " << msgObj;
+        msgList << msgObj["id"].toString();
         QTreeWidgetItem *msgChild = new QTreeWidgetItem(msgList);
         msgChildWidgetList.append(msgChild);
     }
