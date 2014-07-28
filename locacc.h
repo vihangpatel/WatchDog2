@@ -32,15 +32,35 @@ public:
     void writeFile();
     void emptyTreeWidget(QTreeWidgetItem* parent);
     QTreeWidgetItem * getLocAccTree();
-    QTreeWidgetItem *getScreenTree(QJsonObject screenId);
-    QList<QTreeWidgetItem *>getElementsTree(QJsonObject screenId);
-    QList<QTreeWidgetItem *>getMessageTree(QJsonArray eleId);
+    QTreeWidgetItem *generateScreenTree(QJsonObject screenId);
+    QList<QTreeWidgetItem *>generateElementsTree(QJsonObject screenId);
+    QList<QTreeWidgetItem *>generateMessageTree(QJsonArray eleId);
     QJsonObject getElementJson(QStringList screenData);
     QJsonObject getMessageJson(QStringList msgData,bool isAccTextSame);
 
-    bool screenExists(QStringList screenData);
-    bool elementExists(QStringList elementData,QJsonArray parenScreenJObj);
-    bool messageExists(QStringList messageData,QJsonArray parentEleJArray);
+    QStringList getScreenTreeData(QTreeWidgetItem *screenItem);
+    QStringList getElementTreeData(QTreeWidgetItem *elementItem);
+    QStringList getMessageTreeData(QTreeWidgetItem *messageItem);
+
+    bool changeScreen(QStringList newScreenData,QTreeWidgetItem *currentItem);
+    bool changeElement(QStringList newScreenData,QTreeWidgetItem *currentItem);
+    bool changeMessage(QStringList newMsgData,QTreeWidgetItem *currentItem);
+
+    bool screenExistance(QStringList screenData);
+    bool elementExistance(QStringList elementData,QJsonArray parenScreenJObj);
+    bool messageExistance(QStringList messageData,QJsonArray parentEleJArray);
+
+    bool deleteScreen(QTreeWidgetItem *currentItem);
+    bool deleteElement(QTreeWidgetItem *currentItem);
+    bool deleteMessage(QTreeWidgetItem *currentItem);
+
+    bool updateScreen(QStringList newScreenData , QTreeWidgetItem *currentScreen);
+    bool updateElement(QStringList newElementData , QTreeWidgetItem *currentElements);
+    bool updateMessage(QStringList newMessageData , bool isAccTextSame , QTreeWidgetItem *currentMessage);
+
+    QJsonObject fetchScreenJObject(QStringList screenData);
+    QJsonObject fetchElementJObject(QStringList elementData,QJsonArray parenScreenJObj);
+    QJsonObject fetchMessageJObject(QStringList messageData,QJsonArray parentEleJArray);
 
  signals:
     void treeUpdated(QTreeWidgetItem *);

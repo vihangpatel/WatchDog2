@@ -59,6 +59,11 @@ public:
     QJsonArray syncJSList(QJsonArray jJSArray);
     QJsonArray syncCSSList(QJsonArray cssArray);
 
+    void updateLocDetails(int indentationLevel = -1);
+    void fillScreenDetail(QStringList data);
+    void fillElementDetail(QStringList data);
+    void fillMessageDetail(QStringList data);
+
 private slots:
     void on_openDialog_clicked();
     void on_templateNextLoadCheckBox_clicked();
@@ -87,6 +92,18 @@ private slots:
     void on_cssList_itemSelectionChanged();
 
     void on_addMsgBtn_clicked();
+
+    void on_updtScreenBtn_clicked();
+
+    void on_updateMsgBtn_clicked();
+
+    void on_updtEleBtn_clicked();
+
+    void on_dltScrBtn_clicked();
+
+    void on_dltMsgBtn_clicked();
+
+    void on_dltEleBtn_clicked();
 
 public slots:
     void updateTemplateList(QFileInfoList);

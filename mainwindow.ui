@@ -482,7 +482,7 @@ font-weight:bold;</string>
        </rect>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="tab_9">
        <attribute name="title">
@@ -844,6 +844,357 @@ font-weight:bold;</string>
        <attribute name="title">
         <string>Update Item</string>
        </attribute>
+       <widget class="QGroupBox" name="groupBox_updateElement">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>10</y>
+          <width>363</width>
+          <height>181</height>
+         </rect>
+        </property>
+        <property name="title">
+         <string>Update Element</string>
+        </property>
+        <widget class="QLabel" name="label_20">
+         <property name="geometry">
+          <rect>
+           <x>20</x>
+           <y>20</y>
+           <width>61</width>
+           <height>16</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>ElementId :</string>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_21">
+         <property name="geometry">
+          <rect>
+           <x>20</x>
+           <y>50</y>
+           <width>71</width>
+           <height>16</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>AccId :</string>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="updtEleBtn">
+         <property name="geometry">
+          <rect>
+           <x>264</x>
+           <y>140</y>
+           <width>91</width>
+           <height>23</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Update Element</string>
+         </property>
+        </widget>
+        <widget class="QLineEdit" name="updtEleIdText">
+         <property name="geometry">
+          <rect>
+           <x>100</x>
+           <y>20</y>
+           <width>131</width>
+           <height>20</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+        <widget class="QLineEdit" name="updtEleAccIdText">
+         <property name="geometry">
+          <rect>
+           <x>100</x>
+           <y>50</y>
+           <width>131</width>
+           <height>20</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_22">
+         <property name="geometry">
+          <rect>
+           <x>20</x>
+           <y>110</y>
+           <width>71</width>
+           <height>16</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Role :</string>
+         </property>
+        </widget>
+        <widget class="QLineEdit" name="updtEleRoleText">
+         <property name="geometry">
+          <rect>
+           <x>100</x>
+           <y>110</y>
+           <width>131</width>
+           <height>20</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+        <widget class="QLineEdit" name="updTabIndexText">
+         <property name="geometry">
+          <rect>
+           <x>100</x>
+           <y>140</y>
+           <width>131</width>
+           <height>20</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_23">
+         <property name="geometry">
+          <rect>
+           <x>20</x>
+           <y>140</y>
+           <width>71</width>
+           <height>16</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>TabIndex :</string>
+         </property>
+        </widget>
+        <widget class="QLineEdit" name="updtEleTypeText">
+         <property name="geometry">
+          <rect>
+           <x>100</x>
+           <y>80</y>
+           <width>131</width>
+           <height>20</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_24">
+         <property name="geometry">
+          <rect>
+           <x>20</x>
+           <y>80</y>
+           <width>71</width>
+           <height>16</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Type :</string>
+         </property>
+        </widget>
+       </widget>
+       <widget class="QGroupBox" name="groupBox_updateMessage">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>10</y>
+          <width>363</width>
+          <height>151</height>
+         </rect>
+        </property>
+        <property name="title">
+         <string>Update Message</string>
+        </property>
+        <widget class="QLabel" name="label_28">
+         <property name="geometry">
+          <rect>
+           <x>20</x>
+           <y>20</y>
+           <width>61</width>
+           <height>16</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>MessageId :</string>
+         </property>
+        </widget>
+        <widget class="QLineEdit" name="updtMsgidText">
+         <property name="geometry">
+          <rect>
+           <x>100</x>
+           <y>20</y>
+           <width>131</width>
+           <height>20</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="updateMsgBtn">
+         <property name="geometry">
+          <rect>
+           <x>264</x>
+           <y>110</y>
+           <width>91</width>
+           <height>23</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Update Message</string>
+         </property>
+        </widget>
+        <widget class="QCheckBox" name="cb_isAccTextSameUpdt">
+         <property name="geometry">
+          <rect>
+           <x>20</x>
+           <y>50</y>
+           <width>151</width>
+           <height>21</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>isAccTextSame</string>
+         </property>
+        </widget>
+        <widget class="QLineEdit" name="updtLocMsgText">
+         <property name="geometry">
+          <rect>
+           <x>100</x>
+           <y>80</y>
+           <width>131</width>
+           <height>20</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+        <widget class="QLineEdit" name="updtAccMsgText">
+         <property name="geometry">
+          <rect>
+           <x>100</x>
+           <y>110</y>
+           <width>131</width>
+           <height>20</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_29">
+         <property name="geometry">
+          <rect>
+           <x>20</x>
+           <y>80</y>
+           <width>61</width>
+           <height>16</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Loc :</string>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_30">
+         <property name="geometry">
+          <rect>
+           <x>20</x>
+           <y>110</y>
+           <width>61</width>
+           <height>16</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Acc :</string>
+         </property>
+        </widget>
+       </widget>
+       <widget class="QGroupBox" name="groupBox_updateScreen">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>10</y>
+          <width>363</width>
+          <height>80</height>
+         </rect>
+        </property>
+        <property name="title">
+         <string>Update Screen</string>
+        </property>
+        <widget class="QLineEdit" name="updtScreenIdText">
+         <property name="geometry">
+          <rect>
+           <x>100</x>
+           <y>20</y>
+           <width>131</width>
+           <height>20</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="updtScreenBtn">
+         <property name="geometry">
+          <rect>
+           <x>264</x>
+           <y>30</y>
+           <width>91</width>
+           <height>23</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Update Screen</string>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_33">
+         <property name="geometry">
+          <rect>
+           <x>20</x>
+           <y>20</y>
+           <width>61</width>
+           <height>16</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>ScreenId :</string>
+         </property>
+        </widget>
+        <widget class="QLineEdit" name="updtScreenNameText">
+         <property name="geometry">
+          <rect>
+           <x>100</x>
+           <y>50</y>
+           <width>131</width>
+           <height>20</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_34">
+         <property name="geometry">
+          <rect>
+           <x>20</x>
+           <y>50</y>
+           <width>71</width>
+           <height>16</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>ScreenName  :</string>
+         </property>
+        </widget>
+       </widget>
       </widget>
       <widget class="QWidget" name="tab_7">
        <attribute name="title">

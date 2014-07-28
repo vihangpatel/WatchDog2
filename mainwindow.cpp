@@ -403,6 +403,11 @@ void MainWindow::on_cssList_itemSelectionChanged()
 /***************************************************************
  *                         L O C - A C C     J S O N     H A N D L I N G
  ***************************************************************/
+
+/*
+#################    ADD  MESSAGE   #######################
+*/
+
 void MainWindow::on_addScreenBtn_clicked()
 {
     QString screenId = ui->screenNameText->text();
@@ -413,14 +418,6 @@ void MainWindow::on_addScreenBtn_clicked()
     {
         QMessageBox::critical(this,"Same screen Id exists","Same screen Id exists .Please use another Id.",QMessageBox::Cancel);
     }
-}
-
-void MainWindow::on_locTreeWidget_itemClicked(QTreeWidgetItem *item, int column)
-{
-    int indentationCount =  getTreeItemIndentationLevel(item);
-    qDebug() << "LOC TREE CLICKED : " << item->text(column) << " col : " << column << " Heirarchy : "
-             <<  indentationCount;
-    manageLocAccItemsVisibility(indentationCount);
 }
 
 void MainWindow::on_addEleBtn_clicked()
@@ -448,6 +445,55 @@ void MainWindow::on_addMsgBtn_clicked()
     }
 }
 
+/*
+#################    UPDATE MESSAGE   #######################
+*/
+
+void MainWindow::on_updtScreenBtn_clicked()
+{
+    QString screenId = ui->updtScreenIdText->text();
+    QString screenName = ui->updtScreenNameText->text();
+    QStringList screenData;
+    screenData << screenId << screenName;
+    if(!locAcc->updateScreen(screenData,ui->locTreeWidget->currentItem()))
+    {
+        QMessageBox::critical(this,"Same screen Id exists","Same screen Id exists .Please use another Id.",QMessageBox::Cancel);
+    }
+}
+
+void MainWindow::on_updateMsgBtn_clicked()
+{
+    QStringList msgData;
+    msgData << ui->updtMsgidText->text() << ui->updtLocMsgText->text() << ui->updtAccMsgText->text();
+    if(!locAcc->updateMessage(msgData,ui->cb_isAccTextSameUpdt->isChecked(),ui->locTreeWidget->currentItem()))
+    {
+         QMessageBox::critical(this,"Same message Id exists in element.","Same message Id exists .Please use another Id.",QMessageBox::Cancel);
+    }
+}
+
+void MainWindow::on_updtEleBtn_clicked()
+{
+    QString eleName = ui->updtEleIdText->text();
+    QString eleAccId = ui->updtEleAccIdText->text();
+    QString eleRole = ui->updtEleRoleText->text();
+    QString eleType = ui->updtEleTypeText->text();
+    QString eleTabIndex = ui->updTabIndexText->text();
+    QStringList eleData;
+    eleData << eleName << eleAccId << eleType << eleRole << eleTabIndex;
+    if(!locAcc->updateElement(eleData,ui->locTreeWidget->currentItem()))
+    {
+        QMessageBox::critical(this,"Same element Id exists in screen.","Same element Id exists .Please use another Id.",QMessageBox::Cancel);
+    }
+}
+
+void MainWindow::on_locTreeWidget_itemClicked(QTreeWidgetItem *item, int column)
+{
+    int indentationCount =  getTreeItemIndentationLevel(item);
+    qDebug() << "LOC TREE CLICKED : " << item->text(column) << " col : " << column << " Heirarchy : "
+             <<  indentationCount;
+    manageLocAccItemsVisibility(indentationCount);
+}
+
 void MainWindow::manageLocAccItemsVisibility(int indentationLevel)
 {
     ui->groupBox_addScreen->setVisible(indentationLevel == 0 );
@@ -457,6 +503,58 @@ void MainWindow::manageLocAccItemsVisibility(int indentationLevel)
     ui->groupBox_optScr->setVisible(indentationLevel == 1);
     ui->groupBox_optEle->setVisible(indentationLevel == 2);
     ui->groupBox_optMsg->setVisible(indentationLevel == 3);
+
+    ui->groupBox_updateScreen->setVisible(indentationLevel == 1);
+    ui->groupBox_updateElement->setVisible(indentationLevel == 2);
+    ui->groupBox_updateMessage->setVisible(indentationLevel == 3);
+
+    updateLocDetails(indentationLevel);
+}
+
+void MainWindow::updateLocDetails(int indentationLevel)
+{
+    QStringList dataList;
+    QTreeWidgetItem *currentItem = ui->locTreeWidget->currentItem();
+    switch (indentationLevel) {
+            case 1:
+                dataList =locAcc->getScreenTreeData(currentItem);
+                fillScreenDetail(dataList);
+                break;
+            case 2:
+                dataList =locAcc->getElementTreeData(currentItem);
+                fillElementDetail(dataList);
+                break;
+            case 3:
+                dataList =locAcc->getMessageTreeData(currentItem);
+                fillMessageDetail(dataList);
+                break;
+            default:
+                break;
+    }
+}
+
+void MainWindow::fillScreenDetail(QStringList data)
+{
+    ui->updtScreenIdText->setText(data.at(0));
+    ui->updtScreenNameText->setText(data.at(0));
+}
+
+void MainWindow::fillElementDetail(QStringList data)
+{
+    ui->updtEleIdText->setText(data.at(0));
+    ui->updtEleAccIdText->setText(data.at(1));
+    ui->updtEleTypeText->setText(data.at(2));
+    ui->updtEleRoleText->setText(data.at(3));
+    ui->updTabIndexText->setText(data.at(4));
+}
+
+void MainWindow::fillMessageDetail(QStringList data)
+{
+    ui->updtMsgidText->setText(data.at(0));
+    ui->cb_isAccTextSameUpdt->setChecked(data.at(1) == "1" ? true : false);
+    ui->updtLocMsgText->setText(data.at(2));
+    ui->updtAccMsgText->setText(data.at(3));
+    qDebug() << "Message detail updated : " << data.at(1);
 }
 
 int MainWindow::getTreeItemIndentationLevel(QTreeWidgetItem *currentItem,int count)
@@ -491,6 +589,43 @@ void MainWindow::on_locMsgText_textChanged(const QString &arg1)
         ui->accMsgText->setText(ui->locMsgText->text());
     }
 }
+
+/*
+  #############################################
+            D E L E T I O N   O F   T H E   D A T A
+*/
+
+void MainWindow::on_dltScrBtn_clicked()
+{
+    int result = QMessageBox::warning(this,"Are you Sure ???" , "You are about to delete Screen !!! Allow Deletion?",
+                         QMessageBox::Ok, QMessageBox::Cancel);
+    if(result == QMessageBox::Ok)
+    {
+        locAcc->deleteScreen(ui->locTreeWidget->currentItem());
+    }
+}
+
+void MainWindow::on_dltMsgBtn_clicked()
+{
+    int result = QMessageBox::warning(this,"Are you Sure ???" , "You are about to delete Message !!! Allow Deletion?",
+                         QMessageBox::Ok, QMessageBox::Cancel);
+    if(result == QMessageBox::Ok)
+    {
+       locAcc->deleteMessage(ui->locTreeWidget->currentItem());
+    }
+
+}
+
+void MainWindow::on_dltEleBtn_clicked()
+{
+    int result = QMessageBox::warning(this,"Are you Sure ???" , "You are about to delete Element !!! Allow Deletion?",
+                         QMessageBox::Ok, QMessageBox::Cancel);
+    if(result == QMessageBox::Ok)
+    {
+       locAcc->deleteElement(ui->locTreeWidget->currentItem());
+    }
+}
+
 
 /***************************************************************
  *                          C R E A T E S    N E W    I N T E R A C T I V I T Y
