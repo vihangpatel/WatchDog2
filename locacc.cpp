@@ -573,6 +573,7 @@ bool LOCACC::updateMessage(QStringList newMessageData, bool isAccTextSame, QTree
 QList<QTreeWidgetItem *> LOCACC::getSearchResult(QString searchText)
 {
     QList<QTreeWidgetItem *> searchedResult;
+    currentSearchIndex = 0;
     QTreeWidgetItem *currentScreenItem, *currentElementItem , *currentMessageItem;
     QStringList msgStringList;
     for(int i = 0 ; i < root->childCount() ; i++)
