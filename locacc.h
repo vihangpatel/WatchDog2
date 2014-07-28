@@ -22,6 +22,8 @@ public:
     QJsonObject masterJObj;
     QJsonArray masterArray;
     QTreeWidgetItem *root;
+    QList<QTreeWidgetItem *> searchedResultList;
+    int currentSearchIndex = 0;
 
     void changeBasePath(QString strPath);
     QString getLocAccFilePath();
@@ -57,6 +59,12 @@ public:
     bool updateScreen(QStringList newScreenData , QTreeWidgetItem *currentScreen);
     bool updateElement(QStringList newElementData , QTreeWidgetItem *currentElements);
     bool updateMessage(QStringList newMessageData , bool isAccTextSame , QTreeWidgetItem *currentMessage);
+
+    QList<QTreeWidgetItem*> getSearchResult(QString searchText);
+
+    QTreeWidgetItem* getPrevSeachResult();
+    QTreeWidgetItem* getNextSearchResult();
+    int getCurrentSearchIndex();
 
     QJsonObject fetchScreenJObject(QStringList screenData);
     QJsonObject fetchElementJObject(QStringList elementData,QJsonArray parenScreenJObj);

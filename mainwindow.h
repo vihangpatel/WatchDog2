@@ -105,6 +105,12 @@ private slots:
 
     void on_dltEleBtn_clicked();
 
+    void on_searchLocBtn_clicked();
+
+    void on_goPrevSearchBtn_clicked();
+
+    void on_goNextSearchBtn_clicked();
+
 public slots:
     void updateTemplateList(QFileInfoList);
     void templateFileListClicked(QListWidgetItem *);

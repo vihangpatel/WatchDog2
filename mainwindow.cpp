@@ -441,7 +441,7 @@ void MainWindow::on_addMsgBtn_clicked()
     msgData << ui->msgIdText->text() << ui->locMsgText->text() << ui->accMsgText->text();
     if(!locAcc->addMessage(msgData,ui->cb_isAccTextSame->isChecked(),ui->locTreeWidget->currentItem()))
     {
-         QMessageBox::critical(this,"Same message Id exists in element.","Same message Id exists .Please use another Id.",QMessageBox::Cancel);
+        QMessageBox::critical(this,"Same message Id exists in element.","Same message Id exists .Please use another Id.",QMessageBox::Cancel);
     }
 }
 
@@ -467,7 +467,7 @@ void MainWindow::on_updateMsgBtn_clicked()
     msgData << ui->updtMsgidText->text() << ui->updtLocMsgText->text() << ui->updtAccMsgText->text();
     if(!locAcc->updateMessage(msgData,ui->cb_isAccTextSameUpdt->isChecked(),ui->locTreeWidget->currentItem()))
     {
-         QMessageBox::critical(this,"Same message Id exists in element.","Same message Id exists .Please use another Id.",QMessageBox::Cancel);
+        QMessageBox::critical(this,"Same message Id exists in element.","Same message Id exists .Please use another Id.",QMessageBox::Cancel);
     }
 }
 
@@ -516,20 +516,20 @@ void MainWindow::updateLocDetails(int indentationLevel)
     QStringList dataList;
     QTreeWidgetItem *currentItem = ui->locTreeWidget->currentItem();
     switch (indentationLevel) {
-            case 1:
-                dataList =locAcc->getScreenTreeData(currentItem);
-                fillScreenDetail(dataList);
-                break;
-            case 2:
-                dataList =locAcc->getElementTreeData(currentItem);
-                fillElementDetail(dataList);
-                break;
-            case 3:
-                dataList =locAcc->getMessageTreeData(currentItem);
-                fillMessageDetail(dataList);
-                break;
-            default:
-                break;
+    case 1:
+        dataList =locAcc->getScreenTreeData(currentItem);
+        fillScreenDetail(dataList);
+        break;
+    case 2:
+        dataList =locAcc->getElementTreeData(currentItem);
+        fillElementDetail(dataList);
+        break;
+    case 3:
+        dataList =locAcc->getMessageTreeData(currentItem);
+        fillMessageDetail(dataList);
+        break;
+    default:
+        break;
     }
 }
 
@@ -590,6 +590,37 @@ void MainWindow::on_locMsgText_textChanged(const QString &arg1)
     }
 }
 
+/***********************************************
+ * S E A R C H   R E S U L T   F U N C T I O N
+ **********************************************/
+void MainWindow::on_searchLocBtn_clicked()
+{
+    QList<QTreeWidgetItem *> searchedList = locAcc->getSearchResult(ui->locSearchText->text());
+    ui->totalIndexText->setText(QString::number(searchedList.length()));
+}
+
+void MainWindow::on_goPrevSearchBtn_clicked()
+{
+    QTreeWidgetItem *itemToHighLight = locAcc->getPrevSeachResult();
+    if(itemToHighLight == NULL)
+    {
+        return;
+    }
+    ui->currentIndexText->setText(QString::number(locAcc->getCurrentSearchIndex() + 1));
+    ui->locTreeWidget->setCurrentItem(itemToHighLight);
+}
+
+void MainWindow::on_goNextSearchBtn_clicked()
+{
+    QTreeWidgetItem *itemToHighLight = locAcc->getNextSearchResult();
+    if(itemToHighLight == NULL)
+    {
+        return;
+    }
+    ui->currentIndexText->setText(QString::number(locAcc->getCurrentSearchIndex() + 1));
+    ui->locTreeWidget->setCurrentItem(itemToHighLight);
+}
+
 /*
   #############################################
             D E L E T I O N   O F   T H E   D A T A
@@ -598,7 +629,7 @@ void MainWindow::on_locMsgText_textChanged(const QString &arg1)
 void MainWindow::on_dltScrBtn_clicked()
 {
     int result = QMessageBox::warning(this,"Are you Sure ???" , "You are about to delete Screen !!! Allow Deletion?",
-                         QMessageBox::Ok, QMessageBox::Cancel);
+                                      QMessageBox::Ok, QMessageBox::Cancel);
     if(result == QMessageBox::Ok)
     {
         locAcc->deleteScreen(ui->locTreeWidget->currentItem());
@@ -608,10 +639,10 @@ void MainWindow::on_dltScrBtn_clicked()
 void MainWindow::on_dltMsgBtn_clicked()
 {
     int result = QMessageBox::warning(this,"Are you Sure ???" , "You are about to delete Message !!! Allow Deletion?",
-                         QMessageBox::Ok, QMessageBox::Cancel);
+                                      QMessageBox::Ok, QMessageBox::Cancel);
     if(result == QMessageBox::Ok)
     {
-       locAcc->deleteMessage(ui->locTreeWidget->currentItem());
+        locAcc->deleteMessage(ui->locTreeWidget->currentItem());
     }
 
 }
@@ -619,10 +650,10 @@ void MainWindow::on_dltMsgBtn_clicked()
 void MainWindow::on_dltEleBtn_clicked()
 {
     int result = QMessageBox::warning(this,"Are you Sure ???" , "You are about to delete Element !!! Allow Deletion?",
-                         QMessageBox::Ok, QMessageBox::Cancel);
+                                      QMessageBox::Ok, QMessageBox::Cancel);
     if(result == QMessageBox::Ok)
     {
-       locAcc->deleteElement(ui->locTreeWidget->currentItem());
+        locAcc->deleteElement(ui->locTreeWidget->currentItem());
     }
 }
 

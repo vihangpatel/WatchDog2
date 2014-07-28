@@ -433,10 +433,12 @@ QStringList LOCACC :: getElementTreeData(QTreeWidgetItem *elementItem)
 
 QStringList LOCACC::getMessageTreeData(QTreeWidgetItem *messageItem)
 {
+
     QJsonObject screenObj = fetchScreenJObject(QStringList(messageItem->parent()->parent()->text(0)));
     QJsonObject elementObj = fetchElementJObject(QStringList(messageItem->parent()->text(0)),screenObj["elements"].toArray());
     QJsonObject messageObj = fetchMessageJObject(QStringList(messageItem->text(0)),elementObj["messages"].toArray());
 
+    qDebug() << "FETCHER SUCCESS";
     QStringList messageData ;
     messageData << messageObj["id"].toString()  << messageObj["isAccTextSame"].toString()
             << messageObj["message"].toObject().value("loc").toString()
@@ -562,6 +564,60 @@ bool LOCACC::updateMessage(QStringList newMessageData, bool isAccTextSame, QTree
     currentItem->setText(0,newMessageData.at(0));
     writeFile();
     return true;
+}
+
+/***********************************************
+ * S E A R C H   R E S U L T   F U N C T I O N
+ **********************************************/
+
+QList<QTreeWidgetItem *> LOCACC::getSearchResult(QString searchText)
+{
+    QList<QTreeWidgetItem *> searchedResult;
+    QTreeWidgetItem *currentScreenItem, *currentElementItem , *currentMessageItem;
+    QStringList msgStringList;
+    for(int i = 0 ; i < root->childCount() ; i++)
+    {
+        currentScreenItem = root->child(i);
+        qDebug() << "TOP : " << currentScreenItem->text(0);
+        for( int j = 0 ; j < currentScreenItem->childCount() ; j++)
+        {
+            currentElementItem = currentScreenItem->child(j);
+            qDebug() << "ELE : " << currentElementItem->text(0);
+            for(int  k = 0 ; k < currentElementItem->childCount() ; k++)
+            {
+                currentMessageItem = currentElementItem->child(k);
+                msgStringList = getMessageTreeData(currentMessageItem);
+
+                if(msgStringList.at(2).contains(searchText,Qt::CaseInsensitive)
+                        || msgStringList.at(3).contains(searchText,Qt::CaseInsensitive))
+                {
+                    searchedResult.append(currentMessageItem);
+                }
+
+            }
+        }
+    }
+    searchedResultList = searchedResult;
+    return searchedResult;
+}
+
+QTreeWidgetItem *LOCACC::getPrevSeachResult()
+{
+    currentSearchIndex =  currentSearchIndex > 0 ? currentSearchIndex - 1 : 0;
+    return searchedResultList.length() > currentSearchIndex ?
+                searchedResultList.at(currentSearchIndex) : NULL;
+}
+
+QTreeWidgetItem *LOCACC::getNextSearchResult()
+{
+    currentSearchIndex =  currentSearchIndex < searchedResultList.length() - 1  ? currentSearchIndex + 1 : searchedResultList.length();
+    return searchedResultList.length() > currentSearchIndex ?
+                searchedResultList.at(currentSearchIndex) :  NULL;
+}
+
+int LOCACC::getCurrentSearchIndex()
+{
+    return currentSearchIndex;
 }
 
 QString LOCACC :: getLocAccFilePath()
