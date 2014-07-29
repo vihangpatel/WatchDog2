@@ -438,9 +438,8 @@ QStringList LOCACC::getMessageTreeData(QTreeWidgetItem *messageItem)
     QJsonObject elementObj = fetchElementJObject(QStringList(messageItem->parent()->text(0)),screenObj["elements"].toArray());
     QJsonObject messageObj = fetchMessageJObject(QStringList(messageItem->text(0)),elementObj["messages"].toArray());
 
-    qDebug() << "FETCHER SUCCESS";
     QStringList messageData ;
-    messageData << messageObj["id"].toString()  << messageObj["isAccTextSame"].toString()
+    messageData << messageObj["id"].toString()  << (messageObj["isAccTextSame"].toBool() ? "true" : "false")
             << messageObj["message"].toObject().value("loc").toString()
             <<  messageObj["message"].toObject().value("acc").toString()  ;
     return messageData;
@@ -573,7 +572,6 @@ bool LOCACC::updateMessage(QStringList newMessageData, bool isAccTextSame, QTree
 QList<QTreeWidgetItem *> LOCACC::getSearchResult(QString searchText)
 {
     QList<QTreeWidgetItem *> searchedResult;
-    currentSearchIndex = 0;
     QTreeWidgetItem *currentScreenItem, *currentElementItem , *currentMessageItem;
     QStringList msgStringList;
     for(int i = 0 ; i < root->childCount() ; i++)
@@ -599,7 +597,13 @@ QList<QTreeWidgetItem *> LOCACC::getSearchResult(QString searchText)
         }
     }
     searchedResultList = searchedResult;
+    currentSearchIndex = searchedResult.length() > 0 ? 0 : -1;
     return searchedResult;
+}
+
+QTreeWidgetItem *LOCACC::getCurrentSearchResult()
+{
+    return currentSearchIndex > 0 && currentSearchIndex < searchedResultList.length() ? searchedResultList.at(currentSearchIndex) : NULL;
 }
 
 QTreeWidgetItem *LOCACC::getPrevSeachResult()

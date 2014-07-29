@@ -62,6 +62,7 @@ public:
 
     QList<QTreeWidgetItem*> getSearchResult(QString searchText);
 
+    QTreeWidgetItem* getCurrentSearchResult();
     QTreeWidgetItem* getPrevSeachResult();
     QTreeWidgetItem* getNextSearchResult();
     int getCurrentSearchIndex();

@@ -111,6 +111,10 @@ private slots:
 
     void on_goNextSearchBtn_clicked();
 
+    void on_cb_isAccTextSameUpdt_clicked();
+
+    void on_updtLocMsgText_textEdited(const QString &arg1);
+
 public slots:
     void updateTemplateList(QFileInfoList);
     void templateFileListClicked(QListWidgetItem *);

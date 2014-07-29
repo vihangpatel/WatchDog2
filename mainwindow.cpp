@@ -109,6 +109,7 @@ void MainWindow::changeBasePath(QString strBasePath)
     locAcc->changeBasePath(str_basePath);
     updateDirTree();
     setWindowTitle("DE-Interactives " + str_basePath);
+    on_searchLocBtn_clicked();
 }
 
 void MainWindow::on_openDialog_clicked()
@@ -551,10 +552,11 @@ void MainWindow::fillElementDetail(QStringList data)
 void MainWindow::fillMessageDetail(QStringList data)
 {
     ui->updtMsgidText->setText(data.at(0));
-    ui->cb_isAccTextSameUpdt->setChecked(data.at(1) == "1" ? true : false);
+    ui->cb_isAccTextSameUpdt->setChecked(data.at(1) == "true" ? true : false);
     ui->updtLocMsgText->setText(data.at(2));
     ui->updtAccMsgText->setText(data.at(3));
     qDebug() << "Message detail updated : " << data.at(1);
+    on_cb_isAccTextSameUpdt_clicked();
 }
 
 int MainWindow::getTreeItemIndentationLevel(QTreeWidgetItem *currentItem,int count)
@@ -590,6 +592,24 @@ void MainWindow::on_locMsgText_textChanged(const QString &arg1)
     }
 }
 
+void MainWindow::on_cb_isAccTextSameUpdt_clicked()
+{
+    bool cb_status = ui->cb_isAccTextSameUpdt->isChecked();
+    ui->updtAccMsgText->setDisabled(cb_status);
+    if(cb_status)
+    {
+        ui->updtAccMsgText->setText(ui->updtLocMsgText->text());
+    }
+}
+
+void MainWindow::on_updtLocMsgText_textEdited(const QString &arg1)
+{
+    if(ui->cb_isAccTextSameUpdt->isChecked())
+    {
+        ui->updtAccMsgText->setText(ui->updtLocMsgText->text());
+    }
+}
+
 /***********************************************
  * S E A R C H   R E S U L T   F U N C T I O N
  **********************************************/
@@ -597,6 +617,12 @@ void MainWindow::on_searchLocBtn_clicked()
 {
     QList<QTreeWidgetItem *> searchedList = locAcc->getSearchResult(ui->locSearchText->text());
     ui->totalIndexText->setText(QString::number(searchedList.length()));
+    QTreeWidgetItem *currentResult = locAcc->getCurrentSearchResult();
+    ui->currentIndexText->setText(QString::number(locAcc->getCurrentSearchIndex() + 1));
+    if(currentResult != NULL)
+    {
+        ui->locTreeWidget->setCurrentItem(currentResult);
+    }
 }
 
 void MainWindow::on_goPrevSearchBtn_clicked()

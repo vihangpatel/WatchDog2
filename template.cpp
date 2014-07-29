@@ -71,7 +71,7 @@ void Templates::on_file_changed(QString strFilePath){
          emit filesChanged(getFileInfoList());
         return;
     }
-    process->execute("C:/Users/Vihang/Desktop/test.bat");
+    process->execute(TEMPLATE_COMPILE_COMMAND);
 }
 
 void Templates::on_dir_changed(QString strDirPath){

@@ -31,7 +31,7 @@
      <string notr="true"/>
     </property>
     <property name="currentIndex">
-     <number>5</number>
+     <number>6</number>
     </property>
     <widget class="QWidget" name="tab">
      <attribute name="title">
@@ -50,7 +50,7 @@
      <widget class="QPushButton" name="openDialog">
       <property name="geometry">
        <rect>
-        <x>580</x>
+        <x>590</x>
         <y>60</y>
         <width>151</width>
         <height>61</height>
@@ -80,7 +80,7 @@ font-weight:bold;</string>
      <widget class="QPushButton" name="createNewInter">
       <property name="geometry">
        <rect>
-        <x>414</x>
+        <x>424</x>
         <y>60</y>
         <width>151</width>
         <height>61</height>
@@ -254,7 +254,7 @@ font-weight:bold;</string>
        </rect>
       </property>
       <property name="text">
-       <string>Templates List:</string>
+       <string>Templates List :</string>
       </property>
      </widget>
      <widget class="Line" name="line">
@@ -482,7 +482,7 @@ font-weight:bold;</string>
        </rect>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="tab_9">
        <attribute name="title">
@@ -494,7 +494,7 @@ font-weight:bold;</string>
           <x>10</x>
           <y>10</y>
           <width>363</width>
-          <height>151</height>
+          <height>181</height>
          </rect>
         </property>
         <property name="title">
@@ -530,7 +530,7 @@ font-weight:bold;</string>
          <property name="geometry">
           <rect>
            <x>280</x>
-           <y>110</y>
+           <y>140</y>
            <width>75</width>
            <height>23</height>
           </rect>
@@ -555,9 +555,9 @@ font-weight:bold;</string>
         <widget class="QLineEdit" name="locMsgText">
          <property name="geometry">
           <rect>
-           <x>100</x>
+           <x>60</x>
            <y>80</y>
-           <width>131</width>
+           <width>291</width>
            <height>20</height>
           </rect>
          </property>
@@ -568,9 +568,9 @@ font-weight:bold;</string>
         <widget class="QLineEdit" name="accMsgText">
          <property name="geometry">
           <rect>
-           <x>100</x>
+           <x>60</x>
            <y>110</y>
-           <width>131</width>
+           <width>291</width>
            <height>20</height>
           </rect>
          </property>
@@ -1000,123 +1000,6 @@ font-weight:bold;</string>
          </property>
         </widget>
        </widget>
-       <widget class="QGroupBox" name="groupBox_updateMessage">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>10</y>
-          <width>363</width>
-          <height>151</height>
-         </rect>
-        </property>
-        <property name="title">
-         <string>Update Message</string>
-        </property>
-        <widget class="QLabel" name="label_28">
-         <property name="geometry">
-          <rect>
-           <x>20</x>
-           <y>20</y>
-           <width>61</width>
-           <height>16</height>
-          </rect>
-         </property>
-         <property name="text">
-          <string>MessageId :</string>
-         </property>
-        </widget>
-        <widget class="QLineEdit" name="updtMsgidText">
-         <property name="geometry">
-          <rect>
-           <x>100</x>
-           <y>20</y>
-           <width>131</width>
-           <height>20</height>
-          </rect>
-         </property>
-         <property name="text">
-          <string/>
-         </property>
-        </widget>
-        <widget class="QPushButton" name="updateMsgBtn">
-         <property name="geometry">
-          <rect>
-           <x>264</x>
-           <y>110</y>
-           <width>91</width>
-           <height>23</height>
-          </rect>
-         </property>
-         <property name="text">
-          <string>Update Message</string>
-         </property>
-        </widget>
-        <widget class="QCheckBox" name="cb_isAccTextSameUpdt">
-         <property name="geometry">
-          <rect>
-           <x>20</x>
-           <y>50</y>
-           <width>151</width>
-           <height>21</height>
-          </rect>
-         </property>
-         <property name="text">
-          <string>isAccTextSame</string>
-         </property>
-        </widget>
-        <widget class="QLineEdit" name="updtLocMsgText">
-         <property name="geometry">
-          <rect>
-           <x>100</x>
-           <y>80</y>
-           <width>131</width>
-           <height>20</height>
-          </rect>
-         </property>
-         <property name="text">
-          <string/>
-         </property>
-        </widget>
-        <widget class="QLineEdit" name="updtAccMsgText">
-         <property name="geometry">
-          <rect>
-           <x>100</x>
-           <y>110</y>
-           <width>131</width>
-           <height>20</height>
-          </rect>
-         </property>
-         <property name="text">
-          <string/>
-         </property>
-        </widget>
-        <widget class="QLabel" name="label_29">
-         <property name="geometry">
-          <rect>
-           <x>20</x>
-           <y>80</y>
-           <width>61</width>
-           <height>16</height>
-          </rect>
-         </property>
-         <property name="text">
-          <string>Loc :</string>
-         </property>
-        </widget>
-        <widget class="QLabel" name="label_30">
-         <property name="geometry">
-          <rect>
-           <x>20</x>
-           <y>110</y>
-           <width>61</width>
-           <height>16</height>
-          </rect>
-         </property>
-         <property name="text">
-          <string>Acc :</string>
-         </property>
-        </widget>
-       </widget>
        <widget class="QGroupBox" name="groupBox_updateScreen">
         <property name="geometry">
          <rect>
@@ -1192,6 +1075,123 @@ font-weight:bold;</string>
          </property>
          <property name="text">
           <string>ScreenName  :</string>
+         </property>
+        </widget>
+       </widget>
+       <widget class="QGroupBox" name="groupBox_updateMessage">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>10</y>
+          <width>363</width>
+          <height>181</height>
+         </rect>
+        </property>
+        <property name="title">
+         <string>Update Message</string>
+        </property>
+        <widget class="QLabel" name="label_28">
+         <property name="geometry">
+          <rect>
+           <x>20</x>
+           <y>20</y>
+           <width>61</width>
+           <height>16</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>MessageId :</string>
+         </property>
+        </widget>
+        <widget class="QLineEdit" name="updtMsgidText">
+         <property name="geometry">
+          <rect>
+           <x>100</x>
+           <y>20</y>
+           <width>131</width>
+           <height>20</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="updateMsgBtn">
+         <property name="geometry">
+          <rect>
+           <x>264</x>
+           <y>140</y>
+           <width>91</width>
+           <height>23</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Update Message</string>
+         </property>
+        </widget>
+        <widget class="QCheckBox" name="cb_isAccTextSameUpdt">
+         <property name="geometry">
+          <rect>
+           <x>20</x>
+           <y>50</y>
+           <width>151</width>
+           <height>21</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>isAccTextSame</string>
+         </property>
+        </widget>
+        <widget class="QLineEdit" name="updtLocMsgText">
+         <property name="geometry">
+          <rect>
+           <x>60</x>
+           <y>80</y>
+           <width>291</width>
+           <height>20</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+        <widget class="QLineEdit" name="updtAccMsgText">
+         <property name="geometry">
+          <rect>
+           <x>60</x>
+           <y>110</y>
+           <width>291</width>
+           <height>20</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_29">
+         <property name="geometry">
+          <rect>
+           <x>20</x>
+           <y>80</y>
+           <width>61</width>
+           <height>16</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Loc :</string>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_30">
+         <property name="geometry">
+          <rect>
+           <x>20</x>
+           <y>110</y>
+           <width>61</width>
+           <height>16</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Acc :</string>
          </property>
         </widget>
        </widget>
@@ -1462,7 +1462,7 @@ font-weight:bold;</string>
      <widget class="QLabel" name="label_27">
       <property name="geometry">
        <rect>
-        <x>160</x>
+        <x>150</x>
         <y>366</y>
         <width>21</width>
         <height>20</height>
@@ -1475,7 +1475,7 @@ font-weight:bold;</string>
      <widget class="QLabel" name="totalIndexText">
       <property name="geometry">
        <rect>
-        <x>190</x>
+        <x>170</x>
         <y>366</y>
         <width>21</width>
         <height>20</height>
@@ -1485,6 +1485,11 @@ font-weight:bold;</string>
        <string>#</string>
       </property>
      </widget>
+    </widget>
+    <widget class="QWidget" name="tab_10">
+     <attribute name="title">
+      <string>Utilities</string>
+     </attribute>
     </widget>
    </widget>
   </widget>
@@ -1535,6 +1540,36 @@ font-weight:bold;</string>
   <tabstop>locMsgText</tabstop>
   <tabstop>accMsgText</tabstop>
   <tabstop>addMsgBtn</tabstop>
+  <tabstop>tabWidget_2</tabstop>
+  <tabstop>updtEleIdText</tabstop>
+  <tabstop>updtEleAccIdText</tabstop>
+  <tabstop>updtEleTypeText</tabstop>
+  <tabstop>updtEleRoleText</tabstop>
+  <tabstop>updTabIndexText</tabstop>
+  <tabstop>updtEleBtn</tabstop>
+  <tabstop>updtScreenIdText</tabstop>
+  <tabstop>updtScreenNameText</tabstop>
+  <tabstop>updtScreenBtn</tabstop>
+  <tabstop>updtMsgidText</tabstop>
+  <tabstop>cb_isAccTextSameUpdt</tabstop>
+  <tabstop>updtLocMsgText</tabstop>
+  <tabstop>updtAccMsgText</tabstop>
+  <tabstop>updateMsgBtn</tabstop>
+  <tabstop>cutMsgBtn</tabstop>
+  <tabstop>copyMsgBtn</tabstop>
+  <tabstop>pasteMsgBtn</tabstop>
+  <tabstop>dltMsgBtn</tabstop>
+  <tabstop>cutEleBtn</tabstop>
+  <tabstop>copyEleBtn</tabstop>
+  <tabstop>pasteEleBtn</tabstop>
+  <tabstop>dltEleBtn</tabstop>
+  <tabstop>copyScrBtn</tabstop>
+  <tabstop>pasteScrBtn</tabstop>
+  <tabstop>dltScrBtn</tabstop>
+  <tabstop>locSearchText</tabstop>
+  <tabstop>searchLocBtn</tabstop>
+  <tabstop>goPrevSearchBtn</tabstop>
+  <tabstop>goNextSearchBtn</tabstop>
  </tabstops>
  <resources>
   <include location="resources.qrc"/>

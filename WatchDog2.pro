@@ -28,7 +28,8 @@ HEADERS  += mainwindow.h \
     Monitor.h \
     configHandler.h \
     css.h \
-    locacc.h
+    locacc.h \
+    messages.h
 
 FORMS    += \
     newinteractivityform.ui \

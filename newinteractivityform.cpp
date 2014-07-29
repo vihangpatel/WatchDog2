@@ -10,6 +10,7 @@ QString CSS_FOLDER = "css";
 QString DATA_FOLDER = "data";
 QString  LANG_FOLDER = "lang";
 QString MEDIA_FOLDER = "media";
+QString IMAGES_FOLDER = "images";
 QString EN_FOLDER = "en";
 
 NewInterActivityForm::NewInterActivityForm(QWidget *parent) :
@@ -83,6 +84,7 @@ bool NewInterActivityForm::createDirStructure(){
     baseDir.mkpath(currentPath + "/" + JS_FOLDER + "/" + JS_MODEL_FOLDER);
     baseDir.mkpath(currentPath + "/" + CSS_FOLDER);
     baseDir.mkpath(currentPath + "/" + MEDIA_FOLDER);
+    baseDir.mkpath(currentPath + "/" + MEDIA_FOLDER + "/" + IMAGES_FOLDER);
     baseDir.mkpath(currentPath +  "/" + LANG_FOLDER);
     baseDir.mkpath(currentPath + "/" +  LANG_FOLDER + "/" + EN_FOLDER + "/" + DATA_FOLDER);
     baseDir.mkpath(currentPath + "/" + TEMPLATE_FOLDER);
