@@ -24,6 +24,7 @@ void MainWindow::initialize(){
     ui->treeView->setRootIndex(qfs_model->index(str_rootPath));
     ui->treeView->setIndentation(20);
     ui->treeView->setSortingEnabled(true);
+    ui->locSearchText->setAutoFillBackground(true);
     qfsw = new QFileSystemWatcher(this);
     form = new NewInterActivityForm(this);
     form->changeBasePath(str_rootPath);
@@ -251,7 +252,6 @@ void MainWindow::updateJSList(QFileInfoList fileList){
 
     for(int i = 0 ; i < jsFolderFiles.count() ; i++ ){
         currentFileName = jsFolderFiles.at(i).fileName();
-        ui->jsViewList->addItem(currentFileName);
         obj["url"] = currentFileName;
         obj["isNextStepLoad"] = false;
         jsViewJArray.insert(i,obj);
@@ -259,18 +259,16 @@ void MainWindow::updateJSList(QFileInfoList fileList){
 
     int addCnt = jsFolderFiles.length();
     for(int i = 0 ; i < modelFolderFiles.count() ; i++ ){
-        currentFileName = modelFolderFiles.at(i).fileName();
-        ui->jsViewList->addItem("models/" + currentFileName);
-        obj["url"] ="models/" +  currentFileName;
+        currentFileName = "models/" + modelFolderFiles.at(i).fileName();
+        obj["url"] = currentFileName;
         obj["isNextStepLoad"] = true;
         jsViewJArray.insert(addCnt + i,obj);
     }
 
     addCnt = jsFolderFiles.length() + modelFolderFiles.length();
     for(int i = 0 ; i < viewFolderFiles.count() ; i++ ){
-        currentFileName = viewFolderFiles.at(i).fileName();
-        ui->jsViewList->addItem("views/" + currentFileName);
-        obj["url"] ="views/" +  currentFileName;
+        currentFileName = "views/" + viewFolderFiles.at(i).fileName();
+        obj["url"] = currentFileName;
         obj["isNextStepLoad"] = true;
         jsViewJArray.insert(addCnt +  i,obj);
     }
@@ -302,22 +300,67 @@ void MainWindow::on_jsViewNextLoadCheckBox_clicked()
 
 QJsonArray MainWindow::syncJSList(QJsonArray newArray)
 {
+    bool isEntryFound = false;
+    QList<int> removeIndexList ;
     QJsonObject tempNewObj,tempOrigObj;
     QJsonArray jsOrigArray = config->getJSJArray();
-    for(int i = 0 ; i < newArray.count() ; i++)
+    // SCAN ORIGINAL LIST TO REMOVE UNWANTED ENTRIES
+    for(int i = 0 ; i < jsOrigArray.count() ; i++)
     {
-        tempNewObj =  newArray.at(i).toObject();
-        for(int j = 0 ; j < jsOrigArray.count() ; j ++)
+        tempOrigObj =   jsOrigArray.at(i).toObject();
+        isEntryFound = false;
+        for(int j = 0 ; j < newArray.count() ; j ++)
         {
-            tempOrigObj = jsOrigArray.at(j).toObject();
+            tempNewObj = newArray.at(j).toObject();
             if(tempNewObj["url"] == tempOrigObj["url"]){
                 tempNewObj["isNextStepLoad"] = tempOrigObj["isNextStepLoad"];
-                newArray.replace(i,tempNewObj);
+                jsOrigArray.replace(i,tempNewObj);
                 qDebug() <<"replced";
+                isEntryFound = true;
             }
         }
+        if(!isEntryFound)
+        {
+            removeIndexList.append(i);
+        }
     }
-    return newArray;
+    for(int i = 0 ; i < removeIndexList.length() ; i++)
+    {
+        jsOrigArray.removeAt(removeIndexList.at(i));
+    }
+
+    // SCAN NEW LIST FOR NEW ENTRIES
+    removeIndexList.clear();
+    for(int i = 0 ; i < newArray.count() ; i++)
+    {
+        tempNewObj = newArray.at(i).toObject();
+        isEntryFound = false;
+        for(int j = 0 ; j < jsOrigArray.count() ; j++)
+        {
+            tempOrigObj = jsOrigArray.at(j).toObject();
+            if(tempNewObj["url"] == tempOrigObj["url"])
+            {
+                isEntryFound = true;
+                break;
+            }
+        }
+        if(!isEntryFound)
+        {
+            removeIndexList.append(i);
+        }
+    }
+    for(int i = 0 ; i < removeIndexList.length() ; i++)
+    {
+        jsOrigArray.append(newArray.at(removeIndexList.at(i)));
+    }
+
+    // Fill the view list of the JS tab
+    for(int i = 0 ; i < jsOrigArray.count() ; i++ )
+    {
+        QString fileName = jsOrigArray.at(i).toObject()["url"].toString();
+        ui->jsViewList->addItem(fileName);
+    }
+    return jsOrigArray;
 }
 
 void MainWindow::on_templateList_itemSelectionChanged()
@@ -629,6 +672,15 @@ void MainWindow::on_searchLocBtn_clicked()
     if(currentResult != NULL)
     {
         ui->locTreeWidget->setCurrentItem(currentResult);
+    }
+    on_goPrevSearchBtn_clicked();
+    if(searchedList.length() == 0)
+    {
+        ui->locSearchText->setStyleSheet("background-color : pink ; opacity : 0.5;");
+    }
+    else
+    {
+        ui->locSearchText->setStyleSheet("background-color: white ; opacity : 1;");
     }
 }
 
