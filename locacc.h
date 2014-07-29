@@ -30,6 +30,7 @@ public:
     bool addScreen(QStringList screenData);
     bool addElement(QStringList elementData,QTreeWidgetItem *parent);
     bool addMessage(QStringList msgData,bool isAccTextSame,QTreeWidgetItem *parent);
+    void setMessageTooltip(QTreeWidgetItem *messageItem,QJsonObject messageJObj);
     void readFile();
     void writeFile();
     void emptyTreeWidget(QTreeWidgetItem* parent);

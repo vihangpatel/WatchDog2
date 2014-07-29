@@ -115,6 +115,8 @@ private slots:
 
     void on_updtLocMsgText_textEdited(const QString &arg1);
 
+    void openLocAccTab();
+
 public slots:
     void updateTemplateList(QFileInfoList);
     void templateFileListClicked(QListWidgetItem *);

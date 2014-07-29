@@ -54,9 +54,16 @@ void MainWindow::initTrayIcon()
     menu->addMenu(minifyMenu);
     menu->addAction("Compile Handlebars");
     menu->addAction("Refresh",this,SLOT(scanChanges()));
+    menu->addAction("Open Loc-acc Tab",this,SLOT(openLocAccTab()));
     menu->addAction("Exit",this,SLOT(close()));
     trayIcon->setContextMenu(menu);
     trayIcon->show();
+}
+
+void MainWindow::openLocAccTab()
+{
+    this->show();
+    ui->tabWidget->setCurrentIndex(5);
 }
 
 void MainWindow::connectSignals(){

@@ -111,10 +111,12 @@ bool LOCACC::addMessage(QStringList msgData, bool isAccTextSame, QTreeWidgetItem
                     {
                         return false;
                     }
-                    msgsArray.append(getMessageJson(msgData,isAccTextSame));
+                    QJsonObject newMsgJson = getMessageJson(msgData,isAccTextSame);
+                    msgsArray.append(newMsgJson);
                     QStringList msgList;
                     msgList << msgData.at(0);
                     QTreeWidgetItem *newMsg = new QTreeWidgetItem(msgList);
+                    setMessageTooltip(newMsg,newMsgJson);
                     parent->addChild(newMsg);
                     tempEleObj["messages"] = msgsArray;
                     eleJArray.replace(j,tempEleObj);
@@ -287,6 +289,7 @@ QList<QTreeWidgetItem *> LOCACC::generateMessageTree(QJsonArray  msgArray)
         qDebug() << " in  message generation : loop  " << msgObj;
         msgList << msgObj["id"].toString();
         QTreeWidgetItem *msgChild = new QTreeWidgetItem(msgList);
+        setMessageTooltip(msgChild,msgObj);
         msgChildWidgetList.append(msgChild);
     }
     return msgChildWidgetList;
@@ -552,6 +555,7 @@ bool LOCACC::updateMessage(QStringList newMessageData, bool isAccTextSame, QTree
                             eleJArray.replace(j,tempEleObj);
                             tempObj["elements"] = eleJArray;
                             jArray.replace(i,tempObj);
+                            setMessageTooltip(currentItem,newMsgObj);
                             break;
                         }
                     }
@@ -623,6 +627,17 @@ QTreeWidgetItem *LOCACC::getNextSearchResult()
 int LOCACC::getCurrentSearchIndex()
 {
     return currentSearchIndex;
+}
+
+/***********************************************************************
+ ************************  T O O L T I P     T E X T **************************
+ **********************************************************************/
+
+void LOCACC::setMessageTooltip(QTreeWidgetItem *messageItem, QJsonObject messageJObj)
+{
+    QJsonDocument doc(messageJObj);
+    QString text(doc.toJson());
+    messageItem->setToolTip(0,text);
 }
 
 QString LOCACC :: getLocAccFilePath()
