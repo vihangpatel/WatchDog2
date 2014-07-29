@@ -15,9 +15,10 @@ LOCACC::LOCACC(QString strPath)
 
 void LOCACC::changeBasePath(QString strPath)
 {
-    str_basePath  = strPath;
-    readFile();
+    str_basePath  = strPath;  
     emptyTreeWidget(root);
+    readFile();
+    root->takeChildren();
     getLocAccTree();
 }
 
@@ -28,7 +29,7 @@ void LOCACC::emptyTreeWidget(QTreeWidgetItem *parent)
     {
         child = parent->child(i);
         emptyTreeWidget(child);
-        parent->removeChild(child);
+        parent->removeChild(child);        
         delete child;
     }
 }
@@ -649,6 +650,7 @@ QString LOCACC :: getLocAccFilePath()
 void LOCACC::readFile()
 {
     locAccFile.setFileName(getLocAccFilePath());
+    locAccFile.close();
     locAccFile.open(QIODevice::ReadOnly | QIODevice::Text);
     if(!locAccFile.exists())
     {
