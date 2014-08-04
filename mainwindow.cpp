@@ -214,6 +214,12 @@ void MainWindow::on_templateNextLoadCheckBox_clicked()
     qDebug() << "ON CHECK BOX CLICKED : " << tmpltJArray;
 }
 
+void MainWindow::on_templateList_itemSelectionChanged()
+{
+    templateFileListClicked(ui->templateList->currentItem());
+
+}
+
 /****************************************************************
              J S     H A N D L I N G
 ******************************************************************/
@@ -225,8 +231,11 @@ void MainWindow::jsFileListClicked(QListWidgetItem *item){
     }
     QJsonArray jsViewJArray = config->getJSJArray();
     QString itemText = item->text();
+    bool containsBase = false;
     for(int i = 0; i < jsViewJArray.count() ; i++){
         QJsonObject obj = jsViewJArray.at(i).toObject();
+        containsBase = obj.contains("basePath");
+        ui->jsViewNextLoadCheckBox->setDisabled(containsBase);
         if(obj["url"] == itemText)
         {
             ui->jsViewNextLoadCheckBox->setChecked(obj["isNextStepLoad"].toBool());
@@ -326,6 +335,10 @@ QJsonArray MainWindow::syncJSList(QJsonArray newArray)
     }
     for(int i = 0 ; i < removeIndexList.length() ; i++)
     {
+        if(jsOrigArray.at(removeIndexList.at(i)).toObject().contains("basePath"))
+        {
+            continue;
+        }
         jsOrigArray.removeAt(removeIndexList.at(i));
     }
 
@@ -361,11 +374,6 @@ QJsonArray MainWindow::syncJSList(QJsonArray newArray)
         ui->jsViewList->addItem(fileName);
     }
     return jsOrigArray;
-}
-
-void MainWindow::on_templateList_itemSelectionChanged()
-{
-    templateFileListClicked(ui->templateList->currentItem());
 }
 
 /****************************************************************

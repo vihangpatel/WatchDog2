@@ -31,7 +31,7 @@
      <string notr="true"/>
     </property>
     <property name="currentIndex">
-     <number>5</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="tab">
      <attribute name="title">
@@ -1422,6 +1422,9 @@ font-weight:bold;</string>
       <property name="text">
        <string>Search</string>
       </property>
+      <property name="shortcut">
+       <string>Ctrl+F</string>
+      </property>
      </widget>
      <widget class="QPushButton" name="goPrevSearchBtn">
       <property name="geometry">
@@ -1435,6 +1438,9 @@ font-weight:bold;</string>
       <property name="text">
        <string>Prev</string>
       </property>
+      <property name="shortcut">
+       <string>Shift+F3</string>
+      </property>
      </widget>
      <widget class="QPushButton" name="goNextSearchBtn">
       <property name="geometry">
@@ -1447,6 +1453,9 @@ font-weight:bold;</string>
       </property>
       <property name="text">
        <string>Next</string>
+      </property>
+      <property name="shortcut">
+       <string>F3</string>
       </property>
      </widget>
      <widget class="QLabel" name="currentIndexText">

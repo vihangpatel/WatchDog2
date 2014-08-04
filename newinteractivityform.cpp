@@ -140,13 +140,6 @@ void NewInterActivityForm::createLocAccFile()
     QJsonArray masterLocArray;
     masterLocArray.append(tabContentObj);
 
-    QJsonObject titleScreenObj;
-    titleScreenObj["id"] = "title-screen";
-    titleScreenObj["name"] = "title-screen";
-    QJsonArray array;
-    titleScreenObj["elements"] = array;
-    masterAccObj["locAccData"] = masterLocArray;
-
     QJsonDocument doc(masterAccObj);
     file.open(QIODevice::ReadWrite | QIODevice::Text);
     file.write(doc.toJson());

@@ -16,6 +16,7 @@
 #include "css.h"
 #include "QSystemTrayIcon"
 #include "locacc.h"
+#include <QBrush>
 
 namespace Ui {
     class MainWindow;
