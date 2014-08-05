@@ -11,7 +11,7 @@
 #include <QIODevice>
 #include <QFile>
 #include <QString>
-
+#include <QDir>
 class LOCACC : public QObject
 {
     Q_OBJECT
@@ -24,9 +24,13 @@ public:
     QTreeWidgetItem *root;
     QList<QTreeWidgetItem *> searchedResultList;
     int currentSearchIndex = 0;
+    int currentLangIndex = 0;
+    QStringList availableLangList;
+    QDir *langDir;
 
     void changeBasePath(QString strPath);
     QString getLocAccFilePath();
+    QString getLangFolderPath();
     bool addScreen(QStringList screenData);
     bool addElement(QStringList elementData,QTreeWidgetItem *parent);
     bool addMessage(QStringList msgData,bool isAccTextSame,QTreeWidgetItem *parent);
@@ -71,6 +75,12 @@ public:
     QJsonObject fetchScreenJObject(QStringList screenData);
     QJsonObject fetchElementJObject(QStringList elementData,QJsonArray parenScreenJObj);
     QJsonObject fetchMessageJObject(QStringList messageData,QJsonArray parentEleJArray);
+
+    bool addNewLanguage(QString lang);
+    bool changeLanguage(int currentLangIndex);
+    void makeNewLangFolder(QString newLang);
+    QStringList getAvailableLangugaes();
+
 
  signals:
     void treeUpdated(QTreeWidgetItem *);

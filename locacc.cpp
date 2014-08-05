@@ -9,13 +9,16 @@ LOCACC::LOCACC(QString strPath)
 {
     QStringList treeList;
     treeList << "locAccData";
+    langDir = new QDir("D:\DE");
     root = new QTreeWidgetItem(treeList);
     changeBasePath(strPath);
 }
 
 void LOCACC::changeBasePath(QString strPath)
 {
-    str_basePath  = strPath;  
+    str_basePath  = strPath;
+    langDir->setPath(getLangFolderPath());
+    getAvailableLangugaes();
     emptyTreeWidget(root);
     readFile();
     root->takeChildren();
@@ -641,10 +644,64 @@ void LOCACC::setMessageTooltip(QTreeWidgetItem *messageItem, QJsonObject message
     messageItem->setToolTip(0,text);
 }
 
+/***********************************************************************
+ ********************* A D D   N E W   L A N G U A G E **********************
+ **********************************************************************/
+
+bool LOCACC::addNewLanguage(QString lang)
+{
+   bool contains =  availableLangList.contains(lang,Qt::CaseSensitive);
+   if(contains)
+   {
+        return false;
+   }
+   langDir->setPath(getLangFolderPath());
+   makeNewLangFolder(lang);
+   return true;
+}
+
+void LOCACC::makeNewLangFolder(QString newLang)
+{
+    QString newLangFolderPath = str_basePath + "/" +  LOC_LANG_FOLDER + "/" + newLang + "/" + LOC_DATA_FOLDER;
+    langDir->mkpath(newLangFolderPath);
+    QFile file(newLangFolderPath + "/" + LOC_FILE_NAME);
+    file.open(QIODevice::ReadWrite | QIODevice::Text);
+    file.close();
+}
+
+QStringList LOCACC::getAvailableLangugaes()
+{
+    availableLangList.clear();
+    currentLangIndex = 0;
+    availableLangList = langDir->entryList();
+    availableLangList.removeOne(".");
+    availableLangList.removeOne("..");
+    qDebug() << availableLangList;
+    return availableLangList;
+}
+
+bool LOCACC::changeLanguage(int currentIndex)
+{
+    currentLangIndex = currentLangIndex > availableLangList.count() ?  0 :  currentIndex;
+    qDebug() << currentLangIndex;
+    emptyTreeWidget(root);
+    readFile();
+    root->takeChildren();
+    getLocAccTree();
+}
+
 QString LOCACC :: getLocAccFilePath()
 {
+    QString lang;
+    lang = currentLangIndex >= availableLangList.length() ? LOC_EN_FOLDER :  availableLangList.at(currentLangIndex);
     return str_basePath + "/" + LOC_LANG_FOLDER
-            + "/" + LOC_EN_FOLDER +  + "/" + LOC_DATA_FOLDER  + "/" + LOC_FILE_NAME;
+            + "/"  +   lang
+            + "/" + LOC_DATA_FOLDER  + "/" + LOC_FILE_NAME;
+}
+
+QString LOCACC::getLangFolderPath()
+{
+    return str_basePath + "/" + LOC_LANG_FOLDER;
 }
 
 void LOCACC::readFile()

@@ -118,6 +118,9 @@ void MainWindow::changeBasePath(QString strBasePath)
     updateDirTree();
     setWindowTitle("DE-Interactives " + str_basePath);
     on_searchLocBtn_clicked();
+    ui->comboBox_Languages->clear();
+    ui->comboBox_Languages->addItems(locAcc->getAvailableLangugaes());
+    ui->languageLabel->setText(ui->comboBox_Languages->currentText());
 }
 
 void MainWindow::on_openDialog_clicked()
@@ -750,6 +753,26 @@ void MainWindow::on_dltEleBtn_clicked()
     }
 }
 
+/*****************************************************************
+******* M U L T I P L E   L A N G U A G E  S U P P O R T ******
+*************************************************************/
+
+void MainWindow::on_comboBox_Languages_currentIndexChanged(int index)
+{
+    locAcc->changeLanguage(index);
+    ui->languageLabel->setText(ui->comboBox_Languages->currentText());
+}
+
+void MainWindow::on_addNewLangBtn_clicked()
+{
+    QString newLangName = ui->newLangText->text();
+    if(!locAcc->addNewLanguage(newLangName))
+    {
+        QMessageBox::critical(this,"Same language exists","Same language exists. Please enter another language.",QMessageBox::Cancel);
+        return;
+    }
+    ui->comboBox_Languages->addItem(newLangName);
+}
 
 /***************************************************************
  *                          C R E A T E S    N E W    I N T E R A C T I V I T Y
@@ -759,4 +782,3 @@ void MainWindow::on_createNewInter_clicked()
     form->clearAllFormData();
     form->show();
 }
-

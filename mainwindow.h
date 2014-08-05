@@ -118,6 +118,10 @@ private slots:
 
     void openLocAccTab();
 
+    void on_comboBox_Languages_currentIndexChanged(int index);
+
+    void on_addNewLangBtn_clicked();
+
 public slots:
     void updateTemplateList(QFileInfoList);
     void templateFileListClicked(QListWidgetItem *);
