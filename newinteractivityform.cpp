@@ -139,7 +139,9 @@ void NewInterActivityForm::createLocAccFile()
     tabContentObj["elements"] = tempArray;
     QJsonArray masterLocArray;
     masterLocArray.append(tabContentObj);
+    masterAccObj["locAccData"] = masterLocArray;
 
+    qDebug() << "NEW LOC CREATED " << filePath << " \n" << masterAccObj;
     QJsonDocument doc(masterAccObj);
     file.open(QIODevice::ReadWrite | QIODevice::Text);
     file.write(doc.toJson());

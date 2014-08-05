@@ -114,13 +114,14 @@ void MainWindow::changeBasePath(QString strBasePath)
     tmplt->changeBasePath(str_basePath);
     js->changeBasePath(str_basePath);
     css->changeBasePath(str_basePath);
-    locAcc->changeBasePath(str_basePath);
+    locAcc->changeBasePath(str_basePath);    
     updateDirTree();
     setWindowTitle("DE-Interactives " + str_basePath);
     on_searchLocBtn_clicked();
     ui->comboBox_Languages->clear();
     ui->comboBox_Languages->addItems(locAcc->getAvailableLangugaes());
     ui->languageLabel->setText(ui->comboBox_Languages->currentText());
+    on_comboBox_Languages_currentIndexChanged(0);
 }
 
 void MainWindow::on_openDialog_clicked()
@@ -759,6 +760,9 @@ void MainWindow::on_dltEleBtn_clicked()
 
 void MainWindow::on_comboBox_Languages_currentIndexChanged(int index)
 {
+    if(index < 0){
+        return;
+    }
     locAcc->changeLanguage(index);
     ui->languageLabel->setText(ui->comboBox_Languages->currentText());
 }

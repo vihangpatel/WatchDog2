@@ -657,13 +657,18 @@ bool LOCACC::addNewLanguage(QString lang)
    }
    langDir->setPath(getLangFolderPath());
    makeNewLangFolder(lang);
+   availableLangList.append(lang);
    return true;
 }
 
 void LOCACC::makeNewLangFolder(QString newLang)
 {
     QString newLangFolderPath = str_basePath + "/" +  LOC_LANG_FOLDER + "/" + newLang + "/" + LOC_DATA_FOLDER;
-    langDir->mkpath(newLangFolderPath);
+    QDir dir(newLangFolderPath);
+    if(!dir.exists())
+    {
+        langDir->mkpath(newLangFolderPath);
+    }
     QFile file(newLangFolderPath + "/" + LOC_FILE_NAME);
     file.open(QIODevice::ReadWrite | QIODevice::Text);
     file.close();
@@ -714,10 +719,12 @@ void LOCACC::readFile()
         qDebug() << " LOC ACC READING FAILED :" << getLocAccFilePath();
         return;
     }
+    qDebug() << " LOC ACC READING  :" << getLocAccFilePath();
     QByteArray rawData = locAccFile.readAll();
     QJsonDocument doc(QJsonDocument::fromJson(rawData));
     masterJObj = doc.object();
     qDebug() << "READ : " << masterJObj;
+    locAccFile.close();
 }
 
 void LOCACC :: writeFile()
