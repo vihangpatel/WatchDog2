@@ -31,7 +31,7 @@
      <string notr="true"/>
     </property>
     <property name="currentIndex">
-     <number>5</number>
+     <number>6</number>
     </property>
     <widget class="QWidget" name="tab">
      <attribute name="title">
@@ -1673,6 +1673,182 @@ font-weight:bold;</string>
      <attribute name="title">
       <string>Utilities</string>
      </attribute>
+     <widget class="QGroupBox" name="groupBox">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>20</y>
+        <width>721</width>
+        <height>111</height>
+       </rect>
+      </property>
+      <property name="title">
+       <string> Minification </string>
+      </property>
+      <widget class="QLabel" name="label_36">
+       <property name="geometry">
+        <rect>
+         <x>30</x>
+         <y>20</y>
+         <width>481</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Minify Common level Code. Make sure that you are on testing branch before running minification.</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="miniFyCommonBtn">
+       <property name="geometry">
+        <rect>
+         <x>590</x>
+         <y>20</y>
+         <width>101</width>
+         <height>23</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Common</string>
+       </property>
+       <property name="icon">
+        <iconset resource="resources.qrc">
+         <normaloff>:/images/C:/Users/Vihang/Downloads/android_icons/PNG/48/Travel/sleeping_mat-48.png</normaloff>:/images/C:/Users/Vihang/Downloads/android_icons/PNG/48/Travel/sleeping_mat-48.png</iconset>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_37">
+       <property name="geometry">
+        <rect>
+         <x>30</x>
+         <y>50</y>
+         <width>481</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Minify current Interactivity. See title for the current interactivity.</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="minifyInterActBtn">
+       <property name="geometry">
+        <rect>
+         <x>590</x>
+         <y>50</y>
+         <width>101</width>
+         <height>23</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Interactivity</string>
+       </property>
+       <property name="icon">
+        <iconset resource="resources.qrc">
+         <normaloff>:/images/C:/Users/Vihang/Downloads/android_icons/PNG/48/Travel/sleeping_mat-48.png</normaloff>:/images/C:/Users/Vihang/Downloads/android_icons/PNG/48/Travel/sleeping_mat-48.png</iconset>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="minifyPreLoadBtn">
+       <property name="geometry">
+        <rect>
+         <x>590</x>
+         <y>80</y>
+         <width>101</width>
+         <height>23</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Pre-Loader</string>
+       </property>
+       <property name="icon">
+        <iconset resource="resources.qrc">
+         <normaloff>:/images/C:/Users/Vihang/Downloads/android_icons/PNG/48/Travel/sleeping_mat-48.png</normaloff>:/images/C:/Users/Vihang/Downloads/android_icons/PNG/48/Travel/sleeping_mat-48.png</iconset>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_38">
+       <property name="geometry">
+        <rect>
+         <x>30</x>
+         <y>80</y>
+         <width>481</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Minify Preloader.</string>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QGroupBox" name="groupBox_2">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>140</y>
+        <width>721</width>
+        <height>91</height>
+       </rect>
+      </property>
+      <property name="title">
+       <string> Cleaning </string>
+      </property>
+      <widget class="QPushButton" name="miniFyCommonBtn_3">
+       <property name="geometry">
+        <rect>
+         <x>590</x>
+         <y>20</y>
+         <width>101</width>
+         <height>23</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>orig files</string>
+       </property>
+       <property name="icon">
+        <iconset resource="resources.qrc">
+         <normaloff>:/images/C:/Users/Vihang/Downloads/android_icons/PNG/48/Household/broom-48.png</normaloff>:/images/C:/Users/Vihang/Downloads/android_icons/PNG/48/Household/broom-48.png</iconset>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_39">
+       <property name="geometry">
+        <rect>
+         <x>30</x>
+         <y>20</y>
+         <width>481</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Clean all unwanted orig files .</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_40">
+       <property name="geometry">
+        <rect>
+         <x>30</x>
+         <y>50</y>
+         <width>481</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Clean all deleted GIT branches.</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="miniFyCommonBtn_4">
+       <property name="geometry">
+        <rect>
+         <x>590</x>
+         <y>50</y>
+         <width>101</width>
+         <height>23</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>GIT branches</string>
+       </property>
+       <property name="icon">
+        <iconset resource="resources.qrc">
+         <normaloff>:/images/C:/Users/Vihang/Downloads/android_icons/PNG/48/Household/broom-48.png</normaloff>:/images/C:/Users/Vihang/Downloads/android_icons/PNG/48/Household/broom-48.png</iconset>
+       </property>
+      </widget>
+     </widget>
     </widget>
    </widget>
   </widget>
