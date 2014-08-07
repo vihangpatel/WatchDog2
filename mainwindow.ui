@@ -31,7 +31,7 @@
      <string notr="true"/>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="tab">
      <attribute name="title">
@@ -65,7 +65,7 @@ font-weight:bold;</string>
       </property>
       <property name="icon">
        <iconset resource="resources.qrc">
-        <normaloff>:/images/C:/Users/Vihang/Downloads/android_icons/PNG/48/Very_Basic/opened_folder-48.png</normaloff>:/images/C:/Users/Vihang/Downloads/android_icons/PNG/48/Very_Basic/opened_folder-48.png</iconset>
+        <normaloff>:/images/opened_folder-48.png</normaloff>:/images/opened_folder-48.png</iconset>
       </property>
      </widget>
      <widget class="QLabel" name="label">
@@ -99,7 +99,7 @@ font-weight:bold;</string>
       </property>
       <property name="icon">
        <iconset resource="resources.qrc">
-        <normaloff>:/images/C:/Users/Vihang/Downloads/android_icons/PNG/48/Very_Basic/file-48.png</normaloff>:/images/C:/Users/Vihang/Downloads/android_icons/PNG/48/Very_Basic/file-48.png</iconset>
+        <normaloff>:/images/file-48.png</normaloff>:/images/file-48.png</iconset>
       </property>
      </widget>
      <widget class="QLabel" name="label_15">
@@ -547,7 +547,7 @@ font-weight:bold;</string>
           <string>Message</string>
          </property>
          <property name="icon">
-          <iconset resource="resources.qrc">
+          <iconset>
            <normaloff>:/images/C:/Users/Vihang/Downloads/android_icons/PNG/48/Very_Basic/plus-48.png</normaloff>:/images/C:/Users/Vihang/Downloads/android_icons/PNG/48/Very_Basic/plus-48.png</iconset>
          </property>
         </widget>
@@ -668,7 +668,7 @@ font-weight:bold;</string>
           <string>Element</string>
          </property>
          <property name="icon">
-          <iconset resource="resources.qrc">
+          <iconset>
            <normaloff>:/images/C:/Users/Vihang/Downloads/android_icons/PNG/48/Very_Basic/plus-48.png</normaloff>:/images/C:/Users/Vihang/Downloads/android_icons/PNG/48/Very_Basic/plus-48.png</iconset>
          </property>
         </widget>
@@ -815,7 +815,7 @@ font-weight:bold;</string>
           <string>Screen</string>
          </property>
          <property name="icon">
-          <iconset resource="resources.qrc">
+          <iconset>
            <normaloff>:/images/C:/Users/Vihang/Downloads/android_icons/PNG/48/Very_Basic/plus-48.png</normaloff>:/images/C:/Users/Vihang/Downloads/android_icons/PNG/48/Very_Basic/plus-48.png</iconset>
          </property>
         </widget>
@@ -916,7 +916,7 @@ font-weight:bold;</string>
          </property>
          <property name="icon">
           <iconset resource="resources.qrc">
-           <normaloff>:/images/C:/Users/Vihang/Downloads/android_icons/PNG/48/Very_Basic/download-48.png</normaloff>:/images/C:/Users/Vihang/Downloads/android_icons/PNG/48/Very_Basic/download-48.png</iconset>
+           <normaloff>:/images/download-48.png</normaloff>:/images/download-48.png</iconset>
          </property>
         </widget>
         <widget class="QLineEdit" name="updtEleIdText">
@@ -1063,7 +1063,7 @@ font-weight:bold;</string>
          </property>
          <property name="icon">
           <iconset resource="resources.qrc">
-           <normaloff>:/images/C:/Users/Vihang/Downloads/android_icons/PNG/48/Very_Basic/download-48.png</normaloff>:/images/C:/Users/Vihang/Downloads/android_icons/PNG/48/Very_Basic/download-48.png</iconset>
+           <normaloff>:/images/download-48.png</normaloff>:/images/download-48.png</iconset>
          </property>
         </widget>
         <widget class="QLabel" name="label_33">
@@ -1158,7 +1158,7 @@ font-weight:bold;</string>
          </property>
          <property name="icon">
           <iconset resource="resources.qrc">
-           <normaloff>:/images/C:/Users/Vihang/Downloads/android_icons/PNG/48/Very_Basic/download-48.png</normaloff>:/images/C:/Users/Vihang/Downloads/android_icons/PNG/48/Very_Basic/download-48.png</iconset>
+           <normaloff>:/images/download-48.png</normaloff>:/images/download-48.png</iconset>
          </property>
         </widget>
         <widget class="QCheckBox" name="cb_isAccTextSameUpdt">
@@ -1297,7 +1297,7 @@ font-weight:bold;</string>
          </property>
          <property name="icon">
           <iconset resource="resources.qrc">
-           <normaloff>:/images/C:/Users/Vihang/Downloads/android_icons/PNG/48/Very_Basic/delete-48.png</normaloff>:/images/C:/Users/Vihang/Downloads/android_icons/PNG/48/Very_Basic/delete-48.png</iconset>
+           <normaloff>:/images/delete-48.png</normaloff>:/images/delete-48.png</iconset>
          </property>
         </widget>
        </widget>
@@ -1366,7 +1366,7 @@ font-weight:bold;</string>
          </property>
          <property name="icon">
           <iconset resource="resources.qrc">
-           <normaloff>:/images/C:/Users/Vihang/Downloads/android_icons/PNG/48/Very_Basic/delete-48.png</normaloff>:/images/C:/Users/Vihang/Downloads/android_icons/PNG/48/Very_Basic/delete-48.png</iconset>
+           <normaloff>:/images/delete-48.png</normaloff>:/images/delete-48.png</iconset>
          </property>
         </widget>
        </widget>
@@ -1422,7 +1422,7 @@ font-weight:bold;</string>
          </property>
          <property name="icon">
           <iconset resource="resources.qrc">
-           <normaloff>:/images/C:/Users/Vihang/Downloads/android_icons/PNG/48/Very_Basic/delete-48.png</normaloff>:/images/C:/Users/Vihang/Downloads/android_icons/PNG/48/Very_Basic/delete-48.png</iconset>
+           <normaloff>:/images/delete-48.png</normaloff>:/images/delete-48.png</iconset>
          </property>
         </widget>
        </widget>
@@ -1468,7 +1468,7 @@ font-weight:bold;</string>
       </property>
       <property name="icon">
        <iconset resource="resources.qrc">
-        <normaloff>:/images/C:/Users/Vihang/Downloads/android_icons/PNG/48/Very_Basic/search-48.png</normaloff>:/images/C:/Users/Vihang/Downloads/android_icons/PNG/48/Very_Basic/search-48.png</iconset>
+        <normaloff>:/images/search-48.png</normaloff>:/images/search-48.png</iconset>
       </property>
       <property name="shortcut">
        <string>Ctrl+F</string>
@@ -1488,7 +1488,7 @@ font-weight:bold;</string>
       </property>
       <property name="icon">
        <iconset resource="resources.qrc">
-        <normaloff>:/images/C:/Users/Vihang/Downloads/android_icons/PNG/48/Arrows/left-48.png</normaloff>:/images/C:/Users/Vihang/Downloads/android_icons/PNG/48/Arrows/left-48.png</iconset>
+        <normaloff>:/images/left-48.png</normaloff>:/images/left-48.png</iconset>
       </property>
       <property name="shortcut">
        <string>Shift+F3</string>
@@ -1508,7 +1508,7 @@ font-weight:bold;</string>
       </property>
       <property name="icon">
        <iconset resource="resources.qrc">
-        <normaloff>:/images/C:/Users/Vihang/Downloads/android_icons/PNG/48/Arrows/right-48.png</normaloff>:/images/C:/Users/Vihang/Downloads/android_icons/PNG/48/Arrows/right-48.png</iconset>
+        <normaloff>:/images/right-48.png</normaloff>:/images/right-48.png</iconset>
       </property>
       <property name="shortcut">
        <string>F3</string>
@@ -1638,7 +1638,7 @@ font-weight:bold;</string>
        <string>Language</string>
       </property>
       <property name="icon">
-       <iconset resource="resources.qrc">
+       <iconset>
         <normaloff>:/images/C:/Users/Vihang/Downloads/android_icons/PNG/48/Very_Basic/plus-48.png</normaloff>:/images/C:/Users/Vihang/Downloads/android_icons/PNG/48/Very_Basic/plus-48.png</iconset>
       </property>
      </widget>
@@ -1712,7 +1712,7 @@ font-weight:bold;</string>
        </property>
        <property name="icon">
         <iconset resource="resources.qrc">
-         <normaloff>:/images/C:/Users/Vihang/Downloads/android_icons/PNG/48/Travel/sleeping_mat-48.png</normaloff>:/images/C:/Users/Vihang/Downloads/android_icons/PNG/48/Travel/sleeping_mat-48.png</iconset>
+         <normaloff>:/images/sleeping_mat-48.png</normaloff>:/images/sleeping_mat-48.png</iconset>
        </property>
       </widget>
       <widget class="QLabel" name="label_37">
@@ -1742,7 +1742,7 @@ font-weight:bold;</string>
        </property>
        <property name="icon">
         <iconset resource="resources.qrc">
-         <normaloff>:/images/C:/Users/Vihang/Downloads/android_icons/PNG/48/Travel/sleeping_mat-48.png</normaloff>:/images/C:/Users/Vihang/Downloads/android_icons/PNG/48/Travel/sleeping_mat-48.png</iconset>
+         <normaloff>:/images/sleeping_mat-48.png</normaloff>:/images/sleeping_mat-48.png</iconset>
        </property>
       </widget>
       <widget class="QPushButton" name="minifyPreLoadBtn">
@@ -1759,7 +1759,7 @@ font-weight:bold;</string>
        </property>
        <property name="icon">
         <iconset resource="resources.qrc">
-         <normaloff>:/images/C:/Users/Vihang/Downloads/android_icons/PNG/48/Travel/sleeping_mat-48.png</normaloff>:/images/C:/Users/Vihang/Downloads/android_icons/PNG/48/Travel/sleeping_mat-48.png</iconset>
+         <normaloff>:/images/sleeping_mat-48.png</normaloff>:/images/sleeping_mat-48.png</iconset>
        </property>
       </widget>
       <widget class="QLabel" name="label_38">
@@ -1802,7 +1802,7 @@ font-weight:bold;</string>
        </property>
        <property name="icon">
         <iconset resource="resources.qrc">
-         <normaloff>:/images/C:/Users/Vihang/Downloads/android_icons/PNG/48/Household/broom-48.png</normaloff>:/images/C:/Users/Vihang/Downloads/android_icons/PNG/48/Household/broom-48.png</iconset>
+         <normaloff>:/images/broom-48.png</normaloff>:/images/broom-48.png</iconset>
        </property>
       </widget>
       <widget class="QLabel" name="label_39">
@@ -1845,7 +1845,7 @@ font-weight:bold;</string>
        </property>
        <property name="icon">
         <iconset resource="resources.qrc">
-         <normaloff>:/images/C:/Users/Vihang/Downloads/android_icons/PNG/48/Household/broom-48.png</normaloff>:/images/C:/Users/Vihang/Downloads/android_icons/PNG/48/Household/broom-48.png</iconset>
+         <normaloff>:/images/broom-48.png</normaloff>:/images/broom-48.png</iconset>
        </property>
       </widget>
      </widget>

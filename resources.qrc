@@ -1,28 +1,27 @@
 <RCC>
     <qresource prefix="/images">
         <file>tray_icon.ico</file>
-        <file>C:/Users/Vihang/Downloads/android_icons/PNG/48/Very_Basic/audio_file-48.png</file>
-        <file>C:/Users/Vihang/Downloads/android_icons/PNG/48/Very_Basic/delete-48.png</file>
-        <file>C:/Users/Vihang/Downloads/android_icons/PNG/48/Very_Basic/document-48.png</file>
-        <file>C:/Users/Vihang/Downloads/android_icons/PNG/48/Very_Basic/file-48.png</file>
-        <file>C:/Users/Vihang/Downloads/android_icons/PNG/48/Very_Basic/frame-48.png</file>
-        <file>C:/Users/Vihang/Downloads/android_icons/PNG/48/Very_Basic/home-48.png</file>
-        <file>C:/Users/Vihang/Downloads/android_icons/PNG/48/Very_Basic/info-48.png</file>
-        <file>C:/Users/Vihang/Downloads/android_icons/PNG/48/Very_Basic/lock-48.png</file>
-        <file>C:/Users/Vihang/Downloads/android_icons/PNG/48/Very_Basic/opened_folder-48.png</file>
-        <file>C:/Users/Vihang/Downloads/android_icons/PNG/48/Very_Basic/picture-48.png</file>
-        <file>C:/Users/Vihang/Downloads/android_icons/PNG/48/Very_Basic/search-48.png</file>
-        <file>C:/Users/Vihang/Downloads/android_icons/PNG/48/Very_Basic/settings-48.png</file>
-        <file>C:/Users/Vihang/Downloads/android_icons/PNG/48/Very_Basic/sinchronize-48.png</file>
-        <file>C:/Users/Vihang/Downloads/android_icons/PNG/48/Very_Basic/unlock-48.png</file>
-        <file>C:/Users/Vihang/Downloads/android_icons/PNG/48/Very_Basic/upload-48.png</file>
-        <file>C:/Users/Vihang/Downloads/android_icons/PNG/48/Arrows/left-48.png</file>
-        <file>C:/Users/Vihang/Downloads/android_icons/PNG/48/Arrows/right-48.png</file>
-        <file>C:/Users/Vihang/Downloads/android_icons/PNG/48/Very_Basic/minus-48.png</file>
-        <file>C:/Users/Vihang/Downloads/android_icons/PNG/48/Very_Basic/plus-48.png</file>
-        <file>C:/Users/Vihang/Downloads/android_icons/PNG/48/Very_Basic/video_file-48.png</file>
-        <file>C:/Users/Vihang/Downloads/android_icons/PNG/48/Very_Basic/download-48.png</file>
-        <file>C:/Users/Vihang/Downloads/android_icons/PNG/48/Travel/sleeping_mat-48.png</file>
-        <file>C:/Users/Vihang/Downloads/android_icons/PNG/48/Household/broom-48.png</file>
+        <file>audio_file-48.png</file>
+        <file>broom-48.png</file>
+        <file>delete-48.png</file>
+        <file>document-48.png</file>
+        <file>download-48.png</file>
+        <file>file-48.png</file>
+        <file>frame-48.png</file>
+        <file>home-48.png</file>
+        <file>info-48.png</file>
+        <file>left-48.png</file>
+        <file>lock-48.png</file>
+        <file>minus-48.png</file>
+        <file>opened_folder-48.png</file>
+        <file>picture-48.png</file>
+        <file>plus-48.png</file>
+        <file>right-48.png</file>
+        <file>search-48.png</file>
+        <file>settings-48.png</file>
+        <file>sleeping_mat-48.png</file>
+        <file>unlock-48.png</file>
+        <file>upload-48.png</file>
+        <file>video_file-48.png</file>
     </qresource>
 </RCC>
