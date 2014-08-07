@@ -127,11 +127,13 @@ void MainWindow::changeBasePath(QString strBasePath)
 void MainWindow::on_openDialog_clicked()
 {
     deregisterWatcher();
-    str_basePath = QFileDialog::getExistingDirectory (this, tr("Directory"),str_rootPath);
+    str_basePath = str_rootPath + "/" +
+            qfs_model->itemData(ui->treeView->currentIndex())[Qt::DisplayRole].toString();
     changeBasePath(str_basePath);
 }
 
-void MainWindow::updateDirTree(){
+void MainWindow::updateDirTree(){   
+    return;
     ui->treeView->setRootIndex(qfs_model->index(str_basePath));
 }
 
