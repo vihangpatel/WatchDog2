@@ -106,6 +106,7 @@ void MainWindow::startMonitoring()
     actions.at(5)->setEnabled(true);
     actions.at(6)->setEnabled(false);
     setCheckBoxStatus(false);
+    scanChanges();
 }
 
 void MainWindow::setCheckBoxStatus(bool checked)
@@ -181,6 +182,7 @@ void MainWindow::on_openDialog_clicked()
     QString folderName =  qfs_model->itemData(ui->treeView->currentIndex())[Qt::DisplayRole].toString();
     str_basePath = str_rootPath + "/" + folderName;
 
+    ui->statusBar->showMessage("Current interactivity : " + folderName);
     ui->label_interActiveName->setText(folderName);
     changeBasePath(str_basePath);
 }
