@@ -129,6 +129,8 @@ private slots:
 
     void on_dependencyTable_cellChanged(int row, int column);
 
+    void on_browsePathBtn_clicked();
+
 public slots:
     void updateTemplateList(QFileInfoList);
     void templateFileListClicked(QListWidgetItem *);

@@ -472,7 +472,7 @@ void MainWindow::on_dependencyTable_cellChanged(int row, int column)
 }
 
 /****************************************************************
-                                                C S S        H A N D  L I N G
+               C S S        H A N D  L I N G
 ******************************************************************/
 
 void MainWindow::updateCssList(QFileInfoList fileList){
@@ -877,12 +877,25 @@ void MainWindow::on_addNewLangBtn_clicked()
     ui->comboBox_Languages->addItem(newLangName);
 }
 
-/***************************************************************
- *                          C R E A T E S    N E W    I N T E R A C T I V I T Y
- ***************************************************************/
+/****************************************************************
+ ****** C R E A T E S    N E W    I N T E R A C T I V I T Y *****
+ ****************************************************************/
 void MainWindow::on_createNewInter_clicked()
 {
     form->clearAllFormData();
     form->show();
 }
 
+/****************************************************************
+ ****************** S E T T I N G S    T A B ********************
+ ****************************************************************/
+
+void MainWindow::on_browsePathBtn_clicked()
+{
+    str_rootPath =  QFileDialog::getExistingDirectory(this, tr("Set DE-Interactives Path"),
+                                                      "D:\\",QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
+    qfs_model->setRootPath(str_basePath);
+    ui->treeView->setModel(qfs_model);
+    ui->treeView->setRootIndex(qfs_model->index(str_rootPath));
+    ui->DEpathText->setText(str_rootPath);
+}
