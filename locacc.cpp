@@ -273,7 +273,7 @@ QList<QTreeWidgetItem *> LOCACC::generateElementsTree(QJsonObject screenJObj)
         eleJObject = eleJArray.at(i).toObject();
         treeList << eleJObject["id"].toString();
         QTreeWidgetItem *ele = new QTreeWidgetItem(treeList);
-        qDebug() << eleJArray.at(i).toString();
+        // qDebug() << eleJArray.at(i).toString();
         eleTreeItemlist.append(ele);
         ele->addChildren(generateMessageTree(eleJObject["messages"].toArray()));
     }
@@ -285,12 +285,12 @@ QList<QTreeWidgetItem *> LOCACC::generateMessageTree(QJsonArray  msgArray)
     QList<QTreeWidgetItem *> msgChildWidgetList;
     QJsonObject msgObj;
     QStringList msgList;
-    qDebug() << " in  message generation : " << msgArray;
+    // qDebug() << " in  message generation : " << msgArray;
     for(int i = 0 ; i < msgArray.count() ; i++)
     {
         msgList.clear();
         msgObj = msgArray.at(i).toObject();
-        qDebug() << " in  message generation : loop  " << msgObj;
+        // qDebug() << " in  message generation : loop  " << msgObj;
         msgList << msgObj["id"].toString();
         QTreeWidgetItem *msgChild = new QTreeWidgetItem(msgList);
         setMessageTooltip(msgChild,msgObj);
@@ -585,11 +585,11 @@ QList<QTreeWidgetItem *> LOCACC::getSearchResult(QString searchText)
     for(int i = 0 ; i < root->childCount() ; i++)
     {
         currentScreenItem = root->child(i);
-        qDebug() << "TOP : " << currentScreenItem->text(0);
+        // qDebug() << "TOP : " << currentScreenItem->text(0);
         for( int j = 0 ; j < currentScreenItem->childCount() ; j++)
         {
             currentElementItem = currentScreenItem->child(j);
-            qDebug() << "ELE : " << currentElementItem->text(0);
+            // qDebug() << "ELE : " << currentElementItem->text(0);
             for(int  k = 0 ; k < currentElementItem->childCount() ; k++)
             {
                 currentMessageItem = currentElementItem->child(k);
@@ -681,14 +681,14 @@ QStringList LOCACC::getAvailableLangugaes()
     availableLangList = langDir->entryList();
     availableLangList.removeOne(".");
     availableLangList.removeOne("..");
-    qDebug() << availableLangList;
+    // qDebug() << availableLangList;
     return availableLangList;
 }
 
 bool LOCACC::changeLanguage(int currentIndex)
 {
     currentLangIndex = currentLangIndex > availableLangList.count() ?  0 :  currentIndex;
-    qDebug() << currentLangIndex;
+    // qDebug() << currentLangIndex;
     emptyTreeWidget(root);
     readFile();
     root->takeChildren();
@@ -716,14 +716,14 @@ void LOCACC::readFile()
     locAccFile.open(QIODevice::ReadOnly | QIODevice::Text);
     if(!locAccFile.exists())
     {
-        qDebug() << " LOC ACC READING FAILED :" << getLocAccFilePath();
+        // qDebug() << " LOC ACC READING FAILED :" << getLocAccFilePath();
         return;
     }
-    qDebug() << " LOC ACC READING  :" << getLocAccFilePath();
+    // qDebug() << " LOC ACC READING  :" << getLocAccFilePath();
     QByteArray rawData = locAccFile.readAll();
     QJsonDocument doc(QJsonDocument::fromJson(rawData));
     masterJObj = doc.object();
-    qDebug() << "READ : " << masterJObj;
+    // qDebug() << "READ : " << masterJObj;
     locAccFile.close();
 }
 
@@ -735,9 +735,9 @@ void LOCACC :: writeFile()
     locAccFile.open(QIODevice::ReadWrite | QIODevice::Text);
     if(!locAccFile.exists())
     {
-        qDebug() << " LOC ACC DO NOT EXIST . NEW WILL BE CREATED :" << getLocAccFilePath();
+        // qDebug() << " LOC ACC DO NOT EXIST . NEW WILL BE CREATED :" << getLocAccFilePath();
     }
-    qDebug() << "WRITE : \n" << masterJObj;
+    // qDebug() << "WRITE : \n" << masterJObj;
     QJsonDocument doc(masterJObj);
     locAccFile.write(doc.toJson());
     locAccFile.close();

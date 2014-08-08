@@ -141,7 +141,7 @@ void NewInterActivityForm::createLocAccFile()
     masterLocArray.append(tabContentObj);
     masterAccObj["locAccData"] = masterLocArray;
 
-    qDebug() << "NEW LOC CREATED " << filePath << " \n" << masterAccObj;
+    // qDebug() << "NEW LOC CREATED " << filePath << " \n" << masterAccObj;
     QJsonDocument doc(masterAccObj);
     file.open(QIODevice::ReadWrite | QIODevice::Text);
     file.write(doc.toJson());
@@ -303,7 +303,7 @@ void NewInterActivityForm::writeConfigJson()
     mainJSONObj["config"] = jObject;
     mainJSONObj["resources"] = resourceObj;
     mainJson = mainJSONObj;
-    qDebug() << "CONFIG : \n" << mainJson;
+    // qDebug() << "CONFIG : \n" << mainJson;
 }
 
 QList<QStringList> NewInterActivityForm::getTemplateTableData()
@@ -320,7 +320,7 @@ QList<QStringList> NewInterActivityForm::getTemplateTableData()
         QStringList currentRow ;
         currentRow <<  ui->tableWidget->item(i,0)->text() <<  ui->tableWidget->item(i,1)->text() <<
                        ui->tableWidget->item(i,2)->text() << ui->tableWidget->item(i,3)->text();
-        qDebug() << currentRow;
+        // qDebug() << currentRow;
         tableData.append(currentRow);
     }
     return tableData;

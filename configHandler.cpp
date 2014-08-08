@@ -88,13 +88,13 @@ void ConfigHandler::readConfigJson()
     configJsonFIle.open(QIODevice::ReadOnly | QIODevice::Text);
     if(!configJsonFIle.exists())
     {
-        qDebug() << " CONFIG READING FAILED :" << getConfigJSONFilePath();
+        // qDebug() << " CONFIG READING FAILED :" << getConfigJSONFilePath();
        // QMessageBox::critical(this,"Config File Not Found","Config File doesn't exist",QMessageBox::Cancel);
     }
     QByteArray rawData = configJsonFIle.readAll();
     QJsonDocument doc(QJsonDocument::fromJson(rawData));
     masterJObj = doc.object();
-    qDebug() << "READ : " << masterJObj;
+    // qDebug() << "READ : " << masterJObj;
 }
 
 void ConfigHandler::writeConfigJson()
@@ -104,9 +104,9 @@ void ConfigHandler::writeConfigJson()
     configJsonFIle.open(QIODevice::ReadWrite | QIODevice::Text);
     if(!configJsonFIle.exists())
     {
-        qDebug() << " CONFIG FAILED :" << getConfigJSONFilePath();
+        // qDebug() << " CONFIG FAILED :" << getConfigJSONFilePath();
     }
-    qDebug() << "WRITE : \n" << masterJObj;
+    // qDebug() << "WRITE : \n" << masterJObj;
     QJsonDocument doc(masterJObj);
     configJsonFIle.write(doc.toJson());
     configJsonFIle.close();

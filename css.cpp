@@ -49,7 +49,7 @@ bool CSS::registerWatcher(){
     }
 
     qfsw_css->addPath(str_basePath);
-    qDebug() << "Files added : " << qfsw_css->files().length();
+    // qDebug() << "Files added : " << qfsw_css->files().length();
     return true;
 }
 
@@ -61,17 +61,17 @@ QFileInfoList CSS::getFileInfoList(){
 }
 
 void CSS::on_file_changed(QString strFilePath){
-    qDebug() << "File changed : " << strFilePath;
+    // qDebug() << "File changed : " << strFilePath;
     QFile file(strFilePath);
     if(!file.exists()){
-        qDebug()  << "File do not exits";
+        // qDebug()  << "File do not exits";
          emit filesChanged(getFileInfoList());
         return;
     }
 }
 
 void CSS::on_dir_changed(QString strDirPath){
-    qDebug() << "Dir changed : " << strDirPath;
+    // qDebug() << "Dir changed : " << strDirPath;
     deregisterFiles();
     registerWatcher();
     emit filesChanged(getFileInfoList());

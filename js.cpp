@@ -46,7 +46,7 @@ void JS::changeBasePath(QString strPath){
     modelDir->setPath(getModelDirPath());
     deRegisterWatcher();
     if(!jsDir->exists()){
-        qDebug() << "JS folder doesn't exist. : " << str_basePath;
+        // qDebug() << "JS folder doesn't exist. : " << str_basePath;
         return;
     }
     registerWatcher();
@@ -109,13 +109,13 @@ void JS :: disconnectSignals(){
 }
 
 void JS::on_viewDir_changed(QString strFilePath){
-    qDebug() << "View folder changed : " << strFilePath;
+    // qDebug() << "View folder changed : " << strFilePath;
     emit viewfilesChanged(getViewFileInfoList());
     emit jsfilesChanged(getAllFileInfoList());
 }
 
 void JS::on_modelDir_changed(QString strDirPath){
-    qDebug() << "Model folder changed : " << strDirPath;
+    // qDebug() << "Model folder changed : " << strDirPath;
     emit modelfilesChanged(getModelFileInfoList());
     emit jsfilesChanged(getAllFileInfoList());
 }

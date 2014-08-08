@@ -127,8 +127,10 @@ void MainWindow::changeBasePath(QString strBasePath)
 void MainWindow::on_openDialog_clicked()
 {
     deregisterWatcher();
-    str_basePath = str_rootPath + "/" +
-            qfs_model->itemData(ui->treeView->currentIndex())[Qt::DisplayRole].toString();
+    QString folderName =  qfs_model->itemData(ui->treeView->currentIndex())[Qt::DisplayRole].toString();
+    str_basePath = str_rootPath + "/" + folderName;
+
+    ui->label_interActiveName->setText(folderName);
     changeBasePath(str_basePath);
 }
 
@@ -147,6 +149,10 @@ void MainWindow::resetAll(){
 ******************************************************************/
 
 void MainWindow::updateTemplateList(QFileInfoList fileList){
+    if(ui->cb_stopTmpltMonitir->isChecked())
+    {
+        return;
+    }
     ui->templateList->clear();
     QJsonObject obj;
     QJsonArray jArray ;
@@ -157,7 +163,7 @@ void MainWindow::updateTemplateList(QFileInfoList fileList){
         obj["isNextStepLoad"] = true;
         jArray.insert(i,obj);
         ui->templateList->addItem(currentFileName);
-        qDebug() << fileList.at(i).fileName();
+        // qDebug() << fileList.at(i).fileName();
     }
     ui->templateList->setCurrentRow(0);
     config->setTemplateJArray(syncTmpltList(jArray));
@@ -178,7 +184,7 @@ QJsonArray MainWindow::syncTmpltList(QJsonArray newArray)
             if(tempNewObj["url"] == tempOrigObj["url"]){
                 tempNewObj["isNextStepLoad"] = tempOrigObj["isNextStepLoad"];
                 newArray.replace(i,tempNewObj);
-                qDebug() <<"replced";
+                // qDebug() <<"replced";
             }
         }
     }
@@ -187,6 +193,10 @@ QJsonArray MainWindow::syncTmpltList(QJsonArray newArray)
 
 void MainWindow::templateFileListClicked(QListWidgetItem *item){
     if(item == NULL)
+    {
+        return;
+    }
+    if(ui->cb_stopTmpltMonitir->isChecked())
     {
         return;
     }
@@ -204,6 +214,10 @@ void MainWindow::templateFileListClicked(QListWidgetItem *item){
 
 void MainWindow::on_templateNextLoadCheckBox_clicked()
 {
+    if(ui->cb_stopTmpltMonitir->isChecked())
+    {
+        return;
+    }
     QJsonArray tmpltJArray = config->getTemplateJArray();
     QListWidgetItem *currentItem  = ui->templateList->currentItem();
     for(int i = 0; i < tmpltJArray.count() ; i++){
@@ -217,7 +231,7 @@ void MainWindow::on_templateNextLoadCheckBox_clicked()
     }
     config->setTemplateJArray(tmpltJArray);
     config->writeConfigJson();
-    qDebug() << "ON CHECK BOX CLICKED : " << tmpltJArray;
+    // qDebug() << "ON CHECK BOX CLICKED : " << tmpltJArray;
 }
 
 void MainWindow::on_templateList_itemSelectionChanged()
@@ -231,7 +245,7 @@ void MainWindow::on_templateList_itemSelectionChanged()
 ******************************************************************/
 
 void MainWindow::jsFileListClicked(QListWidgetItem *item){
-    if(item == NULL)
+    if(item == NULL || ui->cb_stopJSMonitor->isChecked())
     {
         return;
     }
@@ -257,6 +271,10 @@ void MainWindow::on_jsViewList_itemSelectionChanged()
 }
 
 void MainWindow::updateJSList(QFileInfoList fileList){
+    if(ui->cb_stopJSMonitor->isChecked())
+    {
+        return;
+    }
     ui->jsViewList->clear();
     QJsonArray jsViewJArray;
     QString currentFileName ;
@@ -286,8 +304,7 @@ void MainWindow::updateJSList(QFileInfoList fileList){
         obj["url"] = currentFileName;
         obj["isNextStepLoad"] = true;
         jsViewJArray.insert(addCnt +  i,obj);
-    }
-
+    }    
     ui->jsViewList->setCurrentRow(0);
     config->setJSJArray(syncJSList(jsViewJArray));
     config->writeConfigJson();
@@ -297,6 +314,11 @@ void MainWindow::updateJSList(QFileInfoList fileList){
 
 void MainWindow::on_jsViewNextLoadCheckBox_clicked()
 {
+    if(ui->cb_stopJSMonitor->isChecked())
+    {
+        return;
+    }
+
     QListWidgetItem *currentItem  = ui->jsViewList->currentItem();
     QJsonArray jsViewJArray = config->getJSJArray();
     for(int i = 0; i < jsViewJArray.count() ; i++){
@@ -310,7 +332,7 @@ void MainWindow::on_jsViewNextLoadCheckBox_clicked()
     }
     config->setJSJArray(jsViewJArray);
     config->writeConfigJson();
-    qDebug() << "ON CHECK BOX CLICKED : JS LIST \n" << jsViewJArray;
+    // qDebug() << "ON CHECK BOX CLICKED : JS LIST \n" << jsViewJArray;
 }
 
 QJsonArray MainWindow::syncJSList(QJsonArray newArray)
@@ -330,7 +352,7 @@ QJsonArray MainWindow::syncJSList(QJsonArray newArray)
             if(tempNewObj["url"] == tempOrigObj["url"]){
                 tempNewObj["isNextStepLoad"] = tempOrigObj["isNextStepLoad"];
                 jsOrigArray.replace(i,tempNewObj);
-                qDebug() <<"replced";
+                // qDebug() <<"replced";
                 isEntryFound = true;
             }
         }
@@ -382,11 +404,29 @@ QJsonArray MainWindow::syncJSList(QJsonArray newArray)
     return jsOrigArray;
 }
 
+
+void MainWindow::on_adDependJSBtn_clicked()
+{
+    int rowCount = ui->dependencyTable->rowCount();
+    ui->dependencyTable->insertRow(rowCount);
+    ui->dependencyTable->setItem(rowCount,0,new QTableWidgetItem("JS"));
+    ui->dependencyTable->setItem(rowCount,0,new QTableWidgetItem("basePath"));
+}
+
+void MainWindow::on_dependencyTable_cellChanged(int row, int column)
+{
+
+}
+
 /****************************************************************
                                                 C S S        H A N D  L I N G
 ******************************************************************/
 
 void MainWindow::updateCssList(QFileInfoList fileList){
+    if(ui->cb_stopCSSMonitor->isChecked())
+    {
+        return;
+    }
     ui->cssList->clear();
     QJsonObject obj;
     QJsonArray cssArray ;
@@ -397,7 +437,7 @@ void MainWindow::updateCssList(QFileInfoList fileList){
         obj["isNextStepLoad"] = true;
         cssArray.insert(i,obj);
         ui->cssList->addItem(currentFileName);
-        qDebug() << fileList.at(i).fileName();
+        // qDebug() << fileList.at(i).fileName();
     }
     ui->cssList->setCurrentRow(0);
     config->setCssJArray(syncCSSList(cssArray));
@@ -418,7 +458,7 @@ QJsonArray MainWindow::syncCSSList(QJsonArray newArray)
             if(tempNewObj["url"] == tempOrigObj["url"]){
                 tempNewObj["isNextStepLoad"] = tempOrigObj["isNextStepLoad"];
                 newArray.replace(i,tempNewObj);
-                qDebug() <<"replced";
+                // qDebug() <<"replced";
             }
         }
     }
@@ -426,7 +466,7 @@ QJsonArray MainWindow::syncCSSList(QJsonArray newArray)
 }
 
 void MainWindow::cssFileListClicked(QListWidgetItem *item){
-    if(item == NULL)
+    if(item == NULL || ui->cb_stopCSSMonitor->isChecked())
     {
         return;
     }
@@ -444,6 +484,10 @@ void MainWindow::cssFileListClicked(QListWidgetItem *item){
 
 void MainWindow::on_cssNextLoadCheckBox_clicked()
 {
+    if(ui->cb_stopCSSMonitor->isChecked())
+    {
+        return;
+    }
     QJsonArray cssJArray = config->getCssJArray();
     QListWidgetItem *currentItem  = ui->cssList->currentItem();
     for(int i = 0; i < cssJArray.count() ; i++){
@@ -457,7 +501,7 @@ void MainWindow::on_cssNextLoadCheckBox_clicked()
     }
     config->setCssJArray(cssJArray);
     config->writeConfigJson();
-    qDebug() << "ON CHECK BOX CLICKED CSS: " << cssJArray;
+    // qDebug() << "ON CHECK BOX CLICKED CSS: " << cssJArray;
 }
 
 void MainWindow::on_cssList_itemSelectionChanged()
@@ -554,8 +598,8 @@ void MainWindow::on_updtEleBtn_clicked()
 void MainWindow::on_locTreeWidget_itemClicked(QTreeWidgetItem *item, int column)
 {
     int indentationCount =  getTreeItemIndentationLevel(item);
-    qDebug() << "LOC TREE CLICKED : " << item->text(column) << " col : " << column << " Heirarchy : "
-             <<  indentationCount;
+    // qDebug() << "LOC TREE CLICKED : " << item->text(column) << " col : " << column << " Heirarchy : "
+             //<<  indentationCount;
     manageLocAccItemsVisibility(indentationCount);
 }
 
@@ -619,7 +663,7 @@ void MainWindow::fillMessageDetail(QStringList data)
     ui->cb_isAccTextSameUpdt->setChecked(data.at(1) == "true" ? true : false);
     ui->updtLocMsgText->setText(data.at(2));
     ui->updtAccMsgText->setText(data.at(3));
-    qDebug() << "Message detail updated : " << data.at(1);
+    // qDebug() << "Message detail updated : " << data.at(1);
     on_cb_isAccTextSameUpdt_clicked();
 }
 
@@ -788,3 +832,4 @@ void MainWindow::on_createNewInter_clicked()
     form->clearAllFormData();
     form->show();
 }
+

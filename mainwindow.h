@@ -122,6 +122,11 @@ private slots:
 
     void on_addNewLangBtn_clicked();
 
+    void on_adDependJSBtn_clicked();
+
+
+    void on_dependencyTable_cellChanged(int row, int column);
+
 public slots:
     void updateTemplateList(QFileInfoList);
     void templateFileListClicked(QListWidgetItem *);

@@ -34,6 +34,10 @@
      <number>0</number>
     </property>
     <widget class="QWidget" name="tab">
+     <attribute name="icon">
+      <iconset resource="resources.qrc">
+       <normaloff>:/images/info-48.png</normaloff>:/images/info-48.png</iconset>
+     </attribute>
      <attribute name="title">
       <string>Overview</string>
      </attribute>
@@ -154,8 +158,124 @@ font-weight:bold;</string>
        <enum>Qt::Horizontal</enum>
       </property>
      </widget>
+     <widget class="QLabel" name="label_42">
+      <property name="geometry">
+       <rect>
+        <x>420</x>
+        <y>170</y>
+        <width>111</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Current Interactive :</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_interActiveName">
+      <property name="geometry">
+       <rect>
+        <x>530</x>
+        <y>170</y>
+        <width>211</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QCheckBox" name="cb_stopJSMonitor">
+      <property name="geometry">
+       <rect>
+        <x>460</x>
+        <y>200</y>
+        <width>181</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Stop Monitoring JS</string>
+      </property>
+      <property name="icon">
+       <iconset resource="resources.qrc">
+        <normaloff>:/images/lock-48.png</normaloff>:/images/lock-48.png</iconset>
+      </property>
+      <property name="checked">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QCheckBox" name="cb_stopTmpltMonitir">
+      <property name="geometry">
+       <rect>
+        <x>460</x>
+        <y>220</y>
+        <width>181</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Stop Monitoring Templates</string>
+      </property>
+      <property name="icon">
+       <iconset resource="resources.qrc">
+        <normaloff>:/images/lock-48.png</normaloff>:/images/lock-48.png</iconset>
+      </property>
+      <property name="checked">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QCheckBox" name="cb_stopCSSMonitor">
+      <property name="geometry">
+       <rect>
+        <x>460</x>
+        <y>240</y>
+        <width>181</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Stop Monitoring CSS</string>
+      </property>
+      <property name="icon">
+       <iconset resource="resources.qrc">
+        <normaloff>:/images/lock-48.png</normaloff>:/images/lock-48.png</iconset>
+      </property>
+      <property name="checked">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QCheckBox" name="cs_stopMediaMonitor">
+      <property name="geometry">
+       <rect>
+        <x>460</x>
+        <y>260</y>
+        <width>181</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Stop Monitoring Media</string>
+      </property>
+      <property name="icon">
+       <iconset resource="resources.qrc">
+        <normaloff>:/images/lock-48.png</normaloff>:/images/lock-48.png</iconset>
+      </property>
+      <property name="checked">
+       <bool>true</bool>
+      </property>
+     </widget>
     </widget>
     <widget class="QWidget" name="tab_2">
+     <attribute name="icon">
+      <iconset resource="resources.qrc">
+       <normaloff>:/images/document-48.png</normaloff>:/images/document-48.png</iconset>
+     </attribute>
      <attribute name="title">
       <string>JS</string>
      </attribute>
@@ -247,8 +367,92 @@ font-weight:bold;</string>
        <string> N / A</string>
       </property>
      </widget>
+     <widget class="QLabel" name="label_41">
+      <property name="geometry">
+       <rect>
+        <x>320</x>
+        <y>150</y>
+        <width>151</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Add JS dependencies</string>
+      </property>
+     </widget>
+     <widget class="Line" name="line_8">
+      <property name="geometry">
+       <rect>
+        <x>310</x>
+        <y>160</y>
+        <width>441</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+     </widget>
+     <widget class="QTableWidget" name="dependencyTable">
+      <property name="geometry">
+       <rect>
+        <x>310</x>
+        <y>180</y>
+        <width>341</width>
+        <height>91</height>
+       </rect>
+      </property>
+      <column>
+       <property name="text">
+        <string>JS dependencies</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>basePath</string>
+       </property>
+      </column>
+     </widget>
+     <widget class="QPushButton" name="adDependJSBtn">
+      <property name="geometry">
+       <rect>
+        <x>670</x>
+        <y>200</y>
+        <width>75</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="icon">
+       <iconset resource="resources.qrc">
+        <normaloff>:/images/plus-48.png</normaloff>:/images/plus-48.png</iconset>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="removeDependJSBtn">
+      <property name="geometry">
+       <rect>
+        <x>670</x>
+        <y>230</y>
+        <width>75</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="icon">
+       <iconset resource="resources.qrc">
+        <normaloff>:/images/minus-48.png</normaloff>:/images/minus-48.png</iconset>
+      </property>
+     </widget>
     </widget>
     <widget class="QWidget" name="tab_3">
+     <attribute name="icon">
+      <iconset resource="resources.qrc">
+       <normaloff>:/images/document-48.png</normaloff>:/images/document-48.png</iconset>
+     </attribute>
      <attribute name="title">
       <string>Templates</string>
      </attribute>
@@ -345,6 +549,10 @@ font-weight:bold;</string>
      </widget>
     </widget>
     <widget class="QWidget" name="tab_4">
+     <attribute name="icon">
+      <iconset resource="resources.qrc">
+       <normaloff>:/images/document-48.png</normaloff>:/images/document-48.png</iconset>
+     </attribute>
      <attribute name="title">
       <string>CSS</string>
      </attribute>
@@ -441,11 +649,19 @@ font-weight:bold;</string>
      </widget>
     </widget>
     <widget class="QWidget" name="tab_6">
+     <attribute name="icon">
+      <iconset resource="resources.qrc">
+       <normaloff>:/images/picture-48.png</normaloff>:/images/picture-48.png</iconset>
+     </attribute>
      <attribute name="title">
       <string>Media</string>
      </attribute>
     </widget>
     <widget class="QWidget" name="tab_5">
+     <attribute name="icon">
+      <iconset resource="resources.qrc">
+       <normaloff>:/images/pen-48.png</normaloff>:/images/pen-48.png</iconset>
+     </attribute>
      <attribute name="title">
       <string>Loc-acc Json</string>
      </attribute>
@@ -490,7 +706,7 @@ font-weight:bold;</string>
        </rect>
       </property>
       <property name="currentIndex">
-       <number>2</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="tab_9">
        <attribute name="title">
@@ -1664,12 +1880,22 @@ font-weight:bold;</string>
         <height>16</height>
        </rect>
       </property>
+      <property name="font">
+       <font>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
       <property name="text">
        <string/>
       </property>
      </widget>
     </widget>
     <widget class="QWidget" name="tab_10">
+     <attribute name="icon">
+      <iconset resource="resources.qrc">
+       <normaloff>:/images/broom-48.png</normaloff>:/images/broom-48.png</iconset>
+     </attribute>
      <attribute name="title">
       <string>Utilities</string>
      </attribute>
@@ -1849,6 +2075,15 @@ font-weight:bold;</string>
        </property>
       </widget>
      </widget>
+    </widget>
+    <widget class="QWidget" name="tab_11">
+     <attribute name="icon">
+      <iconset resource="resources.qrc">
+       <normaloff>:/images/settings-48.png</normaloff>:/images/settings-48.png</iconset>
+     </attribute>
+     <attribute name="title">
+      <string>Setttings</string>
+     </attribute>
     </widget>
    </widget>
   </widget>

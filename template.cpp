@@ -52,7 +52,7 @@ bool Templates::registerWatcher(){
     }
 
     qfsw_tmplt->addPath(str_basePath);
-    qDebug() << "Files added : " << qfsw_tmplt->files().length();
+    // qDebug() << "Files added : " << qfsw_tmplt->files().length();
     return true;
 }
 
@@ -64,10 +64,10 @@ QFileInfoList Templates::getFileInfoList(){
 }
 
 void Templates::on_file_changed(QString strFilePath){
-    qDebug() << "File changed : " << strFilePath;
+    // qDebug() << "File changed : " << strFilePath;
     QFile file(strFilePath);
     if(!file.exists()){
-        qDebug()  << "File do not exits";
+        // qDebug()  << "File do not exits";
          emit filesChanged(getFileInfoList());
         return;
     }
@@ -75,7 +75,7 @@ void Templates::on_file_changed(QString strFilePath){
 }
 
 void Templates::on_dir_changed(QString strDirPath){
-    qDebug() << "Dir changed : " << strDirPath;
+    // qDebug() << "Dir changed : " << strDirPath;
     deregisterFiles();
     registerWatcher();
     emit filesChanged(getFileInfoList());
