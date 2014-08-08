@@ -39,6 +39,7 @@ public:
     ConfigHandler *config;
     QSystemTrayIcon *trayIcon;
     LOCACC *locAcc;
+    QMenu *trayMenu;
 
 private :
     void initialize();
@@ -55,6 +56,7 @@ public:
     void connectSignals();
     int getTreeItemIndentationLevel(QTreeWidgetItem *,int count=0);
     void manageLocAccItemsVisibility(int indentationLevel = 0);
+    void setCheckBoxStatus(bool checked);
 
     QJsonArray syncTmpltList(QJsonArray jTemplateArray);
     QJsonArray syncJSList(QJsonArray jJSArray);
@@ -138,6 +140,10 @@ public slots:
     void cssFileListClicked(QListWidgetItem *);
 
     void changeBasePath(QString);
+    void showApp();
+    void hideApp();
+    void stopMonitoring();
+    void startMonitoring();
 
 private:
     Ui::MainWindow *ui;

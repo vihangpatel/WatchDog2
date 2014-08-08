@@ -40,32 +40,83 @@ void MainWindow::initialize(){
     manageLocAccItemsVisibility(-1);
 }
 
+/*****************************************************************
+ ******************** M E N U   H A N D L I N G **********************
+ *****************************************************************/
+
 void MainWindow::initTrayIcon()
 {
     trayIcon = new QSystemTrayIcon(this);
     QIcon icon(":/images/tray_icon.ico");
     trayIcon->setIcon(icon);
-    QMenu *menu = new QMenu(this);
-    menu->addAction("Show",this,SLOT(show()));
-    menu->addAction("Hide",this,SLOT(hide()));
+    trayMenu = new QMenu(this);
+    trayMenu->addAction("Show",this,SLOT(showApp()));
+    trayMenu->addAction("Hide",this,SLOT(hideApp()));
     QMenu *minifyMenu = new QMenu("Minify",this);
+    minifyMenu->setIcon(QIcon(":/images/sleeping_mat-48.png"));
     minifyMenu->addAction("Common");
     minifyMenu->addAction("Interactive");
     minifyMenu->addAction("Preloader");
-    menu->addMenu(minifyMenu);
-    menu->addAction("Compile Handlebars");
-    menu->addAction("Refresh",this,SLOT(scanChanges()));
-    menu->addAction("Open Loc-acc Tab",this,SLOT(openLocAccTab()));
-    menu->addAction("Exit",this,SLOT(close()));
-    trayIcon->setContextMenu(menu);
+    trayMenu->addMenu(minifyMenu);
+    trayMenu->addAction("Compile Handlebars");
+    trayMenu->addAction(QIcon(":/images/refresh-48.png"),"Refresh",this,SLOT(scanChanges()));
+    trayMenu->addAction(QIcon(":/images/lock-48.png"),"Stop monitoring",this,SLOT(stopMonitoring()));
+    trayMenu->addAction(QIcon(":/images/unlock-48.png"),"Start monitoring",this,SLOT(startMonitoring()));
+    trayMenu->addAction("Open Loc-acc Tab",this,SLOT(openLocAccTab()));
+    trayMenu->addAction("Exit",this,SLOT(close()));
+    trayIcon->setContextMenu(trayMenu);
     trayIcon->show();
+    showApp();
+    stopMonitoring();
 }
 
 void MainWindow::openLocAccTab()
 {
-    this->show();
+    this->showApp();
     ui->tabWidget->setCurrentIndex(5);
 }
+
+void MainWindow::showApp()
+{
+    QList<QAction *> actions = trayMenu->actions();
+    actions.at(0)->setEnabled(false);
+    actions.at(1)->setEnabled(true);
+    this->show();
+}
+
+void MainWindow::hideApp()
+{
+    QList<QAction *> actions = trayMenu->actions();
+    actions.at(0)->setEnabled(true);
+    actions.at(1)->setEnabled(false);
+    this->hide();
+}
+
+void MainWindow::stopMonitoring()
+{
+    QList<QAction *> actions = trayMenu->actions();
+    actions.at(5)->setEnabled(false);
+    actions.at(6)->setEnabled(true);
+    setCheckBoxStatus(true);
+}
+
+void MainWindow::startMonitoring()
+{
+    QList<QAction *> actions = trayMenu->actions();
+    actions.at(5)->setEnabled(true);
+    actions.at(6)->setEnabled(false);
+    setCheckBoxStatus(false);
+}
+
+void MainWindow::setCheckBoxStatus(bool checked)
+{
+    ui->cb_stopCSSMonitor->setChecked(checked);
+    ui->cb_stopJSMonitor->setChecked(checked);
+    ui->cb_stopTmpltMonitir->setChecked(checked);
+    ui->cb_stopMediaMonitor->setChecked(checked);
+}
+
+// ////////////////////////////////////////////////////////////////////////////////////
 
 void MainWindow::connectSignals(){
     connect(tmplt,SIGNAL(filesChanged(QFileInfoList)),this,SLOT(updateTemplateList(QFileInfoList)));

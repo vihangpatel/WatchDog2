@@ -250,7 +250,7 @@ font-weight:bold;</string>
        <bool>true</bool>
       </property>
      </widget>
-     <widget class="QCheckBox" name="cs_stopMediaMonitor">
+     <widget class="QCheckBox" name="cb_stopMediaMonitor">
       <property name="geometry">
        <rect>
         <x>460</x>
