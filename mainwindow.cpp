@@ -33,16 +33,17 @@ void MainWindow::storeSetting()
 }
 
 void MainWindow::initialize(){
+
+    appConfig = new AppConfig(this);
+    initTrayIcon();
+    loadSavedSettings();
+
     qfs_model = new QFileSystemModel;
     qfs_model->setRootPath(str_basePath);
     ui->treeView->setModel(qfs_model);
     ui->treeView->setRootIndex(qfs_model->index(str_rootPath));
     ui->treeView->setIndentation(20);
     ui->treeView->setSortingEnabled(true);
-    appConfig = new AppConfig(this);
-    initTrayIcon();
-    loadSavedSettings();
-
     ui->locSearchText->setAutoFillBackground(true);
     qfsw = new QFileSystemWatcher(this);
     form = new NewInterActivityForm(this);
@@ -487,19 +488,50 @@ QJsonArray MainWindow::syncJSList(QJsonArray newArray)
     return jsOrigArray;
 }
 
-
-void MainWindow::on_adDependJSBtn_clicked()
+/** J S UP DOWN Buttons
+ **/
+void MainWindow::on_jsOneUpBtn_clicked()
 {
-    int rowCount = ui->dependencyTable->rowCount();
-    ui->dependencyTable->insertRow(rowCount);
-    ui->dependencyTable->setItem(rowCount,0,new QTableWidgetItem("JS"));
-    ui->dependencyTable->setItem(rowCount,0,new QTableWidgetItem("basePath"));
+        int currentIndex = ui->jsViewList->currentRow();
+        if(currentIndex < 0)
+        {
+            return;
+        }
+        QJsonArray jsJArray = config->getJSJArray();
+        QJsonObject removedJObj = jsJArray.at(currentIndex).toObject();
+        jsJArray.removeAt(currentIndex);
+
+        QListWidgetItem *currentItem = ui->jsViewList->takeItem(currentIndex);
+        int newIndex = currentIndex < 1 ? 0 : currentIndex - 1;
+        ui->jsViewList->insertItem(newIndex,currentItem);
+        ui->jsViewList->setCurrentRow(newIndex);
+        jsJArray.insert(newIndex,removedJObj);
+
+        config->setJSJArray(jsJArray);
+        config->writeConfigJson();
 }
 
-void MainWindow::on_dependencyTable_cellChanged(int row, int column)
+void MainWindow::on_jsOneDownBtn_clicked()
 {
+    int currentIndex = ui->jsViewList->currentRow();
+    if(currentIndex < 0)
+    {
+        return;
+    }
+    QJsonArray jsJArray = config->getJSJArray();
+    QJsonObject removedJObj = jsJArray.at(currentIndex).toObject();
+    jsJArray.removeAt(currentIndex);
 
+    QListWidgetItem *currentItem = ui->jsViewList->takeItem(currentIndex);
+    int newIndex = currentIndex > ui->jsViewList->count() - 1 ? ui->jsViewList->count() : currentIndex + 1;
+    ui->jsViewList->insertItem(newIndex,currentItem);
+    ui->jsViewList->setCurrentRow(newIndex);
+    jsJArray.insert(newIndex,removedJObj);
+
+    config->setJSJArray(jsJArray);
+    config->writeConfigJson();
 }
+
 
 /****************************************************************
                C S S        H A N D  L I N G
@@ -591,6 +623,8 @@ void MainWindow::on_cssList_itemSelectionChanged()
 {
     cssFileListClicked(ui->cssList->currentItem());
 }
+
+
 
 /***************************************************************
  *                         L O C - A C C     J S O N     H A N D L I N G
@@ -929,3 +963,4 @@ void MainWindow::on_browsePathBtn_clicked()
     ui->treeView->setRootIndex(qfs_model->index(str_rootPath));
     ui->DEpathText->setText(str_rootPath);
 }
+

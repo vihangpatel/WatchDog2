@@ -25,5 +25,7 @@
         <file>video_file-48.png</file>
         <file>pen-48.png</file>
         <file>refresh-48.png</file>
+        <file>collapse_arrow-48.png</file>
+        <file>expand_arrow-48.png</file>
     </qresource>
 </RCC>

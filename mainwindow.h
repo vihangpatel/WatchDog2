@@ -127,12 +127,11 @@ private slots:
 
     void on_addNewLangBtn_clicked();
 
-    void on_adDependJSBtn_clicked();
-
-
-    void on_dependencyTable_cellChanged(int row, int column);
-
     void on_browsePathBtn_clicked();
+
+    void on_jsOneUpBtn_clicked();
+
+    void on_jsOneDownBtn_clicked();
 
 public slots:
     void updateTemplateList(QFileInfoList);
