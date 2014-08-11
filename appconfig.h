@@ -15,8 +15,8 @@ class AppConfig : public QObject
 public:
     explicit AppConfig(QObject *parent = 0);
     const int JS_TRUE = 1;
-    const int CSS_TRUE = 2;
-    const int TEMPLATE_TRUE = 4;
+    const int TEMPLATE_TRUE = 2;
+    const int CSS_TRUE = 4;
     const int MEDIA_TRUE = 8;
     QString str_rootPath;
     QString str_curIntrctvPath;
@@ -25,6 +25,7 @@ public:
     int flagStatus = 0;
 
     void readSettings();
+    void resetFlag();
     void writeSettings();
     void setRootPath(QString strRootPath);
     QString getRootPath();

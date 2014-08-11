@@ -22,6 +22,7 @@ void MainWindow::loadSavedSettings(){
 
 void MainWindow::storeSetting()
 {
+    appConfig->resetFlag();
     appConfig->setRootPath(str_rootPath);
     appConfig->setCurrentInteractivity(str_basePath);
     appConfig->setJSFlag(ui->cb_stopJSMonitor->isChecked());
@@ -39,6 +40,7 @@ void MainWindow::initialize(){
     ui->treeView->setIndentation(20);
     ui->treeView->setSortingEnabled(true);
     appConfig = new AppConfig(this);
+    initTrayIcon();
     loadSavedSettings();
 
     ui->locSearchText->setAutoFillBackground(true);
@@ -54,7 +56,7 @@ void MainWindow::initialize(){
 
     ui->locTreeWidget->addTopLevelItem(locAcc->getLocAccTree());
     ui->DEpathText->setText(str_rootPath);
-    initTrayIcon();
+
     connectSignals();
     manageLocAccItemsVisibility(-1);
     changeBasePath(str_basePath);

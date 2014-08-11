@@ -50,12 +50,12 @@ bool AppConfig::monitorCSS()
 
 bool AppConfig::monitorMedia()
 {
-     return (flagStatus & TEMPLATE_TRUE) == TEMPLATE_TRUE;
+    return (flagStatus & MEDIA_TRUE) == MEDIA_TRUE;
 }
 
 bool AppConfig::monitorTemplates()
-{
-     return (flagStatus & MEDIA_TRUE) == MEDIA_TRUE;
+{     
+     return (flagStatus & TEMPLATE_TRUE) == TEMPLATE_TRUE;
 }
 
 void AppConfig::setJSFlag(bool isTrue)
@@ -63,11 +63,7 @@ void AppConfig::setJSFlag(bool isTrue)
     if(isTrue)
     {
         flagStatus = flagStatus | JS_TRUE;
-    }
-    else if(monitorJS())
-    {
-        flagStatus = flagStatus ^ JS_TRUE;
-    }
+    }  
 }
 
 void AppConfig::setCSSFlag(bool isTrue)
@@ -75,11 +71,7 @@ void AppConfig::setCSSFlag(bool isTrue)
     if(isTrue)
     {
         flagStatus = flagStatus | CSS_TRUE;
-    }
-    else if(monitorCSS())
-    {
-        flagStatus = flagStatus ^ CSS_TRUE;
-    }
+    }   
 }
 
 void AppConfig::setTemplateFlag(bool isTrue)
@@ -87,11 +79,7 @@ void AppConfig::setTemplateFlag(bool isTrue)
     if(isTrue)
     {
         flagStatus = flagStatus | TEMPLATE_TRUE;
-    }
-    else if(monitorTemplates())
-    {
-        flagStatus = flagStatus ^ TEMPLATE_TRUE;
-    }
+    }  
 }
 
 void AppConfig::setMediaFlag(bool isTrue)
@@ -99,11 +87,7 @@ void AppConfig::setMediaFlag(bool isTrue)
     if(isTrue)
     {
         flagStatus = flagStatus | MEDIA_TRUE;
-    }
-    else if(monitorMedia())
-    {
-            flagStatus = flagStatus ^ MEDIA_TRUE;
-    }
+    }    
 }
 
 QString AppConfig::getCurrentInteractivity()
@@ -116,6 +100,11 @@ QString AppConfig::getConfigFileName()
 {
      QString strCurrentPath = QDir::currentPath();
      return strCurrentPath + "/" + APP_CONFIG_FILE;
+}
+
+void AppConfig::resetFlag()
+{
+    flagStatus = 0;
 }
 
 void AppConfig::readSettings()
