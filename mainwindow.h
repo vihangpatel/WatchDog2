@@ -16,6 +16,7 @@
 #include "css.h"
 #include "QSystemTrayIcon"
 #include "locacc.h"
+#include "appconfig.h"
 #include <QBrush>
 
 namespace Ui {
@@ -40,6 +41,7 @@ public:
     QSystemTrayIcon *trayIcon;
     LOCACC *locAcc;
     QMenu *trayMenu;
+    AppConfig *appConfig;
 
 private :
     void initialize();
@@ -52,6 +54,7 @@ public:
     void registerWatcher();
     void deregisterWatcher();
     void loadSavedSettings();
+    void storeSetting();
     void updateDirTree();
     void connectSignals();
     int getTreeItemIndentationLevel(QTreeWidgetItem *,int count=0);

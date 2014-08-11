@@ -12,18 +12,35 @@ MainWindow::MainWindow(QWidget *parent) :
 }
 
 void MainWindow::loadSavedSettings(){
-    str_basePath = "D:/DE";
-    str_rootPath = "D:/DE";
+     str_rootPath= appConfig->getRootPath();
+     str_basePath = appConfig->getCurrentInteractivity();
+    ui->cb_stopCSSMonitor->setChecked(appConfig->monitorCSS());
+    ui->cb_stopJSMonitor->setChecked(appConfig->monitorJS());
+    ui->cb_stopMediaMonitor->setChecked(appConfig->monitorMedia());
+    ui->cb_stopTmpltMonitir->setChecked(appConfig->monitorTemplates());
+}
+
+void MainWindow::storeSetting()
+{
+    appConfig->setRootPath(str_rootPath);
+    appConfig->setCurrentInteractivity(str_basePath);
+    appConfig->setJSFlag(ui->cb_stopJSMonitor->isChecked());
+    appConfig->setCSSFlag(ui->cb_stopCSSMonitor->isChecked());
+    appConfig->setTemplateFlag(ui->cb_stopTmpltMonitir->isChecked());
+    appConfig->setMediaFlag(ui->cb_stopMediaMonitor->isChecked());
+    appConfig->writeSettings();
 }
 
 void MainWindow::initialize(){
-    loadSavedSettings();
     qfs_model = new QFileSystemModel;
     qfs_model->setRootPath(str_basePath);
     ui->treeView->setModel(qfs_model);
     ui->treeView->setRootIndex(qfs_model->index(str_rootPath));
     ui->treeView->setIndentation(20);
     ui->treeView->setSortingEnabled(true);
+    appConfig = new AppConfig(this);
+    loadSavedSettings();
+
     ui->locSearchText->setAutoFillBackground(true);
     qfsw = new QFileSystemWatcher(this);
     form = new NewInterActivityForm(this);
@@ -34,10 +51,13 @@ void MainWindow::initialize(){
     config = new ConfigHandler(str_basePath);
     css = new CSS(str_basePath);
     locAcc = new LOCACC(str_basePath);
+
     ui->locTreeWidget->addTopLevelItem(locAcc->getLocAccTree());
+    ui->DEpathText->setText(str_rootPath);
     initTrayIcon();
     connectSignals();
     manageLocAccItemsVisibility(-1);
+    changeBasePath(str_basePath);
 }
 
 /*****************************************************************
@@ -135,6 +155,14 @@ void MainWindow::connectSignals(){
 
 MainWindow::~MainWindow()
 {
+    storeSetting();
+
+    delete locAcc;
+    delete appConfig;
+    delete js;
+    delete css;
+    delete tmplt;
+    delete config;
     delete ui;
 }
 

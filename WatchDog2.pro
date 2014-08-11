@@ -19,7 +19,8 @@ SOURCES += main.cpp\
     js.cpp \
     configHandler.cpp \
     css.cpp \
-    locacc.cpp
+    locacc.cpp \
+    appconfig.cpp
 
 HEADERS  += mainwindow.h \
     templates.h \
@@ -29,7 +30,8 @@ HEADERS  += mainwindow.h \
     configHandler.h \
     css.h \
     locacc.h \
-    messages.h
+    messages.h \
+    appconfig.h
 
 FORMS    += \
     newinteractivityform.ui \
