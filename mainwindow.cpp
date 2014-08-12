@@ -216,6 +216,7 @@ void MainWindow::on_openDialog_clicked()
     ui->statusBar->showMessage("Current interactivity : " + folderName);
     ui->label_interActiveName->setText(folderName);
     changeBasePath(str_basePath);
+    form->changeBasePath(str_rootPath);
 }
 
 void MainWindow::updateDirTree(){   
