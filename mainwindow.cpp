@@ -644,7 +644,11 @@ void MainWindow::on_addScreenBtn_clicked()
     if(!locAcc->addScreen(screenData))
     {
         QMessageBox::critical(this,"Same screen Id exists","Same screen Id exists .Please use another Id.",QMessageBox::Cancel);
+        return;
     }
+    ui->screenNameText->clear();
+    ui->screenNameText_2->clear();
+    ui->statusBar->showMessage("New screen successfully addded.",1000);
 }
 
 void MainWindow::on_addEleBtn_clicked()
@@ -659,7 +663,14 @@ void MainWindow::on_addEleBtn_clicked()
     if(!locAcc->addElement(eleData,ui->locTreeWidget->currentItem()))
     {
         QMessageBox::critical(this,"Same element Id exists in screen.","Same element Id exists .Please use another Id.",QMessageBox::Cancel);
+        return;
     }
+    ui->eleAccIdText->clear();
+    ui->eleNameText->clear();
+    ui->eleRoleText->clear();
+    ui->eleTabIndexText->clear();
+    ui->eleTypeText->clear();
+    ui->statusBar->showMessage("New element successfully addded.",1000);
 }
 
 void MainWindow::on_addMsgBtn_clicked()
@@ -669,7 +680,12 @@ void MainWindow::on_addMsgBtn_clicked()
     if(!locAcc->addMessage(msgData,ui->cb_isAccTextSame->isChecked(),ui->locTreeWidget->currentItem()))
     {
         QMessageBox::critical(this,"Same message Id exists in element.","Same message Id exists .Please use another Id.",QMessageBox::Cancel);
+        return;
     }
+    ui->msgIdText->clear();
+    ui->locMsgText->clear();
+    ui->accMsgText->clear();
+    ui->statusBar->showMessage("New message successfully addded.",1000);
 }
 
 /*
@@ -685,7 +701,9 @@ void MainWindow::on_updtScreenBtn_clicked()
     if(!locAcc->updateScreen(screenData,ui->locTreeWidget->currentItem()))
     {
         QMessageBox::critical(this,"Same screen Id exists","Same screen Id exists .Please use another Id.",QMessageBox::Cancel);
+        return;
     }
+    ui->statusBar->showMessage("Screen entry successfully updated.",1000);
 }
 
 void MainWindow::on_updateMsgBtn_clicked()
@@ -695,7 +713,9 @@ void MainWindow::on_updateMsgBtn_clicked()
     if(!locAcc->updateMessage(msgData,ui->cb_isAccTextSameUpdt->isChecked(),ui->locTreeWidget->currentItem()))
     {
         QMessageBox::critical(this,"Same message Id exists in element.","Same message Id exists .Please use another Id.",QMessageBox::Cancel);
+        return;
     }
+    ui->statusBar->showMessage("Message entry successfully updated.",1000);
 }
 
 void MainWindow::on_updtEleBtn_clicked()
@@ -710,7 +730,9 @@ void MainWindow::on_updtEleBtn_clicked()
     if(!locAcc->updateElement(eleData,ui->locTreeWidget->currentItem()))
     {
         QMessageBox::critical(this,"Same element Id exists in screen.","Same element Id exists .Please use another Id.",QMessageBox::Cancel);
+        return;
     }
+    ui->statusBar->showMessage("Element entry successfully updated.",1000);
 }
 
 void MainWindow::on_locTreeWidget_itemClicked(QTreeWidgetItem *item, int column)
