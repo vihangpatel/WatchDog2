@@ -24,6 +24,7 @@ public:
     void deregisterFiles();
     void deregisterDirs();
     void connectSignals();
+    QString getCompileTemplatePath();
     QFileInfoList getFileInfoList();
 
 public slots:

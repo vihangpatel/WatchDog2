@@ -2,8 +2,8 @@
 #include <QDebug>
 QString TEMPLATE_SUFFIX = "templates";
 QString TEMPLATE_FILE_EXTENSION = ".handlebars";
-QString TEMPLATE_COMPILE_COMMAND = "C:/Users/Vihang/Desktop/test.bat";
-QString TEMPLATE_FOLDER_COMPILE_COMMAND = "C:/Users/Vihang/Desktop/test.bat";
+QString TEMPLATE_COMPILE_COMMAND = "compile_handlebars_in_folder.bat";
+QString TEMPLATE_FOLDER_COMPILE_COMMAND = "compile_handlebars_in_folder.bat";
 
 Templates::Templates(QString basePath) {
     qfsw_tmplt = new QFileSystemWatcher();
@@ -71,7 +71,15 @@ void Templates::on_file_changed(QString strFilePath){
          emit filesChanged(getFileInfoList());
         return;
     }
-    process->execute(TEMPLATE_COMPILE_COMMAND);
+    QStringList args ;
+    QString fileName = file.fileName().replace(TEMPLATE_FILE_EXTENSION,"");
+    args  << fileName;
+    process->execute(getCompileTemplatePath(),args);
+}
+
+QString Templates::getCompileTemplatePath()
+{
+    return str_basePath + "/" + TEMPLATE_FOLDER_COMPILE_COMMAND;
 }
 
 void Templates::on_dir_changed(QString strDirPath){
