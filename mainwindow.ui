@@ -31,7 +31,7 @@
      <string notr="true"/>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>4</number>
     </property>
     <widget class="QWidget" name="tab">
      <attribute name="icon">
@@ -650,7 +650,7 @@ font-weight:bold;</string>
        <enum>Qt::Vertical</enum>
       </property>
      </widget>
-     <widget class="QTabWidget" name="tabWidget_2">
+     <widget class="QTabWidget" name="locUtilityTabWidget">
       <property name="geometry">
        <rect>
         <x>370</x>
@@ -2213,7 +2213,7 @@ font-weight:bold;</string>
   <tabstop>locMsgText</tabstop>
   <tabstop>accMsgText</tabstop>
   <tabstop>addMsgBtn</tabstop>
-  <tabstop>tabWidget_2</tabstop>
+  <tabstop>locUtilityTabWidget</tabstop>
   <tabstop>updtEleIdText</tabstop>
   <tabstop>updtEleAccIdText</tabstop>
   <tabstop>updtEleTypeText</tabstop>

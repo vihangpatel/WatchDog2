@@ -31,9 +31,9 @@ public:
     void changeBasePath(QString strPath);
     QString getLocAccFilePath();
     QString getLangFolderPath();
-    bool addScreen(QStringList screenData);
-    bool addElement(QStringList elementData,QTreeWidgetItem *parent);
-    bool addMessage(QStringList msgData,bool isAccTextSame,QTreeWidgetItem *parent);
+    QTreeWidgetItem* addScreen(QStringList screenData);
+    QTreeWidgetItem* addElement(QStringList elementData,QTreeWidgetItem *parent);
+    QTreeWidgetItem* addMessage(QStringList msgData,bool isAccTextSame,QTreeWidgetItem *parent);
     void setMessageTooltip(QTreeWidgetItem *messageItem,QJsonObject messageJObj);
     void readFile();
     void writeFile();

@@ -41,6 +41,7 @@ public:
     QSystemTrayIcon *trayIcon;
     LOCACC *locAcc;
     QMenu *trayMenu;
+    QMenu *treeMenu;
     AppConfig *appConfig;
 
 private :
@@ -69,6 +70,7 @@ public:
     void fillScreenDetail(QStringList data);
     void fillElementDetail(QStringList data);
     void fillMessageDetail(QStringList data);
+    void createLOCTreeContext();
 
 private slots:
     void on_openDialog_clicked();
@@ -132,6 +134,26 @@ private slots:
     void on_jsOneUpBtn_clicked();
 
     void on_jsOneDownBtn_clicked();
+
+    void on_copyEleBtn_clicked();
+
+    void on_cutEleBtn_clicked();
+
+    void on_pasteEleBtn_clicked();
+
+    void on_copyMsgBtn_clicked();
+
+    void on_cutMsgBtn_clicked();
+
+    void on_pasteMsgBtn_clicked();
+
+    void on_copyScrBtn_clicked();
+
+    void on_pasteScrBtn_clicked();
+
+    void showLocTreeCustomMenu(QTreeWidgetItem* item, const QPoint& globalPos);
+
+    void onCustomContextMenuRequested(const QPoint& pos);
 
 public slots:
     void updateTemplateList(QFileInfoList);

@@ -61,6 +61,8 @@ void MainWindow::initialize(){
     connectSignals();
     manageLocAccItemsVisibility(-1);
     changeBasePath(str_basePath);
+
+    createLOCTreeContext();
 }
 
 /*****************************************************************
@@ -140,6 +142,14 @@ void MainWindow::setCheckBoxStatus(bool checked)
     ui->cb_stopMediaMonitor->setChecked(checked);
 }
 
+void MainWindow::createLOCTreeContext()
+{
+    treeMenu = new QMenu(this);
+    treeMenu->addAction("Show",this,SLOT(showApp()));
+    treeMenu->addAction("Hide",this,SLOT(hideApp()));
+    ui->locTreeWidget->setContextMenuPolicy(Qt::CustomContextMenu);
+ }
+
 // ////////////////////////////////////////////////////////////////////////////////////
 
 void MainWindow::connectSignals(){
@@ -154,6 +164,24 @@ void MainWindow::connectSignals(){
 
     connect(form,SIGNAL(newInterActivityCreated(QString)),this,SLOT(changeBasePath(QString)));
     connect(form,SIGNAL(newJSONPrepared(QJsonObject)),config,SLOT(newInteractivityCreated(QJsonObject)));
+
+    connect(ui->locTreeWidget,SIGNAL(customContextMenuRequested(QPoint)),this,SLOT(onCustomContextMenuRequested(QPoint)));
+}
+
+void MainWindow::onCustomContextMenuRequested(const QPoint &pos)
+{
+    QTreeWidgetItem* item = ui->locTreeWidget->itemAt(pos);
+
+            if (item) {
+                showLocTreeCustomMenu(item,ui->locTreeWidget->viewport()->mapToGlobal(pos));
+            }
+}
+
+void MainWindow::showLocTreeCustomMenu(QTreeWidgetItem *item, const QPoint &globalPos)
+{
+    qDebug() << "show request sent";
+    treeMenu->show();
+    treeMenu->popup(globalPos);
 }
 
 MainWindow::~MainWindow()
@@ -641,14 +669,17 @@ void MainWindow::on_addScreenBtn_clicked()
     QString screenName = ui->screenNameText_2->text();
     QStringList screenData;
     screenData << screenId << screenName;
-    if(!locAcc->addScreen(screenData))
+    QTreeWidgetItem *addedItem = locAcc->addScreen(screenData);
+    if(addedItem == NULL)
     {
         QMessageBox::critical(this,"Same screen Id exists","Same screen Id exists .Please use another Id.",QMessageBox::Cancel);
         return;
     }
+    ui->locTreeWidget->setCurrentItem(addedItem,0);
     ui->screenNameText->clear();
     ui->screenNameText_2->clear();
     ui->statusBar->showMessage("New screen successfully addded.",1000);
+    ui->screenNameText->setFocus();
 }
 
 void MainWindow::on_addEleBtn_clicked()
@@ -660,32 +691,42 @@ void MainWindow::on_addEleBtn_clicked()
     QString eleTabIndex = ui->eleTabIndexText->text();
     QStringList eleData;
     eleData << eleName << eleAccId << eleType << eleRole << eleTabIndex;
-    if(!locAcc->addElement(eleData,ui->locTreeWidget->currentItem()))
+    QTreeWidgetItem* addedItem = locAcc->addElement(eleData,ui->locTreeWidget->currentItem());
+    if(addedItem == NULL)
     {
         QMessageBox::critical(this,"Same element Id exists in screen.","Same element Id exists .Please use another Id.",QMessageBox::Cancel);
         return;
     }
+    ui->locTreeWidget->setCurrentItem(addedItem,0);
     ui->eleAccIdText->clear();
     ui->eleNameText->clear();
     ui->eleRoleText->clear();
     ui->eleTabIndexText->clear();
     ui->eleTypeText->clear();
     ui->statusBar->showMessage("New element successfully addded.",1000);
+    ui->eleNameText->setFocus();
+    addedItem->setFlags(Qt::ItemIsDragEnabled);
 }
 
 void MainWindow::on_addMsgBtn_clicked()
 {
     QStringList msgData;
     msgData << ui->msgIdText->text() << ui->locMsgText->text() << ui->accMsgText->text();
-    if(!locAcc->addMessage(msgData,ui->cb_isAccTextSame->isChecked(),ui->locTreeWidget->currentItem()))
+    QTreeWidgetItem* addedItem = locAcc->addMessage(msgData,ui->cb_isAccTextSame->isChecked(),ui->locTreeWidget->currentItem());
+    if(addedItem == NULL)
     {
         QMessageBox::critical(this,"Same message Id exists in element.","Same message Id exists .Please use another Id.",QMessageBox::Cancel);
         return;
     }
+    ui->locTreeWidget->expandItem(ui->locTreeWidget->currentItem());
+    //ui->locTreeWidget->setCurrentItem(addedItem,0);
     ui->msgIdText->clear();
     ui->locMsgText->clear();
     ui->accMsgText->clear();
     ui->statusBar->showMessage("New message successfully addded.",1000);
+    ui->msgIdText->setFocus();
+   addedItem->setFlags(Qt::ItemIsDragEnabled);
+
 }
 
 /*
@@ -776,6 +817,7 @@ void MainWindow::updateLocDetails(int indentationLevel)
     case 3:
         dataList =locAcc->getMessageTreeData(currentItem);
         fillMessageDetail(dataList);
+        ui->locUtilityTabWidget->setCurrentIndex(1);  // Directly set tab to "Update" part for message.
         break;
     default:
         break;
@@ -987,3 +1029,46 @@ void MainWindow::on_browsePathBtn_clicked()
     ui->DEpathText->setText(str_rootPath);
 }
 
+/****************************************************************
+ *********** L O C - A C C    C U T    C O P Y   P A S T E   O P E R A T I O N ********************
+ ****************************************************************/
+
+void MainWindow::on_copyEleBtn_clicked()
+{
+
+}
+
+void MainWindow::on_cutEleBtn_clicked()
+{
+
+}
+
+void MainWindow::on_pasteEleBtn_clicked()
+{
+
+}
+
+void MainWindow::on_copyMsgBtn_clicked()
+{
+
+}
+
+void MainWindow::on_cutMsgBtn_clicked()
+{
+
+}
+
+void MainWindow::on_pasteMsgBtn_clicked()
+{
+
+}
+
+void MainWindow::on_copyScrBtn_clicked()
+{
+
+}
+
+void MainWindow::on_pasteScrBtn_clicked()
+{
+
+}
