@@ -1,6 +1,8 @@
 #include "newinteractivityform.h"
 #include "ui_newinteractivityform.h"
 #include <QDebug>
+#include "locacc.h"
+#include <QTableWidgetItem>
 
 QString TEMPLATE_FOLDER = "templates";
 QString JS_FOLDER = "js";
@@ -102,50 +104,60 @@ void NewInterActivityForm::createFiles()
 
 void NewInterActivityForm::createLocAccFile()
 {
-    QString filePath = currentFolderPath() + "/" +  LANG_FOLDER + "/" + EN_FOLDER + "/" + DATA_FOLDER
-            + "/" + "loc-acc.json";
-    QFile file(filePath);
-    if(file.exists())
-    {
-        return;
-    }
-    QJsonObject masterAccObj;
-    QJsonObject tabContentObj;
-    QJsonArray tempArray;
-    masterAccObj["id"] = ui->idPrefixText->text();
+    LOCACC *locAcc = new LOCACC(currentFolderPath());
+    locAcc->changeBasePath(currentFolderPath());
+    QStringList data;
+    data << "tab-contents" << "tab-contents";
+    QTreeWidgetItem *tabContentsScr = locAcc->addScreen(data);
     QList<QStringList> tabData = getTemplateTableData();
-    tabContentObj["id"] = QString("tab-contents");
-    tabContentObj["name"] = QString("tab-contents");
     for(int i = 0 ; i < tabData.length() ; i++)
     {
-        QJsonObject tabObject;
-        tabObject["id"] = QString("player-tab-" + QString::number(i));
-        tabObject["accId"] = QString("player-tab-" + QString::number(i));
-        tabObject["type"] = QString("text");
-        tabObject["tabIndex"] = QString("1002");
+        // Maintain input parameter order as specified in the addElement method of the locAcc Class.
+        data.clear();
+        data << QString("player-tab-" + QString::number(i));
+        data << QString("player-tab-" + QString::number(i));
+        data << QString("text");
+        data << QString("");
+        data << QString("1002");
+        QTreeWidgetItem *tabItem = locAcc->addElement(data,tabContentsScr);
 
-        QJsonArray msgArray;
-        QJsonObject msgObj;
-        msgObj["id"] = QString("0");
-        msgObj["isAccTextSame"] = true;
-
-        QJsonObject msgTextObj;
-        msgTextObj["loc"] = tabData.at(i).at(0);
-        msgObj["message"] = msgTextObj;
-        msgArray.append(msgObj);
-        tabObject["messages"] = msgArray;
-        tempArray.append(tabObject);
+        data.clear();
+        data <<  QString("0");          // msgID
+        data << tabData.at(i).at(0); // loc
+        data << tabData.at(i).at(0); // acc compulsory
+        QTreeWidgetItem *msgItem = locAcc->addMessage(data,true,tabItem);
     }
-    tabContentObj["elements"] = tempArray;
-    QJsonArray masterLocArray;
-    masterLocArray.append(tabContentObj);
-    masterAccObj["locAccData"] = masterLocArray;
+    // Add Title Screen
+    data.clear();
+    data << "title-screen" << "title-screen";
+    QTreeWidgetItem *titleScreen = locAcc->addScreen(data);
+    data.clear();
+    data << "heading" << "heading" << "text" << "" << "1002";
+    QTreeWidgetItem *headingEle = locAcc->addElement(data,titleScreen);
+    data.clear();
+    data << "0" << "UpdateHeader" << "UpdateHeader";
+    locAcc->addMessage(data,true,headingEle);
 
-    // qDebug() << "NEW LOC CREATED " << filePath << " \n" << masterAccObj;
-    QJsonDocument doc(masterAccObj);
-    file.open(QIODevice::ReadWrite | QIODevice::Text);
-    file.write(doc.toJson());
-    file.close();
+    // Add overview screen
+    data.clear();
+    data << ui->overViewScreenId->text() << ui->overViewScreenId->text();
+    QTreeWidgetItem *overViewScreen = locAcc->addScreen(data);
+    data.clear();
+    data << "overview-header" << "overview-header" << "text" << "" << "";
+    QTreeWidgetItem *overViewHeader = locAcc->addElement(data,overViewScreen);
+    data.clear();
+    data << "0" << "Add Header of the overview tab." << "";
+    locAcc->addMessage(data,true,overViewHeader);
+
+    data.clear();
+    data << "overview-text" << "overview-text" << "text" << "" << "";
+    QTreeWidgetItem *overViewtext = locAcc->addElement(data,overViewScreen);
+    data.clear();
+    data << "0" << "Add Header TEXT of the overview tab." << "";
+    locAcc->addMessage(data,true,overViewtext);
+
+    locAcc->writeFile();
+    delete locAcc;
 }
 
 void NewInterActivityForm::createCSS()
@@ -283,8 +295,8 @@ void NewInterActivityForm::writeConfigJson()
     jObject["isTwoStepLoad"] = ui->cb_isTwoStepLoad->isChecked();
     jObject["isSaveStateAllowed"] = ui->cb_isSaveStateAllowed->isChecked();
     jObject["tabsData"] = getTemplateJSON();
-    jObject["themeType"] = themeType;
-    jObject["playerTheme"] = playerTheme;
+    jObject["themeType"] = themeType.toInt();
+    jObject["playerTheme"] = playerTheme.toInt();
     QJsonObject dataObject ;
     dataObject["class"] = modelClassName;
     jObject["model"] = dataObject;
@@ -348,7 +360,8 @@ QJsonArray NewInterActivityForm::getTemplateJSON()
     int i = 0;
     QList<QStringList> templateData = getTemplateTableData();
     QJsonArray tabsJArray;
-    for(i= 0 ; i < templateData.count() ; i++ )
+    // Exlude first entry "Overview"
+    for(i= 1 ; i < templateData.count() ; i++ )
     {
         QJsonObject tabsData ;
         QJsonObject dataEl;
@@ -358,7 +371,7 @@ QJsonArray NewInterActivityForm::getTemplateJSON()
         dataEl["el"] = templateData.at(i).at(3);
         viewData["data"] =  dataEl;
         tabsData["view"] = viewData;
-        tabsJArray.insert(i,tabsData);
+        tabsJArray.insert(i-1,tabsData);
     }
 
     /********* OVERVIEW TAB DATA *********/
@@ -374,7 +387,7 @@ QJsonArray NewInterActivityForm::getTemplateJSON()
     overViewTabImageJson["leftImageContainerID"] = leftContainerImageId;
     overViewTabImageJson["screenID"] = overViewScreenId;
     tabsData["overviewTabData"] = overViewTabImageJson;
-    tabsJArray.insert(i,tabsData);
+    tabsJArray.insert(0,tabsData);
     return tabsJArray;
 }
 
