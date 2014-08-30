@@ -237,7 +237,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>ottempName</string>
+     <string>overview</string>
     </property>
    </widget>
    <widget class="QGroupBox" name="groupBox_4">
@@ -288,7 +288,7 @@
       </rect>
      </property>
      <property name="text">
-      <string>otViewClass</string>
+      <string>Overview</string>
      </property>
     </widget>
     <widget class="QLineEdit" name="overViewTabEL">
@@ -301,7 +301,7 @@
       </rect>
      </property>
      <property name="text">
-      <string>#ot-view-el</string>
+      <string>#overview-tab</string>
      </property>
     </widget>
    </widget>
@@ -340,7 +340,7 @@
       </rect>
      </property>
      <property name="text">
-      <string>otScreen</string>
+      <string>overview-screen</string>
      </property>
     </widget>
     <widget class="QLabel" name="label_11">
@@ -417,17 +417,17 @@
    </item>
    <item row="0" column="1">
     <property name="text">
-     <string>temp-1</string>
+     <string>tab-1</string>
     </property>
    </item>
    <item row="0" column="2">
     <property name="text">
-     <string>temp-class-1</string>
+     <string>Tab1Class</string>
     </property>
    </item>
    <item row="0" column="3">
     <property name="text">
-     <string>#temp-el-1</string>
+     <string>#tab-1-holder</string>
     </property>
    </item>
    <item row="1" column="0">
@@ -437,17 +437,17 @@
    </item>
    <item row="1" column="1">
     <property name="text">
-     <string>temp-2</string>
+     <string>tab-2</string>
     </property>
    </item>
    <item row="1" column="2">
     <property name="text">
-     <string>temp-class-2</string>
+     <string>Tab2Class</string>
     </property>
    </item>
    <item row="1" column="3">
     <property name="text">
-     <string>#temp-el-2</string>
+     <string>#tab-2-holder</string>
     </property>
    </item>
   </widget>
@@ -656,8 +656,7 @@
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">
-</string>
+    <string notr="true"/>
    </property>
    <property name="text">
     <string>Add Component</string>

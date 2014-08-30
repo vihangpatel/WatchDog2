@@ -225,7 +225,6 @@ bool NewInterActivityForm::createJSFile(QStringList tableEntry)
     }
     newJsFile.open(QIODevice::ReadWrite | QIODevice::Text);
     QTextStream stream(&newJsFile);
-    QString eleID = tableEntry.at(3);
     stream <<  sampleFileData;
     newJsFile.close();
     return true;
