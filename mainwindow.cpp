@@ -705,7 +705,6 @@ void MainWindow::on_addEleBtn_clicked()
     ui->eleTypeText->clear();
     ui->statusBar->showMessage("New element successfully addded.",1000);
     ui->eleNameText->setFocus();
-    addedItem->setFlags(Qt::ItemIsDragEnabled);
 }
 
 void MainWindow::on_addMsgBtn_clicked()
@@ -725,7 +724,6 @@ void MainWindow::on_addMsgBtn_clicked()
     ui->accMsgText->clear();
     ui->statusBar->showMessage("New message successfully addded.",1000);
     ui->msgIdText->setFocus();
-   addedItem->setFlags(Qt::ItemIsDragEnabled);
 
 }
 
