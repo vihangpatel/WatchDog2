@@ -14,6 +14,9 @@ QString  LANG_FOLDER = "lang";
 QString MEDIA_FOLDER = "media";
 QString IMAGES_FOLDER = "images";
 QString EN_FOLDER = "en";
+QString MODULE_PLACE_HOLDER = "%@module#%";
+QString VIEW_PLACE_HOLDER = "%@view/model#%";
+QString CLASS_PLACE_HOLDER = "%@class#%";
 
 NewInterActivityForm::NewInterActivityForm(QWidget *parent) :
     QDialog(parent),
@@ -180,8 +183,52 @@ void NewInterActivityForm::createJSs()
     {
         return ;
     }
+    // Create Initialize File
     jsInitializeFile.open(QIODevice::ReadWrite | QIODevice::Text);
     jsInitializeFile.close();
+
+    // Create view File
+    QList<QStringList> tableEntries = getTemplateTableData();
+    for(int i = 0 ; i < tableEntries.length() ; i++ )
+    {
+        createJSFile(tableEntries.at(i));
+    }
+
+    // Create model File
+    QString modelFilePath = currentFolderPath() + "/" + JS_FOLDER + "/" + JS_MODEL_FOLDER + ui->idPrefixText->text() + ".js";
+    QFile modelFile(modelFilePath);
+    modelFile.open(QIODevice::ReadWrite | QIODevice::Text);
+    modelFile.close();
+}
+
+bool NewInterActivityForm::createJSFile(QStringList tableEntry)
+{
+    QString viewFilePath = currentFolderPath() + "/" + JS_FOLDER + "/" + JS_VIEW_FOLDER + "/" + tableEntry.at(1) + ".js";
+    QFile newJsFile(viewFilePath);
+    if(newJsFile.exists())
+    {
+        return false;
+    }
+    QString sampleFileData = "";
+    QFile sampleFile("pristineJsSample.txt");
+    if(sampleFile.exists())
+    {
+        // Replace placeholder by the actual class name.
+        sampleFile.open(QIODevice::ReadOnly | QIODevice::Text);
+        QByteArray byteArrayData= sampleFile.readAll();
+        QString stringData(byteArrayData);
+        stringData.replace(VIEW_PLACE_HOLDER,"Views");
+        stringData.replace(CLASS_PLACE_HOLDER,tableEntry.at(2));
+        stringData.replace(MODULE_PLACE_HOLDER,ui->moduleText->text());
+        sampleFileData = stringData;
+        sampleFile.close();
+    }
+    newJsFile.open(QIODevice::ReadWrite | QIODevice::Text);
+    QTextStream stream(&newJsFile);
+    QString eleID = tableEntry.at(3);
+    stream <<  sampleFileData;
+    newJsFile.close();
+    return true;
 }
 
 void NewInterActivityForm::createHandleBars()
@@ -265,7 +312,7 @@ void NewInterActivityForm::on_addComponentBtn_clicked()
 {
     int lastRow = ui->componentTable->rowCount();
     ui->componentTable->insertRow(lastRow);
-    ui->componentTable->setItem(lastRow,0,new QTableWidgetItem("componanet name"));
+    ui->componentTable->setItem(lastRow,0,new QTableWidgetItem("Companent name"));
     ui->componentTable->setItem(lastRow,1,new QTableWidgetItem("base path"));
 }
 
