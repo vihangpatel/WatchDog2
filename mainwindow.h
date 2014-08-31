@@ -61,6 +61,9 @@ public:
     int getTreeItemIndentationLevel(QTreeWidgetItem *,int count=0);
     void manageLocAccItemsVisibility(int indentationLevel = 0);
     void setCheckBoxStatus(bool checked);
+    void refreshTabStatus();
+    QString getCommonFolderPath();
+    QString getToolsPath();
 
     QJsonArray syncTmpltList(QJsonArray jTemplateArray);
     QJsonArray syncJSList(QJsonArray jJSArray);
@@ -154,6 +157,24 @@ private slots:
     void showLocTreeCustomMenu(QTreeWidgetItem* item, const QPoint& globalPos);
 
     void onCustomContextMenuRequested(const QPoint& pos);
+
+    void on_cb_stopJSMonitor_clicked();
+
+    void on_cb_stopTmpltMonitir_clicked();
+
+    void on_cb_stopCSSMonitor_clicked();
+
+    void on_cb_stopMediaMonitor_clicked();
+
+    void on_miniFyCommonBtn_clicked();
+
+    void on_minifyInterActBtn_clicked();
+
+    void on_minifyPreLoadBtn_clicked();
+
+    void on_deleteOrigFilesBtn_clicked();
+
+    void on_deleteBranchesBtn_clicked();
 
 public slots:
     void updateTemplateList(QFileInfoList);

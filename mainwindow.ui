@@ -31,7 +31,7 @@
      <string notr="true"/>
     </property>
     <property name="currentIndex">
-     <number>4</number>
+     <number>6</number>
     </property>
     <widget class="QWidget" name="tab">
      <attribute name="icon">
@@ -1968,7 +1968,7 @@ font-weight:bold;</string>
       <property name="title">
        <string> Cleaning </string>
       </property>
-      <widget class="QPushButton" name="miniFyCommonBtn_3">
+      <widget class="QPushButton" name="deleteOrigFilesBtn">
        <property name="geometry">
         <rect>
          <x>590</x>
@@ -2011,7 +2011,7 @@ font-weight:bold;</string>
         <string>Clean all deleted GIT branches.</string>
        </property>
       </widget>
-      <widget class="QPushButton" name="miniFyCommonBtn_4">
+      <widget class="QPushButton" name="deleteBranchesBtn">
        <property name="geometry">
         <rect>
          <x>590</x>
