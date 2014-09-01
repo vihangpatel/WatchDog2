@@ -14,6 +14,9 @@ QString  LANG_FOLDER = "lang";
 QString MEDIA_FOLDER = "media";
 QString IMAGES_FOLDER = "image";
 QString EN_FOLDER = "en";
+QString MODULE_PLACE_HOLDER = "%@module#%";
+QString VIEW_PLACE_HOLDER = "%@view/model#%";
+QString CLASS_PLACE_HOLDER = "%@class#%";
 
 NewInterActivityForm::NewInterActivityForm(QWidget *parent) :
     QDialog(parent),
@@ -126,6 +129,8 @@ void NewInterActivityForm::createLocAccFile()
         data << tabData.at(i).at(0); // loc
         data << tabData.at(i).at(0); // acc compulsory
         QTreeWidgetItem *msgItem = locAcc->addMessage(data,true,tabItem);
+        delete msgItem;
+        delete tabItem;
     }
     // Add Title Screen
     data.clear();
@@ -136,7 +141,7 @@ void NewInterActivityForm::createLocAccFile()
     QTreeWidgetItem *headingEle = locAcc->addElement(data,titleScreen);
     data.clear();
     data << "0" << "UpdateHeader" << "UpdateHeader";
-    locAcc->addMessage(data,true,headingEle);
+    delete locAcc->addMessage(data,true,headingEle);
 
     // Add overview screen
     data.clear();
@@ -147,17 +152,23 @@ void NewInterActivityForm::createLocAccFile()
     QTreeWidgetItem *overViewHeader = locAcc->addElement(data,overViewScreen);
     data.clear();
     data << "0" << "Add Header of the overview tab." << "";
-    locAcc->addMessage(data,true,overViewHeader);
+    delete  locAcc->addMessage(data,true,overViewHeader);
 
     data.clear();
     data << "overview-text" << "overview-text" << "text" << "" << "";
     QTreeWidgetItem *overViewtext = locAcc->addElement(data,overViewScreen);
     data.clear();
     data << "0" << "Add Header TEXT of the overview tab." << "";
-    locAcc->addMessage(data,true,overViewtext);
+    delete locAcc->addMessage(data,true,overViewtext);
 
     locAcc->writeFile();
     delete locAcc;
+    delete overViewHeader;
+    delete overViewtext;
+    delete overViewScreen;
+    delete headingEle;
+    delete titleScreen;
+    delete tabContentsScr;
 }
 
 void NewInterActivityForm::createCSS()
@@ -180,8 +191,67 @@ void NewInterActivityForm::createJSs()
     {
         return ;
     }
+    // Create Initialize File
     jsInitializeFile.open(QIODevice::ReadWrite | QIODevice::Text);
     jsInitializeFile.close();
+
+    // Create view File
+    QList<QStringList> tableEntries = getTemplateTableData();
+    for(int i = 0 ; i < tableEntries.length() ; i++ )
+    {
+        createJSFile(tableEntries.at(i));
+    }
+
+    // Create model File
+    QString modelFilePath = currentFolderPath() + "/" + JS_FOLDER + "/" + JS_MODEL_FOLDER + "/" + ui->idPrefixText->text() + ".js";
+    QFile modelFile(modelFilePath);
+    modelFile.open(QIODevice::ReadWrite | QIODevice::Text);
+    QString sampleFileData = "";
+    QFile sampleFile("pristineJsSample.txt");
+    if(sampleFile.exists())
+    {
+        // Replace placeholder by the actual class name.
+        sampleFile.open(QIODevice::ReadOnly | QIODevice::Text);
+        QByteArray byteArrayData= sampleFile.readAll();
+        QString stringData(byteArrayData);
+        stringData.replace(VIEW_PLACE_HOLDER,"Models");
+        stringData.replace(CLASS_PLACE_HOLDER,ui->modelClassText->text());
+        stringData.replace(MODULE_PLACE_HOLDER,ui->moduleText->text());
+        sampleFileData = stringData;
+        sampleFile.close();
+    }
+    QTextStream stream(&modelFile);
+    stream <<  sampleFileData;
+    modelFile.close();
+}
+
+bool NewInterActivityForm::createJSFile(QStringList tableEntry)
+{
+    QString viewFilePath = currentFolderPath() + "/" + JS_FOLDER + "/" + JS_VIEW_FOLDER + "/" + tableEntry.at(1) + ".js";
+    QFile newJsFile(viewFilePath);
+    if(newJsFile.exists())
+    {
+        return false;
+    }
+    QString sampleFileData = "";
+    QFile sampleFile("pristineJsSample.txt");
+    if(sampleFile.exists())
+    {
+        // Replace placeholder by the actual class name.
+        sampleFile.open(QIODevice::ReadOnly | QIODevice::Text);
+        QByteArray byteArrayData= sampleFile.readAll();
+        QString stringData(byteArrayData);
+        stringData.replace(VIEW_PLACE_HOLDER,"Views");
+        stringData.replace(CLASS_PLACE_HOLDER,tableEntry.at(2));
+        stringData.replace(MODULE_PLACE_HOLDER,ui->moduleText->text());
+        sampleFileData = stringData;
+        sampleFile.close();
+    }
+    newJsFile.open(QIODevice::ReadWrite | QIODevice::Text);
+    QTextStream stream(&newJsFile);
+    stream <<  sampleFileData;
+    newJsFile.close();
+    return true;
 }
 
 void NewInterActivityForm::createHandleBars()
@@ -265,7 +335,7 @@ void NewInterActivityForm::on_addComponentBtn_clicked()
 {
     int lastRow = ui->componentTable->rowCount();
     ui->componentTable->insertRow(lastRow);
-    ui->componentTable->setItem(lastRow,0,new QTableWidgetItem("componanet name"));
+    ui->componentTable->setItem(lastRow,0,new QTableWidgetItem("Companent name"));
     ui->componentTable->setItem(lastRow,1,new QTableWidgetItem("base path"));
 }
 

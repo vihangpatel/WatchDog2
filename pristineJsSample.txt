@@ -1,0 +1,23 @@
+(function(){
+
+	use 'strict';
+
+	/*
+	*
+	*   D E S C R I P T I O N
+	*	
+        * @class Mathinteractives.Interactives.%@module#%.Views.%@class#%
+        */
+
+	Mathinteractives.Interactives.%@module#%.%@view/model#%.%@class#% = Mathinteractives.Interactives.%@view/model#%.Player.Base.extends() {
+	
+		initialize : function() {
+			this.initializeBaseProperties();
+		},
+		
+		render : function() {
+		
+		}
+	
+	}
+})();

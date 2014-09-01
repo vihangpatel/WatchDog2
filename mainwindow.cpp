@@ -12,12 +12,15 @@ MainWindow::MainWindow(QWidget *parent) :
 }
 
 void MainWindow::loadSavedSettings(){
-     str_rootPath= appConfig->getRootPath();
-     str_basePath = appConfig->getCurrentInteractivity();
-    ui->cb_stopCSSMonitor->setChecked(appConfig->monitorCSS());
-    ui->cb_stopJSMonitor->setChecked(appConfig->monitorJS());
-    ui->cb_stopMediaMonitor->setChecked(appConfig->monitorMedia());
-    ui->cb_stopTmpltMonitir->setChecked(appConfig->monitorTemplates());
+        str_rootPath= appConfig->getRootPath();
+        str_basePath = appConfig->getCurrentInteractivity();
+        ui->cb_stopCSSMonitor->setChecked(appConfig->monitorCSS());
+        ui->cb_stopJSMonitor->setChecked(appConfig->monitorJS());
+        ui->cb_stopMediaMonitor->setChecked(appConfig->monitorMedia());
+        ui->cb_stopTmpltMonitir->setChecked(appConfig->monitorTemplates());
+        QDir dir(str_basePath);
+        ui->statusBar->showMessage("Current interactivity : " + dir.dirName());
+        ui->label_interActiveName->setText(dir.dirName());
 }
 
 void MainWindow::storeSetting()
@@ -63,6 +66,7 @@ void MainWindow::initialize(){
     changeBasePath(str_basePath);
 
     createLOCTreeContext();
+    refreshTabStatus();
 }
 
 /*****************************************************************
@@ -139,7 +143,16 @@ void MainWindow::setCheckBoxStatus(bool checked)
     ui->cb_stopCSSMonitor->setChecked(checked);
     ui->cb_stopJSMonitor->setChecked(checked);
     ui->cb_stopTmpltMonitir->setChecked(checked);
-    ui->cb_stopMediaMonitor->setChecked(checked);
+    ui->cb_stopMediaMonitor->setChecked(checked);  
+    refreshTabStatus();
+}
+
+void MainWindow::refreshTabStatus()
+{
+    on_cb_stopCSSMonitor_clicked();
+    on_cb_stopJSMonitor_clicked();
+    on_cb_stopTmpltMonitir_clicked();
+    on_cb_stopMediaMonitor_clicked();
 }
 
 void MainWindow::createLOCTreeContext()
@@ -705,7 +718,6 @@ void MainWindow::on_addEleBtn_clicked()
     ui->eleTypeText->clear();
     ui->statusBar->showMessage("New element successfully addded.",1000);
     ui->eleNameText->setFocus();
-    addedItem->setFlags(Qt::ItemIsDragEnabled);
 }
 
 void MainWindow::on_addMsgBtn_clicked()
@@ -725,8 +737,6 @@ void MainWindow::on_addMsgBtn_clicked()
     ui->accMsgText->clear();
     ui->statusBar->showMessage("New message successfully addded.",1000);
     ui->msgIdText->setFocus();
-   addedItem->setFlags(Qt::ItemIsDragEnabled);
-
 }
 
 /*
@@ -1071,4 +1081,87 @@ void MainWindow::on_copyScrBtn_clicked()
 void MainWindow::on_pasteScrBtn_clicked()
 {
 
+}
+
+/*****************************************************
+ * MONITORING CHECK BOX HANDLING
+ *****************************************************/
+
+void MainWindow::on_cb_stopJSMonitor_clicked()
+{
+    bool flagStatus = !ui->cb_stopJSMonitor->isChecked();
+    if(flagStatus)
+    {
+        js->scanChanges();
+    }
+    ui->tabWidget->setTabEnabled(1,flagStatus);
+}
+
+void MainWindow::on_cb_stopTmpltMonitir_clicked()
+{
+    bool flagStatus = !ui->cb_stopTmpltMonitir->isChecked();
+    if(flagStatus)
+    {
+       tmplt->scanChanges();
+    }
+    ui->tabWidget->setTabEnabled(2,flagStatus);
+}
+
+void MainWindow::on_cb_stopCSSMonitor_clicked()
+{
+    bool flagStatus = !ui->cb_stopCSSMonitor->isChecked();
+    if(flagStatus)
+    {
+       css->scanChanges();
+    }
+    ui->tabWidget->setTabEnabled(3,flagStatus);
+}
+
+void MainWindow::on_cb_stopMediaMonitor_clicked()
+{
+    bool flagStatus = !ui->cb_stopMediaMonitor->isChecked();
+    if(flagStatus)
+    {
+       //->scanChanges();
+    }
+    ui->tabWidget->setTabEnabled(4,flagStatus);
+}
+
+/*****************************************************
+ * UTILITIES OPERATION
+ *****************************************************/
+
+QString MainWindow::getCommonFolderPath()
+{
+    return str_rootPath + "/common";
+}
+
+QString MainWindow::getToolsPath()
+{
+    return str_rootPath + "/common/tool";
+}
+
+void MainWindow::on_miniFyCommonBtn_clicked()
+{
+    QString str_ToolPath = getToolsPath();
+}
+
+void MainWindow::on_minifyInterActBtn_clicked()
+{
+    QString str_ToolPath = getToolsPath();
+}
+
+void MainWindow::on_minifyPreLoadBtn_clicked()
+{
+    QString str_ToolPath = getToolsPath();
+}
+
+void MainWindow::on_deleteOrigFilesBtn_clicked()
+{
+    QString str_ToolPath = getToolsPath();
+}
+
+void MainWindow::on_deleteBranchesBtn_clicked()
+{
+    QString str_ToolPath = getToolsPath();
 }

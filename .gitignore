@@ -34,3 +34,11 @@ Icon
 # Files that might appear on external disk
 .Spotlight-V100
 .Trashes
+
+*.debug
+*.release
+Makefile
+appconfig.json
+ui_*.h
+release/
+debug/

@@ -95,6 +95,7 @@ void ConfigHandler::readConfigJson()
     QJsonDocument doc(QJsonDocument::fromJson(rawData));
     masterJObj = doc.object();
     // qDebug() << "READ : " << masterJObj;
+    configJsonFIle.close();
 }
 
 void ConfigHandler::writeConfigJson()
