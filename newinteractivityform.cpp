@@ -12,7 +12,7 @@ QString CSS_FOLDER = "css";
 QString DATA_FOLDER = "data";
 QString  LANG_FOLDER = "lang";
 QString MEDIA_FOLDER = "media";
-QString IMAGES_FOLDER = "images";
+QString IMAGES_FOLDER = "image";
 QString EN_FOLDER = "en";
 
 NewInterActivityForm::NewInterActivityForm(QWidget *parent) :
