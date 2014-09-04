@@ -72,7 +72,7 @@ void Templates::on_file_changed(QString strFilePath){
         return;
     }
     QStringList args ;
-    QString fileName = file.fileName().replace(TEMPLATE_FILE_EXTENSION,"");
+    QString fileName = str_basePath + "/" + file.fileName().replace(TEMPLATE_FILE_EXTENSION,"");
     args  << fileName;
     process->execute(getCompileTemplatePath(),args);
 }

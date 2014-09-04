@@ -18,9 +18,14 @@ void MainWindow::loadSavedSettings(){
         ui->cb_stopJSMonitor->setChecked(appConfig->monitorJS());
         ui->cb_stopMediaMonitor->setChecked(appConfig->monitorMedia());
         ui->cb_stopTmpltMonitir->setChecked(appConfig->monitorTemplates());
-        QDir dir(str_basePath);
-        ui->statusBar->showMessage("Current interactivity : " + dir.dirName());
-        ui->label_interActiveName->setText(dir.dirName());
+        ui->statusBar->showMessage("Current interactivity : " + getCurrentInteractivityName());
+        ui->label_interActiveName->setText(getCurrentInteractivityName());
+}
+
+QString MainWindow::getCurrentInteractivityName()
+{
+   QDir dir(str_basePath);
+   return dir.dirName();
 }
 
 void MainWindow::storeSetting()
@@ -83,9 +88,9 @@ void MainWindow::initTrayIcon()
     trayMenu->addAction("Hide",this,SLOT(hideApp()));
     QMenu *minifyMenu = new QMenu("Minify",this);
     minifyMenu->setIcon(QIcon(":/images/sleeping_mat-48.png"));
-    minifyMenu->addAction("Common");
-    minifyMenu->addAction("Interactive");
-    minifyMenu->addAction("Preloader");
+    minifyMenu->addAction("Common",this,SLOT(on_miniFyCommonBtn_clicked()));
+    minifyMenu->addAction("Interactive",this,SLOT(on_minifyInterActBtn_clicked()));
+    minifyMenu->addAction("Preloader",this,SLOT(on_minifyPreLoadBtn_clicked()));
     trayMenu->addMenu(minifyMenu);
     trayMenu->addAction("Compile Handlebars");
     trayMenu->addAction(QIcon(":/images/refresh-48.png"),"Refresh",this,SLOT(scanChanges()));
@@ -1141,19 +1146,39 @@ QString MainWindow::getToolsPath()
     return str_rootPath + "/common/tool";
 }
 
+QString MainWindow::getMinificationFolderPath()
+{
+    return getToolsPath() + "/" + "minification-batch-files";
+}
+
+/***************************************************
+ * M I N I F I C A T I O N    R E L A T E D
+***************************************************/
 void MainWindow::on_miniFyCommonBtn_clicked()
 {
-    QString str_ToolPath = getToolsPath();
+    QString str_MiniFyPath = getMinificationFolderPath();
+    QProcess *process = new QProcess();
+    process->execute(str_MiniFyPath + "/" + "minify_common.bat");
+    process->deleteLater();
 }
 
 void MainWindow::on_minifyInterActBtn_clicked()
 {
-    QString str_ToolPath = getToolsPath();
+    QString str_MiniFyPath = getMinificationFolderPath();
+    QProcess *process = new QProcess();
+    QStringList args;
+    args << getCurrentInteractivityName();
+    process->execute(str_MiniFyPath + "/" + "minify_interactive.bat",args);
+    process->deleteLater();
+    qDebug() << str_MiniFyPath;
 }
 
 void MainWindow::on_minifyPreLoadBtn_clicked()
 {
-    QString str_ToolPath = getToolsPath();
+    QString str_MiniFyPath = getMinificationFolderPath();
+    QProcess *process = new QProcess();
+    process->execute(str_MiniFyPath + "/" + "minify_preloader.bat");
+    process->deleteLater();
 }
 
 void MainWindow::on_deleteOrigFilesBtn_clicked()
