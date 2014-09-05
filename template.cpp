@@ -72,9 +72,26 @@ void Templates::on_file_changed(QString strFilePath){
         return;
     }
     QStringList args ;
-    QString fileName = str_basePath + "/" + file.fileName().replace(TEMPLATE_FILE_EXTENSION,"");
-    args  << fileName;
-    process->execute(getCompileTemplatePath(),args);
+    QString fileName = strFilePath.replace(TEMPLATE_FILE_EXTENSION,"");
+    args  << fileName ;// file.fileName().replace(TEMPLATE_FILE_EXTENSION,"");
+    if(process->execute(getCompileTemplatePath(),args) == -2){
+        QFile file("D:\\FALSE.log");
+        file.open(QIODevice::ReadWrite);
+        QTextStream out(&file);
+        out << getCompileTemplatePath();
+        file.close();
+    }
+    else {
+        QFile file("D:\\FALSE.log");
+        file.open(QIODevice::ReadWrite);
+        file.close();
+        file.remove();
+    }
+    QFile file2("D:\\LOG.log");
+    file2.open(QIODevice::ReadWrite);
+    QTextStream out(&file2);
+    out << getCompileTemplatePath() << "\n" << args[0];
+    file2.close();
 }
 
 QString Templates::getCompileTemplatePath()
