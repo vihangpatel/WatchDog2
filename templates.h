@@ -24,13 +24,15 @@ public:
     void deregisterFiles();
     void deregisterDirs();
     void connectSignals();
-    QString getCompileTemplatePath();
+    QString getIndividualTemplateCompilePath();
+    QString getAllTemplateCompilePath();
     QFileInfoList getFileInfoList();
 
 public slots:
     void on_file_changed(QString path);
     void on_dir_changed(QString path);
     void changeBasePath(QString);
+    void compileAllHandleBars();
 
 signals:
     void filesChanged(QFileInfoList);

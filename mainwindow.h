@@ -45,7 +45,7 @@ public:
     AppConfig *appConfig;
 
 private :
-    void initialize();
+    void initialize();    
     void initTrayIcon();
 
 public:
@@ -178,6 +178,8 @@ private slots:
 
     void on_deleteBranchesBtn_clicked();
 
+    void on_openIntrFolderBtn_clicked();
+
 public slots:
     void updateTemplateList(QFileInfoList);
     void templateFileListClicked(QListWidgetItem *);
@@ -193,6 +195,7 @@ public slots:
     void hideApp();
     void stopMonitoring();
     void startMonitoring();
+    void compileAllHandleBars();
 
 private:
     Ui::MainWindow *ui;

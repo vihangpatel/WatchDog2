@@ -2,7 +2,7 @@
 #include <QDebug>
 QString TEMPLATE_SUFFIX = "templates";
 QString TEMPLATE_FILE_EXTENSION = ".handlebars";
-QString TEMPLATE_COMPILE_COMMAND = "compile_handlebars_in_folder.bat";
+QString TEMPLATE_COMPILE_COMMAND = "individual_compilation.bat";
 QString TEMPLATE_FOLDER_COMPILE_COMMAND = "compile_handlebars_in_folder.bat";
 
 Templates::Templates(QString basePath) {
@@ -72,7 +72,7 @@ void Templates::on_file_changed(QString strFilePath){
         return;
     }
     QStringList args ;
-    QString compilePath = getCompileTemplatePath();
+    QString compilePath = getIndividualTemplateCompilePath();
     QString fileName = strFilePath.replace(TEMPLATE_FILE_EXTENSION,"");
     fileName = fileName.replace("/","\\");
     compilePath.replace("/","\\");
@@ -80,9 +80,9 @@ void Templates::on_file_changed(QString strFilePath){
     process->startDetached(compilePath,args);
 }
 
-QString Templates::getCompileTemplatePath()
+QString Templates::getIndividualTemplateCompilePath()
 {
-    return str_basePath + "/" + TEMPLATE_FOLDER_COMPILE_COMMAND;
+    return str_basePath + "/" + TEMPLATE_COMPILE_COMMAND;
 }
 
 void Templates::on_dir_changed(QString strDirPath){
@@ -92,6 +92,17 @@ void Templates::on_dir_changed(QString strDirPath){
     emit filesChanged(getFileInfoList());
 }
 
+void Templates::compileAllHandleBars()
+{
+    QString compilePath = getAllTemplateCompilePath();
+    compilePath.replace("/","\\");
+    process->startDetached(compilePath);
+}
+
+QString Templates::getAllTemplateCompilePath()
+{
+    return str_basePath + "/" + TEMPLATE_FOLDER_COMPILE_COMMAND;
+}
 
 void Templates::deRegisterWatcher(){
     deregisterDirs();

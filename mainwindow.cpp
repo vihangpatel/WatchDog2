@@ -92,16 +92,22 @@ void MainWindow::initTrayIcon()
     minifyMenu->addAction("Interactive",this,SLOT(on_minifyInterActBtn_clicked()));
     minifyMenu->addAction("Preloader",this,SLOT(on_minifyPreLoadBtn_clicked()));
     trayMenu->addMenu(minifyMenu);
-    trayMenu->addAction("Compile Handlebars");
+    trayMenu->addAction("Compile Handlebars",this,SLOT(compileAllHandleBars()));
     trayMenu->addAction(QIcon(":/images/refresh-48.png"),"Refresh",this,SLOT(scanChanges()));
     trayMenu->addAction(QIcon(":/images/lock-48.png"),"Stop monitoring",this,SLOT(stopMonitoring()));
     trayMenu->addAction(QIcon(":/images/unlock-48.png"),"Start monitoring",this,SLOT(startMonitoring()));
     trayMenu->addAction("Open Loc-acc Tab",this,SLOT(openLocAccTab()));
+    trayMenu->addAction("Open Folder Location",this,SLOT(on_openIntrFolderBtn_clicked()));
     trayMenu->addAction("Exit",this,SLOT(close()));
     trayIcon->setContextMenu(trayMenu);
     trayIcon->show();
     showApp();
     stopMonitoring();
+}
+
+void MainWindow::compileAllHandleBars()
+{
+    tmplt->compileAllHandleBars();
 }
 
 void MainWindow::openLocAccTab()
@@ -1158,7 +1164,7 @@ void MainWindow::on_miniFyCommonBtn_clicked()
 {
     QString str_MiniFyPath = getMinificationFolderPath();
     QProcess *process = new QProcess();
-    process->execute(str_MiniFyPath + "/" + "minify_common.bat");
+    process->startDetached(str_MiniFyPath + "/" + "minify_common.bat");
     process->deleteLater();
 }
 
@@ -1168,7 +1174,7 @@ void MainWindow::on_minifyInterActBtn_clicked()
     QProcess *process = new QProcess();
     QStringList args;
     args << getCurrentInteractivityName();
-    process->execute(str_MiniFyPath + "/" + "minify_interactive.bat",args);
+    process->startDetached(str_MiniFyPath + "/" + "minify_interactive.bat",args);
     process->deleteLater();
     qDebug() << str_MiniFyPath;
 }
@@ -1177,7 +1183,7 @@ void MainWindow::on_minifyPreLoadBtn_clicked()
 {
     QString str_MiniFyPath = getMinificationFolderPath();
     QProcess *process = new QProcess();
-    process->execute(str_MiniFyPath + "/" + "minify_preloader.bat");
+    process->startDetached(str_MiniFyPath + "/" + "minify_preloader.bat");
     process->deleteLater();
 }
 
@@ -1189,4 +1195,9 @@ void MainWindow::on_deleteOrigFilesBtn_clicked()
 void MainWindow::on_deleteBranchesBtn_clicked()
 {
     QString str_ToolPath = getToolsPath();
+}
+
+void MainWindow::on_openIntrFolderBtn_clicked()
+{
+    QDesktopServices::openUrl(str_basePath);
 }

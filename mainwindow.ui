@@ -31,7 +31,7 @@
      <string notr="true"/>
     </property>
     <property name="currentIndex">
-     <number>6</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="tab">
      <attribute name="icon">
@@ -268,6 +268,19 @@ font-weight:bold;</string>
       </property>
       <property name="checked">
        <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="openIntrFolderBtn">
+      <property name="geometry">
+       <rect>
+        <x>474</x>
+        <y>302</y>
+        <width>221</width>
+        <height>51</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Open Folder Location</string>
       </property>
      </widget>
     </widget>
