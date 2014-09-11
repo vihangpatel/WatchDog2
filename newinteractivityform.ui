@@ -624,14 +624,6 @@
      <set>AlignHCenter|AlignVCenter|AlignCenter</set>
     </property>
    </column>
-   <column>
-    <property name="text">
-     <string>Base Path</string>
-    </property>
-    <property name="textAlignment">
-     <set>AlignHCenter|AlignVCenter|AlignCenter</set>
-    </property>
-   </column>
   </widget>
   <widget class="QPushButton" name="removeComponentBtn">
    <property name="geometry">

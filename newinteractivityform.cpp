@@ -336,7 +336,6 @@ void NewInterActivityForm::on_addComponentBtn_clicked()
     int lastRow = ui->componentTable->rowCount();
     ui->componentTable->insertRow(lastRow);
     ui->componentTable->setItem(lastRow,0,new QTableWidgetItem("Companent name"));
-    ui->componentTable->setItem(lastRow,1,new QTableWidgetItem("base path"));
 }
 
 void NewInterActivityForm::on_removeComponentBtn_clicked()
@@ -414,7 +413,7 @@ QList<QStringList> NewInterActivityForm::getComponentTableData()
     int rowCount = ui->componentTable->rowCount();
     for(int i = 0 ; i < rowCount ; i++){
         QStringList currentRow ;
-        currentRow << ui->componentTable->item(i,0)->text() << ui->componentTable->item(i,1)->text();
+        currentRow << ui->componentTable->item(i,0)->text() ;
         tableData.insert(i,currentRow);
     }
     return tableData;
