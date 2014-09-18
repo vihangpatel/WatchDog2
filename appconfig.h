@@ -18,6 +18,7 @@ public:
     const int TEMPLATE_TRUE = 2;
     const int CSS_TRUE = 4;
     const int MEDIA_TRUE = 8;
+    const int CONFIG_STOP = 16;
     QString str_rootPath;
     QString str_curIntrctvPath;
     QFile fileAppConfig;
@@ -38,11 +39,13 @@ public:
     bool monitorCSS();
     bool monitorTemplates();
     bool monitorMedia();
+    bool monitorConfig();
     
     void setJSFlag(bool isTrue);
     void setCSSFlag(bool isTrue);
     void setTemplateFlag(bool isTrue);
     void setMediaFlag(bool isTrue);
+    void setConfigModificationFlag(bool isStop);
 
 signals:
     

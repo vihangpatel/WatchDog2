@@ -58,6 +58,11 @@ bool AppConfig::monitorTemplates()
      return (flagStatus & TEMPLATE_TRUE) == TEMPLATE_TRUE;
 }
 
+bool AppConfig::monitorConfig()
+{
+    return (flagStatus & CONFIG_STOP) == CONFIG_STOP;
+}
+
 void AppConfig::setJSFlag(bool isTrue)
 {
     if(isTrue)
@@ -88,6 +93,14 @@ void AppConfig::setMediaFlag(bool isTrue)
     {
         flagStatus = flagStatus | MEDIA_TRUE;
     }    
+}
+
+void AppConfig::setConfigModificationFlag(bool isStop)
+{
+    if(isStop)
+    {
+        flagStatus = flagStatus | CONFIG_STOP;
+    }
 }
 
 QString AppConfig::getCurrentInteractivity()

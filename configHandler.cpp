@@ -82,6 +82,11 @@ void ConfigHandler::newInteractivityCreated(QJsonObject newObject)
     writeConfigJson();
 }
 
+void ConfigHandler::setConfigUpdateFlag(bool stopUpdate)
+{
+    b_stopUpdating = stopUpdate;
+}
+
 void ConfigHandler::readConfigJson()
 {
     configJsonFIle.setFileName(getConfigJSONFilePath());
@@ -100,6 +105,10 @@ void ConfigHandler::readConfigJson()
 
 void ConfigHandler::writeConfigJson()
 {
+    if(b_stopUpdating)
+    {
+        return;
+    }
     configJsonFIle.setFileName(getConfigJSONFilePath());
     configJsonFIle.remove();
     configJsonFIle.open(QIODevice::ReadWrite | QIODevice::Text);

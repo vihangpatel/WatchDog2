@@ -184,6 +184,8 @@ private slots:
 
     void on_screenDownBtn_clicked();
 
+    void on_cb_stopConfigModification_clicked();
+
 public slots:
     void updateTemplateList(QFileInfoList);
     void templateFileListClicked(QListWidgetItem *);

@@ -19,6 +19,7 @@ void MainWindow::loadSavedSettings(){
         ui->cb_stopMediaMonitor->setChecked(appConfig->monitorMedia());
         ui->cb_stopTmpltMonitir->setChecked(appConfig->monitorTemplates());
         ui->statusBar->showMessage("Current interactivity : " + getCurrentInteractivityName());
+        ui->cb_stopConfigModification->setChecked(appConfig->monitorConfig());
         ui->label_interActiveName->setText(getCurrentInteractivityName());
 }
 
@@ -37,6 +38,7 @@ void MainWindow::storeSetting()
     appConfig->setCSSFlag(ui->cb_stopCSSMonitor->isChecked());
     appConfig->setTemplateFlag(ui->cb_stopTmpltMonitir->isChecked());
     appConfig->setMediaFlag(ui->cb_stopMediaMonitor->isChecked());
+    appConfig->setConfigModificationFlag(ui->cb_stopConfigModification->isChecked());
     appConfig->writeSettings();
 }
 
@@ -94,8 +96,9 @@ void MainWindow::initTrayIcon()
     trayMenu->addMenu(minifyMenu);
     trayMenu->addAction("Compile Handlebars",this,SLOT(compileAllHandleBars()));
     trayMenu->addAction(QIcon(":/images/refresh-48.png"),"Refresh",this,SLOT(scanChanges()));
-    trayMenu->addAction(QIcon(":/images/lock-48.png"),"Stop monitoring",this,SLOT(stopMonitoring()));
-    trayMenu->addAction(QIcon(":/images/unlock-48.png"),"Start monitoring",this,SLOT(startMonitoring()));
+    // TODO : Remove setEnabled from the following two lines
+    trayMenu->addAction(QIcon(":/images/lock-48.png"),"Stop monitoring",this,SLOT(stopMonitoring()))->setEnabled(false);
+    trayMenu->addAction(QIcon(":/images/unlock-48.png"),"Start monitoring",this,SLOT(startMonitoring()))->setEnabled(false);
     trayMenu->addAction("Open Loc-acc Tab",this,SLOT(openLocAccTab()));
     trayMenu->addAction("Open Folder Location",this,SLOT(on_openIntrFolderBtn_clicked()));
     trayMenu->addAction("Exit",this,SLOT(close()));
@@ -1231,3 +1234,9 @@ void MainWindow::on_screenDownBtn_clicked()
     ui->locTreeWidget->setCurrentItem(item);
     return;
 }
+
+void MainWindow::on_cb_stopConfigModification_clicked()
+{
+    config->setConfigUpdateFlag(ui->cb_stopConfigModification->isChecked());
+}
+

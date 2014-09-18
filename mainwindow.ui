@@ -31,7 +31,7 @@
      <string notr="true"/>
     </property>
     <property name="currentIndex">
-     <number>5</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="tab">
      <attribute name="icon">
@@ -195,7 +195,7 @@ font-weight:bold;</string>
        <rect>
         <x>460</x>
         <y>200</y>
-        <width>181</width>
+        <width>301</width>
         <height>21</height>
        </rect>
       </property>
@@ -215,7 +215,7 @@ font-weight:bold;</string>
        <rect>
         <x>460</x>
         <y>220</y>
-        <width>181</width>
+        <width>301</width>
         <height>21</height>
        </rect>
       </property>
@@ -235,7 +235,7 @@ font-weight:bold;</string>
        <rect>
         <x>460</x>
         <y>240</y>
-        <width>181</width>
+        <width>301</width>
         <height>21</height>
        </rect>
       </property>
@@ -255,7 +255,7 @@ font-weight:bold;</string>
        <rect>
         <x>460</x>
         <y>260</y>
-        <width>181</width>
+        <width>301</width>
         <height>21</height>
        </rect>
       </property>
@@ -274,13 +274,33 @@ font-weight:bold;</string>
       <property name="geometry">
        <rect>
         <x>474</x>
-        <y>302</y>
+        <y>320</y>
         <width>221</width>
         <height>51</height>
        </rect>
       </property>
       <property name="text">
        <string>Open Folder Location</string>
+      </property>
+     </widget>
+     <widget class="QCheckBox" name="cb_stopConfigModification">
+      <property name="geometry">
+       <rect>
+        <x>460</x>
+        <y>280</y>
+        <width>301</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Stop Modifying Config</string>
+      </property>
+      <property name="icon">
+       <iconset resource="resources.qrc">
+        <normaloff>:/images/lock-48.png</normaloff>:/images/lock-48.png</iconset>
+      </property>
+      <property name="checked">
+       <bool>true</bool>
       </property>
      </widget>
     </widget>

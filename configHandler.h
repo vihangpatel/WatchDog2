@@ -19,6 +19,7 @@ public:
     QFile configJsonFIle;
     QJsonObject masterJObj;
     QString str_basePath;
+    bool b_stopUpdating;
 
     explicit ConfigHandler(QString);
     void changeBasePath(QString);
@@ -31,6 +32,7 @@ public:
     void setJSJArray(QJsonArray);
     void setCssJArray(QJsonArray);
     void setConfigModule(QJsonObject);
+    void setConfigUpdateFlag(bool stopUpdate);
 
     QString getConfigJSONFilePath();
 
