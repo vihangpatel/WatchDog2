@@ -635,6 +635,31 @@ int LOCACC::getCurrentSearchIndex()
     return currentSearchIndex;
 }
 
+bool LOCACC::changeOrder(int currentIndex, int newIndex, QTreeWidgetItem *item)
+{
+      qDebug() << "informal :" <<+currentIndex  ;
+    if (item && ((currentIndex < newIndex &&  currentIndex < root->childCount())
+                  ||  (currentIndex > 0 && currentIndex > newIndex)))
+    {
+        // Visual Update
+        qDebug() << currentIndex  ;
+       QList<QTreeWidgetItem *> items = root->takeChildren();
+       items.removeAt(currentIndex);
+       items.insert(newIndex,item);
+       root->insertChildren(0,items);
+
+        // Actual Update
+       QJsonArray locAccArray = masterJObj.find("locAccData").value().toArray();
+       QJsonObject objectToRemove = locAccArray.at(currentIndex).toObject();
+       locAccArray.removeAt(currentIndex);
+       locAccArray.insert(newIndex,objectToRemove);
+       masterJObj["locAccData"] = locAccArray;
+       writeFile();
+       return true;
+    }
+    return false;
+}
+
 /***********************************************************************
  ************************  T O O L T I P     T E X T **************************
  **********************************************************************/

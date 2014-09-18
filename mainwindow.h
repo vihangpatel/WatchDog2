@@ -180,6 +180,10 @@ private slots:
 
     void on_openIntrFolderBtn_clicked();
 
+    void on_screenUpBtn_clicked();
+
+    void on_screenDownBtn_clicked();
+
 public slots:
     void updateTemplateList(QFileInfoList);
     void templateFileListClicked(QListWidgetItem *);

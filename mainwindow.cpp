@@ -819,6 +819,8 @@ void MainWindow::manageLocAccItemsVisibility(int indentationLevel)
     ui->groupBox_updateElement->setVisible(indentationLevel == 2);
     ui->groupBox_updateMessage->setVisible(indentationLevel == 3);
 
+    ui->screenUpBtn->setVisible(indentationLevel == 1 );
+    ui->screenDownBtn->setVisible(indentationLevel == 1 );
     updateLocDetails(indentationLevel);
 }
 
@@ -1200,4 +1202,32 @@ void MainWindow::on_deleteBranchesBtn_clicked()
 void MainWindow::on_openIntrFolderBtn_clicked()
 {
     QDesktopServices::openUrl(str_basePath);
+}
+
+/*******************************************************
+ ***** CHANGE ORDER OF THE LOC ACC SCREENS ******
+ ******************************************************/
+
+void MainWindow::on_screenUpBtn_clicked()
+{
+    QTreeWidgetItem* item = ui->locTreeWidget->currentItem();
+    int  row  = ui->locTreeWidget->currentIndex().row();
+
+    locAcc->changeOrder(row,row-1,item);
+    ui->locTreeWidget->setCurrentItem(item);
+    return;
+
+}
+
+void MainWindow::on_screenDownBtn_clicked()
+{
+    QTreeWidgetItem* item = ui->locTreeWidget->currentItem();
+    int  row  = ui->locTreeWidget->currentIndex().row();
+
+    if(locAcc->changeOrder(row,row+1,item)){
+
+        qDebug() << "success";
+    }
+    ui->locTreeWidget->setCurrentItem(item);
+    return;
 }

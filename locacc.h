@@ -71,6 +71,7 @@ public:
     QTreeWidgetItem* getPrevSeachResult();
     QTreeWidgetItem* getNextSearchResult();
     int getCurrentSearchIndex();
+    bool changeOrder(int currentIndex,int newIndex,QTreeWidgetItem *item);
 
     QJsonObject fetchScreenJObject(QStringList screenData);
     QJsonObject fetchElementJObject(QStringList elementData,QJsonArray parenScreenJObj);
