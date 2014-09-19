@@ -637,8 +637,8 @@ int LOCACC::getCurrentSearchIndex()
 
 bool LOCACC::changeOrder(int currentIndex, int newIndex, QTreeWidgetItem *item)
 {
-      qDebug() << "informal :" <<+currentIndex  ;
-    if (item && ((currentIndex < newIndex &&  currentIndex < root->childCount())
+      qDebug() << "informal :" << currentIndex  ;
+    if (item && ((currentIndex < newIndex &&  currentIndex < root->childCount() - 1)
                   ||  (currentIndex > 0 && currentIndex > newIndex)))
     {
         // Visual Update
