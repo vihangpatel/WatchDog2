@@ -853,7 +853,7 @@ void MainWindow::updateLocDetails(int indentationLevel)
 void MainWindow::fillScreenDetail(QStringList data)
 {
     ui->updtScreenIdText->setText(data.at(0));
-    ui->updtScreenNameText->setText(data.at(0));
+    ui->updtScreenNameText->setText(data.at(1));
 }
 
 void MainWindow::fillElementDetail(QStringList data)

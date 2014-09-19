@@ -41,7 +41,7 @@ QTreeWidgetItem* LOCACC::addScreen(QStringList screenData)
 {
     QJsonObject newJObjScreen;
 
-    if(screenExistance(screenData))
+    if(screenExistance(screenData,masterJObj["locAccData"].toArray()))
     {
         return NULL;
     }
@@ -196,10 +196,9 @@ QJsonObject LOCACC::fetchMessageJObject(QStringList messageData,QJsonArray msgsA
     return tempObj;
 }
 
-bool LOCACC::screenExistance(QStringList screenData)
+bool LOCACC::screenExistance(QStringList screenData, QJsonArray locArray)
 {
     QString screenId = screenData.at(0);
-    QJsonArray locArray = masterJObj["locAccData"].toArray();
     QJsonObject tempObj;
     for(int i = 0 ; i < locArray.count() ; i++)
     {
@@ -469,7 +468,7 @@ bool LOCACC::updateScreen(QStringList newScreenData, QTreeWidgetItem *currentIte
         if(tempObj["id"] == screenId)
         {
             locArray.removeAt(i);
-            if(screenExistance(newScreenData))
+            if(screenExistance(newScreenData,locArray))
             {
                 return false;
             }

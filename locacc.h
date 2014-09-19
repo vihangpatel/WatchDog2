@@ -53,7 +53,7 @@ public:
     bool changeElement(QStringList newScreenData,QTreeWidgetItem *currentItem);
     bool changeMessage(QStringList newMsgData,QTreeWidgetItem *currentItem);
 
-    bool screenExistance(QStringList screenData);
+    bool screenExistance(QStringList screenData,QJsonArray parenScreenJObj);
     bool elementExistance(QStringList elementData,QJsonArray parenScreenJObj);
     bool messageExistance(QStringList messageData,QJsonArray parentEleJArray);
 
