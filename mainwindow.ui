@@ -31,7 +31,7 @@
      <string notr="true"/>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>5</number>
     </property>
     <widget class="QWidget" name="tab">
      <attribute name="icon">
@@ -656,9 +656,9 @@ font-weight:bold;</string>
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>20</y>
+        <y>30</y>
         <width>301</width>
-        <height>311</height>
+        <height>301</height>
        </rect>
       </property>
       <column>
@@ -1909,6 +1909,19 @@ font-weight:bold;</string>
       <property name="icon">
        <iconset resource="resources.qrc">
         <normaloff>:/images/collapse_arrow-48.png</normaloff>:/images/collapse_arrow-48.png</iconset>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="saveLocAccBtn">
+      <property name="geometry">
+       <rect>
+        <x>270</x>
+        <y>3</y>
+        <width>81</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Save</string>
       </property>
      </widget>
     </widget>

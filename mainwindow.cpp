@@ -105,7 +105,7 @@ void MainWindow::initTrayIcon()
     trayIcon->setContextMenu(trayMenu);
     trayIcon->show();
     showApp();
-    stopMonitoring();
+    //stopMonitoring();
 }
 
 void MainWindow::compileAllHandleBars()
@@ -1240,3 +1240,7 @@ void MainWindow::on_cb_stopConfigModification_clicked()
     config->setConfigUpdateFlag(ui->cb_stopConfigModification->isChecked());
 }
 
+void MainWindow::on_saveLocAccBtn_clicked()
+{
+    locAcc->writeFile();
+}

@@ -186,6 +186,8 @@ private slots:
 
     void on_cb_stopConfigModification_clicked();
 
+    void on_saveLocAccBtn_clicked();
+
 public slots:
     void updateTemplateList(QFileInfoList);
     void templateFileListClicked(QListWidgetItem *);

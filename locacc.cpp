@@ -654,7 +654,7 @@ bool LOCACC::changeOrder(int currentIndex, int newIndex, QTreeWidgetItem *item)
        locAccArray.removeAt(currentIndex);
        locAccArray.insert(newIndex,objectToRemove);
        masterJObj["locAccData"] = locAccArray;
-       writeFile();
+       //writeFile();  // Do not update file on change in order.
        return true;
     }
     return false;
