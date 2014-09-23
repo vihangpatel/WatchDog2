@@ -8,6 +8,7 @@
 #include <QtWidgets/QFileSystemModel>
 #include <QtWidgets/QTreeView>
 #include <QtGui>
+#include <QSignalMapper>
 #include <QListWidgetItem>
 #include "js.h"
 #include "templates.h"
@@ -43,6 +44,9 @@ public:
     QMenu *trayMenu;
     QMenu *treeMenu;
     AppConfig *appConfig;
+    enum OperationType{ O_CUT , O_COPY  ,O_PASTE , O_DELETE} m_eOperation;
+    QTreeWidgetItem *sourceItem;
+    QTreeWidgetItem *destinationItem;
 
 private :
     void initialize();    
@@ -76,6 +80,7 @@ public:
     void fillElementDetail(QStringList data);
     void fillMessageDetail(QStringList data);
     void createLOCTreeContext();
+    void contextMenuVisibility();
 
 private slots:
     void on_openDialog_clicked();
@@ -112,11 +117,11 @@ private slots:
 
     void on_updtEleBtn_clicked();
 
-    void on_dltScrBtn_clicked();
+    void deleteScreen();
 
-    void on_dltMsgBtn_clicked();
+    void deleteMessage();
 
-    void on_dltEleBtn_clicked();
+    void deleteElement();
 
     void on_searchLocBtn_clicked();
 
@@ -139,22 +144,6 @@ private slots:
     void on_jsOneUpBtn_clicked();
 
     void on_jsOneDownBtn_clicked();
-
-    void on_copyEleBtn_clicked();
-
-    void on_cutEleBtn_clicked();
-
-    void on_pasteEleBtn_clicked();
-
-    void on_copyMsgBtn_clicked();
-
-    void on_cutMsgBtn_clicked();
-
-    void on_pasteMsgBtn_clicked();
-
-    void on_copyScrBtn_clicked();
-
-    void on_pasteScrBtn_clicked();
 
     void showLocTreeCustomMenu(QTreeWidgetItem* item, const QPoint& globalPos);
 
@@ -187,6 +176,8 @@ private slots:
     void on_cb_stopConfigModification_clicked();
 
     void on_saveLocAccBtn_clicked();
+
+    void performLocOpertions(int operation);
 
 public slots:
     void updateTemplateList(QFileInfoList);

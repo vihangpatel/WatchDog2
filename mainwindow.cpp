@@ -67,12 +67,12 @@ void MainWindow::initialize(){
 
     ui->locTreeWidget->addTopLevelItem(locAcc->getLocAccTree());
     ui->DEpathText->setText(str_rootPath);
+    createLOCTreeContext();
 
     connectSignals();
     manageLocAccItemsVisibility(-1);
     changeBasePath(str_basePath);
 
-    createLOCTreeContext();
     refreshTabStatus();
 }
 
@@ -168,14 +168,6 @@ void MainWindow::refreshTabStatus()
     on_cb_stopTmpltMonitir_clicked();
     on_cb_stopMediaMonitor_clicked();
 }
-
-void MainWindow::createLOCTreeContext()
-{
-    treeMenu = new QMenu(this);
-    treeMenu->addAction("Show",this,SLOT(showApp()));
-    treeMenu->addAction("Hide",this,SLOT(hideApp()));
-    ui->locTreeWidget->setContextMenuPolicy(Qt::CustomContextMenu);
- }
 
 // ////////////////////////////////////////////////////////////////////////////////////
 
@@ -814,10 +806,6 @@ void MainWindow::manageLocAccItemsVisibility(int indentationLevel)
     ui->groupBox_addElement->setVisible(indentationLevel == 1 );
     ui->groupBox_addMessage->setVisible(indentationLevel == 2 );
 
-    ui->groupBox_optScr->setVisible(indentationLevel == 1);
-    ui->groupBox_optEle->setVisible(indentationLevel == 2);
-    ui->groupBox_optMsg->setVisible(indentationLevel == 3);
-
     ui->groupBox_updateScreen->setVisible(indentationLevel == 1);
     ui->groupBox_updateElement->setVisible(indentationLevel == 2);
     ui->groupBox_updateMessage->setVisible(indentationLevel == 3);
@@ -825,6 +813,7 @@ void MainWindow::manageLocAccItemsVisibility(int indentationLevel)
     ui->screenUpBtn->setVisible(indentationLevel == 1 );
     ui->screenDownBtn->setVisible(indentationLevel == 1 );
     updateLocDetails(indentationLevel);
+    contextMenuVisibility();
 }
 
 void MainWindow::updateLocDetails(int indentationLevel)
@@ -977,7 +966,7 @@ void MainWindow::on_goNextSearchBtn_clicked()
             D E L E T I O N   O F   T H E   D A T A
 */
 
-void MainWindow::on_dltScrBtn_clicked()
+void MainWindow::deleteScreen()
 {
     int result = QMessageBox::warning(this,"Are you Sure ???" , "You are about to delete Screen !!! Allow Deletion?",
                                       QMessageBox::Ok, QMessageBox::Cancel);
@@ -987,7 +976,7 @@ void MainWindow::on_dltScrBtn_clicked()
     }
 }
 
-void MainWindow::on_dltMsgBtn_clicked()
+void MainWindow::deleteMessage()
 {
     int result = QMessageBox::warning(this,"Are you Sure ???" , "You are about to delete Message !!! Allow Deletion?",
                                       QMessageBox::Ok, QMessageBox::Cancel);
@@ -998,7 +987,7 @@ void MainWindow::on_dltMsgBtn_clicked()
 
 }
 
-void MainWindow::on_dltEleBtn_clicked()
+void MainWindow::deleteElement()
 {
     int result = QMessageBox::warning(this,"Are you Sure ???" , "You are about to delete Element !!! Allow Deletion?",
                                       QMessageBox::Ok, QMessageBox::Cancel);
@@ -1056,47 +1045,115 @@ void MainWindow::on_browsePathBtn_clicked()
 }
 
 /****************************************************************
+ * ************** L O C - A C C       C O N T E X T      M E N U  ******************
  *********** L O C - A C C    C U T    C O P Y   P A S T E   O P E R A T I O N ********************
  ****************************************************************/
 
-void MainWindow::on_copyEleBtn_clicked()
+void MainWindow::createLOCTreeContext()
 {
+    treeMenu = new QMenu(this);
+    QSignalMapper *mapper = new QSignalMapper(this);
+    QAction *cutAction = treeMenu->addAction("Cut",mapper,SLOT(map()));
+    QAction *copyAction = treeMenu->addAction("Copy",mapper,SLOT(map()));
+    QAction *pasteAction = treeMenu->addAction("Paste",mapper,SLOT(map()));
+    QAction *deleteAction = treeMenu->addAction("Delete",mapper,SLOT(map()));
 
+    mapper->setMapping(cutAction,0);
+    mapper->setMapping(copyAction,1);
+    mapper->setMapping(pasteAction,2);
+    mapper->setMapping(deleteAction,3);
+
+    connect(mapper,SIGNAL(mapped(int)),this,SLOT(performLocOpertions(int)));
+
+     ui->locTreeWidget->setContextMenuPolicy(Qt::CustomContextMenu);
+ }
+
+void MainWindow::performLocOpertions(int operation)
+{
+    QTreeWidgetItem *currentItem = ui->locTreeWidget->currentItem();
+    int indentationLevel = getTreeItemIndentationLevel(currentItem);
+    qDebug() << "perform loc opertion has been called";
+    switch (operation) {
+        case 0:
+            sourceItem = ui->locTreeWidget->currentItem();
+            m_eOperation = O_CUT;
+            qDebug() << "CUT";
+            break;
+        case 1:
+            sourceItem = ui->locTreeWidget->currentItem();
+            qDebug() << "COPY";
+            m_eOperation = O_COPY;
+            break;
+        case 2:
+                if(sourceItem)
+                {
+                    switch(indentationLevel)
+                    {
+                        case 0 :
+                            ui->locTreeWidget->setCurrentItem( locAcc->cloneScreen(sourceItem));
+                            if(m_eOperation == O_CUT)
+                            {
+                                locAcc->deleteScreen(sourceItem);
+                            }
+                            break;
+                        case 1 :
+                            ui->locTreeWidget->setCurrentItem( locAcc->cloneElement(sourceItem,currentItem));
+                            if(m_eOperation == O_CUT)
+                            {
+                                locAcc->deleteElement(sourceItem);
+                            }
+                            break;
+                        case 2 :
+                            ui->locTreeWidget->setCurrentItem( locAcc->cloneMessage(sourceItem,currentItem));
+                            if(m_eOperation == O_CUT)
+                            {
+                                locAcc->deleteMessage(sourceItem);
+                            }
+                            break;
+                    }
+                }
+                qDebug() << "PASTE";
+                break;
+        case 3:
+                        switch(indentationLevel)
+                        {
+                            case 1 :
+                                deleteScreen();
+                                break;
+                            case 2 :
+                                deleteElement();
+                                break;
+                            case 3 :
+                                deleteMessage();
+                                break;
+                        }
+                    treeMenu->actions()[2]->setEnabled(false);
+                    qDebug() << "DELETE";
+                    break;
+    }
 }
 
-void MainWindow::on_cutEleBtn_clicked()
+void MainWindow::contextMenuVisibility()
 {
+    QTreeWidgetItem *currentItem = ui->locTreeWidget->currentItem();
+    if(currentItem == NULL)
+    {
+        return;
+    }
+    int currentItemIndentation  = getTreeItemIndentationLevel(currentItem);
 
-}
+    treeMenu->actions()[0]->setEnabled(currentItemIndentation != 0);
+    treeMenu->actions()[1]->setEnabled(currentItemIndentation != 0);
+    treeMenu->actions()[2]->setEnabled(currentItemIndentation != 0);
+    treeMenu->actions()[3]->setEnabled(currentItemIndentation != 0);
 
-void MainWindow::on_pasteEleBtn_clicked()
-{
-
-}
-
-void MainWindow::on_copyMsgBtn_clicked()
-{
-
-}
-
-void MainWindow::on_cutMsgBtn_clicked()
-{
-
-}
-
-void MainWindow::on_pasteMsgBtn_clicked()
-{
-
-}
-
-void MainWindow::on_copyScrBtn_clicked()
-{
-
-}
-
-void MainWindow::on_pasteScrBtn_clicked()
-{
-
+    if(sourceItem != NULL)
+    {
+        int sourceItemIndentation = -1;
+        sourceItemIndentation = getTreeItemIndentationLevel(sourceItem);
+        treeMenu->actions()[2]->setEnabled(sourceItemIndentation - currentItemIndentation == 1);
+        qDebug() << "current : " << currentItemIndentation << " source : " << sourceItemIndentation;
+    }
 }
 
 /*****************************************************

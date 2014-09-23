@@ -43,6 +43,7 @@ QTreeWidgetItem* LOCACC::addScreen(QStringList screenData)
 
     if(screenExistance(screenData,masterJObj["locAccData"].toArray()))
     {
+        qDebug() << "screen can not be added";
         return NULL;
     }
     newJObjScreen["id"] = screenData.at(0);
@@ -768,3 +769,80 @@ void LOCACC :: writeFile()
     locAccFile.write(doc.toJson());
     locAccFile.close();
 }
+
+QTreeWidgetItem* LOCACC :: cloneScreen(QTreeWidgetItem *itemToClone)
+{
+    QStringList stringData = getScreenTreeData(itemToClone);
+    QTreeWidgetItem *clonedScreen ;
+    int counter = 0;
+    QStringList newStringData(stringData);
+
+    do
+    {
+        clonedScreen = addScreen(newStringData);
+        counter++;
+        newStringData[0] = stringData.at(0) + "-copy (" + QString::number(counter) + ")";
+        newStringData[1] = stringData.at(1) + "-copy (" + QString::number(counter) + ")";
+    }
+    while (clonedScreen==NULL);
+
+    int elementCount = itemToClone->childCount();
+    for(int i = 0 ; i < elementCount ; i++)
+    {
+        QTreeWidgetItem *currentElement = itemToClone->child(i);
+        cloneElement(currentElement,clonedScreen);
+    }
+    return clonedScreen;
+}
+
+QTreeWidgetItem* LOCACC :: cloneElement(QTreeWidgetItem *itemToClone,QTreeWidgetItem *parent)
+{
+    QStringList stringData = getElementTreeData(itemToClone);
+    QStringList newStringData(stringData);
+    QTreeWidgetItem *clonedElement;
+    int counter = 0;
+    do
+    {
+        clonedElement = addElement(newStringData,parent);
+        counter++;
+        newStringData[0] = stringData[0] + "-copy (" + QString::number(counter) + ")";
+        newStringData[1] = stringData[1] + "-copy (" + QString::number(counter) + ")";
+    }
+    while(clonedElement == NULL);
+
+    int msgCount = itemToClone->childCount();
+    for(int i = 0 ; i < msgCount ; i++)
+    {
+        QTreeWidgetItem *currentMsg = itemToClone->child(i);
+        cloneMessage(currentMsg,clonedElement);
+    }
+    return clonedElement;
+}
+
+QTreeWidgetItem* LOCACC :: cloneMessage(QTreeWidgetItem *itemToClone, QTreeWidgetItem *parent)
+{
+    QStringList stringData = getMessageTreeData(itemToClone);
+    bool isAccTextSame =  stringData.at(1) == "true";
+    QStringList newStringData;
+    for(int  i  =  0 ; i < stringData.count() ; i++ )
+    {
+        if( i == 1)
+        {
+            continue;
+        }
+        newStringData << stringData.at(i);
+    }
+
+    QTreeWidgetItem *clonedMessage;
+    int counter = 0;
+    do
+    {
+        clonedMessage = addMessage(newStringData,isAccTextSame, parent);
+        counter++;
+        newStringData[0] = stringData[0] + "-copy (" + QString::number(counter) + ")";
+    }
+    while(clonedMessage == NULL);
+    return clonedMessage;
+}
+
+

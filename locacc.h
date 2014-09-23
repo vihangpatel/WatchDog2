@@ -82,6 +82,9 @@ public:
     void makeNewLangFolder(QString newLang);
     QStringList getAvailableLangugaes();
 
+    QTreeWidgetItem *cloneScreen(QTreeWidgetItem *itemToClone);
+    QTreeWidgetItem *cloneElement(QTreeWidgetItem *itemToClone,QTreeWidgetItem *parent);
+    QTreeWidgetItem *cloneMessage(QTreeWidgetItem *itemToClone,QTreeWidgetItem *parent);
 
  signals:
     void treeUpdated(QTreeWidgetItem *);
