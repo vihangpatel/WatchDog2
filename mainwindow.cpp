@@ -12,66 +12,66 @@ MainWindow::MainWindow(QWidget *parent) :
 }
 
 void MainWindow::loadSavedSettings(){
-        str_rootPath= appConfig->getRootPath();
-        str_basePath = appConfig->getCurrentInteractivity();
-        ui->cb_stopCSSMonitor->setChecked(appConfig->monitorCSS());
-        ui->cb_stopJSMonitor->setChecked(appConfig->monitorJS());
-        ui->cb_stopMediaMonitor->setChecked(appConfig->monitorMedia());
-        ui->cb_stopTmpltMonitir->setChecked(appConfig->monitorTemplates());
+        m_strRootPath= m_appConfig->getRootPath();
+        m_strBasePath = m_appConfig->getCurrentInteractivity();
+        ui->cb_stopCSSMonitor->setChecked(m_appConfig->monitorCSS());
+        ui->cb_stopJSMonitor->setChecked(m_appConfig->monitorJS());
+        ui->cb_stopMediaMonitor->setChecked(m_appConfig->monitorMedia());
+        ui->cb_stopTmpltMonitir->setChecked(m_appConfig->monitorTemplates());
         ui->statusBar->showMessage("Current interactivity : " + getCurrentInteractivityName());
-        ui->cb_stopConfigModification->setChecked(appConfig->monitorConfig());
+        ui->cb_stopConfigModification->setChecked(m_appConfig->monitorConfig());
         ui->label_interActiveName->setText(getCurrentInteractivityName());
 }
 
 QString MainWindow::getCurrentInteractivityName()
 {
-   QDir dir(str_basePath);
+   QDir dir(m_strBasePath);
    return dir.dirName();
 }
 
 void MainWindow::storeSetting()
 {
-    appConfig->resetFlag();
-    appConfig->setRootPath(str_rootPath);
-    appConfig->setCurrentInteractivity(str_basePath);
-    appConfig->setJSFlag(ui->cb_stopJSMonitor->isChecked());
-    appConfig->setCSSFlag(ui->cb_stopCSSMonitor->isChecked());
-    appConfig->setTemplateFlag(ui->cb_stopTmpltMonitir->isChecked());
-    appConfig->setMediaFlag(ui->cb_stopMediaMonitor->isChecked());
-    appConfig->setConfigModificationFlag(ui->cb_stopConfigModification->isChecked());
-    appConfig->writeSettings();
+    m_appConfig->resetFlag();
+    m_appConfig->setRootPath(m_strRootPath);
+    m_appConfig->setCurrentInteractivity(m_strBasePath);
+    m_appConfig->setJSFlag(ui->cb_stopJSMonitor->isChecked());
+    m_appConfig->setCSSFlag(ui->cb_stopCSSMonitor->isChecked());
+    m_appConfig->setTemplateFlag(ui->cb_stopTmpltMonitir->isChecked());
+    m_appConfig->setMediaFlag(ui->cb_stopMediaMonitor->isChecked());
+    m_appConfig->setConfigModificationFlag(ui->cb_stopConfigModification->isChecked());
+    m_appConfig->writeSettings();
 }
 
 void MainWindow::initialize(){
 
-    appConfig = new AppConfig(this);
+    m_appConfig = new AppConfig(this);
     initTrayIcon();
     loadSavedSettings();
 
-    qfs_model = new QFileSystemModel;
-    qfs_model->setRootPath(str_basePath);
-    ui->treeView->setModel(qfs_model);
-    ui->treeView->setRootIndex(qfs_model->index(str_rootPath));
+    m_qfsModel = new QFileSystemModel;
+    m_qfsModel->setRootPath(m_strBasePath);
+    ui->treeView->setModel(m_qfsModel);
+    ui->treeView->setRootIndex(m_qfsModel->index(m_strRootPath));
     ui->treeView->setIndentation(20);
     ui->treeView->setSortingEnabled(true);
     ui->locSearchText->setAutoFillBackground(true);
-    qfsw = new QFileSystemWatcher(this);
-    form = new NewInterActivityForm(this);
-    form->changeBasePath(str_rootPath);
-    setWindowTitle(str_basePath);
-    js = new JS(str_basePath);
-    tmplt = new Templates(str_basePath);
-    config = new ConfigHandler(str_basePath);
-    css = new CSS(str_basePath);
-    locAcc = new LOCACC(str_basePath);
+    m_qfswMain = new QFileSystemWatcher(this);
+    m_form = new NewInterActivityForm(this);
+    m_form->changeBasePath(m_strRootPath);
+    setWindowTitle(m_strBasePath);
+    m_js = new JS(m_strBasePath);
+    m_template = new Templates(m_strBasePath);
+    m_config = new ConfigHandler(m_strBasePath);
+    m_css = new CSS(m_strBasePath);
+    m_locAcc = new LOCACC(m_strBasePath);
 
-    ui->locTreeWidget->addTopLevelItem(locAcc->getLocAccTree());
-    ui->DEpathText->setText(str_rootPath);
+    ui->locTreeWidget->addTopLevelItem(m_locAcc->getLocAccTree());
+    ui->DEpathText->setText(m_strRootPath);
     createLOCTreeContext();
 
     connectSignals();
     manageLocAccItemsVisibility(-1);
-    changeBasePath(str_basePath);
+    changeBasePath(m_strBasePath);
 
     refreshTabStatus();
 }
@@ -82,35 +82,35 @@ void MainWindow::initialize(){
 
 void MainWindow::initTrayIcon()
 {
-    trayIcon = new QSystemTrayIcon(this);
+    m_trayIcon = new QSystemTrayIcon(this);
     QIcon icon(":/images/tray_icon.ico");
-    trayIcon->setIcon(icon);
-    trayMenu = new QMenu(this);
-    trayMenu->addAction("Show",this,SLOT(showApp()));
-    trayMenu->addAction("Hide",this,SLOT(hideApp()));
+    m_trayIcon->setIcon(icon);
+    m_qmTrayMenu = new QMenu(this);
+    m_qmTrayMenu->addAction("Show",this,SLOT(showApp()));
+    m_qmTrayMenu->addAction("Hide",this,SLOT(hideApp()));
     QMenu *minifyMenu = new QMenu("Minify",this);
     minifyMenu->setIcon(QIcon(":/images/sleeping_mat-48.png"));
     minifyMenu->addAction("Common",this,SLOT(on_miniFyCommonBtn_clicked()));
     minifyMenu->addAction("Interactive",this,SLOT(on_minifyInterActBtn_clicked()));
     minifyMenu->addAction("Preloader",this,SLOT(on_minifyPreLoadBtn_clicked()));
-    trayMenu->addMenu(minifyMenu);
-    trayMenu->addAction("Compile Handlebars",this,SLOT(compileAllHandleBars()));
-    trayMenu->addAction(QIcon(":/images/refresh-48.png"),"Refresh",this,SLOT(scanChanges()));
+    m_qmTrayMenu->addMenu(minifyMenu);
+    m_qmTrayMenu->addAction("Compile Handlebars",this,SLOT(compileAllHandleBars()));
+    m_qmTrayMenu->addAction(QIcon(":/images/refresh-48.png"),"Refresh",this,SLOT(scanChanges()));
     // TODO : Remove setEnabled from the following two lines
-    trayMenu->addAction(QIcon(":/images/lock-48.png"),"Stop monitoring",this,SLOT(stopMonitoring()))->setEnabled(false);
-    trayMenu->addAction(QIcon(":/images/unlock-48.png"),"Start monitoring",this,SLOT(startMonitoring()))->setEnabled(false);
-    trayMenu->addAction("Open Loc-acc Tab",this,SLOT(openLocAccTab()));
-    trayMenu->addAction("Open Folder Location",this,SLOT(on_openIntrFolderBtn_clicked()));
-    trayMenu->addAction("Exit",this,SLOT(close()));
-    trayIcon->setContextMenu(trayMenu);
-    trayIcon->show();
+    m_qmTrayMenu->addAction(QIcon(":/images/lock-48.png"),"Stop monitoring",this,SLOT(stopMonitoring()))->setEnabled(false);
+    m_qmTrayMenu->addAction(QIcon(":/images/unlock-48.png"),"Start monitoring",this,SLOT(startMonitoring()))->setEnabled(false);
+    m_qmTrayMenu->addAction("Open Loc-acc Tab",this,SLOT(openLocAccTab()));
+    m_qmTrayMenu->addAction("Open Folder Location",this,SLOT(on_openIntrFolderBtn_clicked()));
+    m_qmTrayMenu->addAction("Exit",this,SLOT(close()));
+    m_trayIcon->setContextMenu(m_qmTrayMenu);
+    m_trayIcon->show();
     showApp();
     //stopMonitoring();
 }
 
 void MainWindow::compileAllHandleBars()
 {
-    tmplt->compileAllHandleBars();
+    m_template->compileAllHandleBars();
 }
 
 void MainWindow::openLocAccTab()
@@ -121,7 +121,7 @@ void MainWindow::openLocAccTab()
 
 void MainWindow::showApp()
 {
-    QList<QAction *> actions = trayMenu->actions();
+    QList<QAction *> actions = m_qmTrayMenu->actions();
     actions.at(0)->setEnabled(false);
     actions.at(1)->setEnabled(true);
     this->show();
@@ -129,7 +129,7 @@ void MainWindow::showApp()
 
 void MainWindow::hideApp()
 {
-    QList<QAction *> actions = trayMenu->actions();
+    QList<QAction *> actions = m_qmTrayMenu->actions();
     actions.at(0)->setEnabled(true);
     actions.at(1)->setEnabled(false);
     this->hide();
@@ -137,7 +137,7 @@ void MainWindow::hideApp()
 
 void MainWindow::stopMonitoring()
 {
-    QList<QAction *> actions = trayMenu->actions();
+    QList<QAction *> actions = m_qmTrayMenu->actions();
     actions.at(5)->setEnabled(false);
     actions.at(6)->setEnabled(true);
     setCheckBoxStatus(true);
@@ -145,7 +145,7 @@ void MainWindow::stopMonitoring()
 
 void MainWindow::startMonitoring()
 {
-    QList<QAction *> actions = trayMenu->actions();
+    QList<QAction *> actions = m_qmTrayMenu->actions();
     actions.at(5)->setEnabled(true);
     actions.at(6)->setEnabled(false);
     setCheckBoxStatus(false);
@@ -172,17 +172,17 @@ void MainWindow::refreshTabStatus()
 // ////////////////////////////////////////////////////////////////////////////////////
 
 void MainWindow::connectSignals(){
-    connect(tmplt,SIGNAL(filesChanged(QFileInfoList)),this,SLOT(updateTemplateList(QFileInfoList)));
+    connect(m_template,SIGNAL(filesChanged(QFileInfoList)),this,SLOT(updateTemplateList(QFileInfoList)));
     connect(ui->templateList,SIGNAL(itemClicked(QListWidgetItem*)),this,SLOT(templateFileListClicked(QListWidgetItem*)));
 
-    connect(js,SIGNAL(jsfilesChanged(QFileInfoList)),this,SLOT(updateJSList(QFileInfoList)));
+    connect(m_js,SIGNAL(jsfilesChanged(QFileInfoList)),this,SLOT(updateJSList(QFileInfoList)));
     connect(ui->jsViewList,SIGNAL(itemClicked(QListWidgetItem*)),this,SLOT(jsFileListClicked(QListWidgetItem*)));
 
-    connect(css,SIGNAL(filesChanged(QFileInfoList)),this,SLOT(updateCssList(QFileInfoList)));
+    connect(m_css,SIGNAL(filesChanged(QFileInfoList)),this,SLOT(updateCssList(QFileInfoList)));
     connect(ui->cssList,SIGNAL(itemClicked(QListWidgetItem*)),this,SLOT(cssFileListClicked(QListWidgetItem*)));
 
-    connect(form,SIGNAL(newInterActivityCreated(QString)),this,SLOT(changeBasePath(QString)));
-    connect(form,SIGNAL(newJSONPrepared(QJsonObject)),config,SLOT(newInteractivityCreated(QJsonObject)));
+    connect(m_form,SIGNAL(newInterActivityCreated(QString)),this,SLOT(changeBasePath(QString)));
+    connect(m_form,SIGNAL(newJSONPrepared(QJsonObject)),m_config,SLOT(newInteractivityCreated(QJsonObject)));
 
     connect(ui->locTreeWidget,SIGNAL(customContextMenuRequested(QPoint)),this,SLOT(onCustomContextMenuRequested(QPoint)));
 }
@@ -199,35 +199,35 @@ void MainWindow::onCustomContextMenuRequested(const QPoint &pos)
 void MainWindow::showLocTreeCustomMenu(QTreeWidgetItem *item, const QPoint &globalPos)
 {
     qDebug() << "show request sent";
-    treeMenu->show();
-    treeMenu->popup(globalPos);
+    m_qmTreeMenu->show();
+    m_qmTreeMenu->popup(globalPos);
 }
 
 MainWindow::~MainWindow()
 {
     storeSetting();
 
-    delete locAcc;
-    delete appConfig;
-    delete js;
-    delete css;
-    delete tmplt;
-    delete config;
+    delete m_locAcc;
+    delete m_appConfig;
+    delete m_js;
+    delete m_css;
+    delete m_template;
+    delete m_config;
     delete ui;
 }
 
 void MainWindow::scanChanges(){
-    changeBasePath(str_basePath);
+    changeBasePath(m_strBasePath);
 }
 
 void MainWindow::registerWatcher(){
-    js->registerWatcher();
-    tmplt->registerWatcher();
+    m_js->registerWatcher();
+    m_template->registerWatcher();
 }
 
 void MainWindow::deregisterWatcher(){
-    js->deRegisterWatcher();
-    tmplt->deRegisterWatcher();
+    m_js->deRegisterWatcher();
+    m_template->deRegisterWatcher();
 }
 
 /**************************************************************
@@ -239,17 +239,17 @@ void MainWindow::deregisterWatcher(){
 void MainWindow::changeBasePath(QString strBasePath)
 {
     deregisterWatcher();
-    str_basePath = strBasePath;
-    config->changeBasePath(str_basePath);
-    tmplt->changeBasePath(str_basePath);
-    js->changeBasePath(str_basePath);
-    css->changeBasePath(str_basePath);
-    locAcc->changeBasePath(str_basePath);    
+    m_strBasePath = strBasePath;
+    m_config->changeBasePath(m_strBasePath);
+    m_template->changeBasePath(m_strBasePath);
+    m_js->changeBasePath(m_strBasePath);
+    m_css->changeBasePath(m_strBasePath);
+    m_locAcc->changeBasePath(m_strBasePath);    
     updateDirTree();
-    setWindowTitle("DE-Interactives " + str_basePath);
+    setWindowTitle("DE-Interactives " + m_strBasePath);
     on_searchLocBtn_clicked();
     ui->comboBox_Languages->clear();
-    ui->comboBox_Languages->addItems(locAcc->getAvailableLangugaes());
+    ui->comboBox_Languages->addItems(m_locAcc->getAvailableLangugaes());
     ui->languageLabel->setText(ui->comboBox_Languages->currentText());
     on_comboBox_Languages_currentIndexChanged(0);
 }
@@ -257,23 +257,23 @@ void MainWindow::changeBasePath(QString strBasePath)
 void MainWindow::on_openDialog_clicked()
 {
     deregisterWatcher();
-    QString folderName =  qfs_model->itemData(ui->treeView->currentIndex())[Qt::DisplayRole].toString();
-    str_basePath = str_rootPath + "/" + folderName;
+    QString folderName =  m_qfsModel->itemData(ui->treeView->currentIndex())[Qt::DisplayRole].toString();
+    m_strBasePath = m_strRootPath + "/" + folderName;
 
     ui->statusBar->showMessage("Current interactivity : " + folderName);
     ui->label_interActiveName->setText(folderName);
-    changeBasePath(str_basePath);
-    form->changeBasePath(str_rootPath);
+    changeBasePath(m_strBasePath);
+    m_form->changeBasePath(m_strRootPath);
 }
 
 void MainWindow::updateDirTree(){   
     return;
-    ui->treeView->setRootIndex(qfs_model->index(str_basePath));
+    ui->treeView->setRootIndex(m_qfsModel->index(m_strBasePath));
 }
 
 void MainWindow::resetAll(){
-    qfsw->removePaths(qfsw->files());
-    qfsw->removePaths(qfsw->directories());
+    m_qfswMain->removePaths(m_qfswMain->files());
+    m_qfswMain->removePaths(m_qfswMain->directories());
 }
 
 /****************************************************************
@@ -298,15 +298,15 @@ void MainWindow::updateTemplateList(QFileInfoList fileList){
         // qDebug() << fileList.at(i).fileName();
     }
     ui->templateList->setCurrentRow(0);
-    config->setTemplateJArray(syncTmpltList(jArray));
+    m_config->setTemplateJArray(syncTmpltList(jArray));
     templateFileListClicked(ui->templateList->currentItem());
-    config->writeConfigJson();
+    m_config->writeConfigJson();
 }
 
 QJsonArray MainWindow::syncTmpltList(QJsonArray newArray)
 {
     QJsonObject tempNewObj,tempOrigObj;
-    QJsonArray templateJArray = config->getTemplateJArray();
+    QJsonArray templateJArray = m_config->getTemplateJArray();
     for(int i = 0 ; i < newArray.count() ; i++)
     {
         tempNewObj =  newArray.at(i).toObject();
@@ -332,7 +332,7 @@ void MainWindow::templateFileListClicked(QListWidgetItem *item){
     {
         return;
     }
-    QJsonArray tmpltJArray = config->getTemplateJArray();
+    QJsonArray tmpltJArray = m_config->getTemplateJArray();
     QString itemText = item->text();
     for(int i = 0; i < tmpltJArray.count() ; i++){
         QJsonObject obj = tmpltJArray.at(i).toObject();
@@ -350,7 +350,7 @@ void MainWindow::on_templateNextLoadCheckBox_clicked()
     {
         return;
     }
-    QJsonArray tmpltJArray = config->getTemplateJArray();
+    QJsonArray tmpltJArray = m_config->getTemplateJArray();
     QListWidgetItem *currentItem  = ui->templateList->currentItem();
     for(int i = 0; i < tmpltJArray.count() ; i++){
 
@@ -361,8 +361,8 @@ void MainWindow::on_templateNextLoadCheckBox_clicked()
             tmpltJArray.replace(i,obj);
         }
     }
-    config->setTemplateJArray(tmpltJArray);
-    config->writeConfigJson();
+    m_config->setTemplateJArray(tmpltJArray);
+    m_config->writeConfigJson();
     // qDebug() << "ON CHECK BOX CLICKED : " << tmpltJArray;
 }
 
@@ -381,7 +381,7 @@ void MainWindow::jsFileListClicked(QListWidgetItem *item){
     {
         return;
     }
-    QJsonArray jsViewJArray = config->getJSJArray();
+    QJsonArray jsViewJArray = m_config->getJSJArray();
     QString itemText = item->text();
     bool containsBase = false;
     for(int i = 0; i < jsViewJArray.count() ; i++){
@@ -411,9 +411,9 @@ void MainWindow::updateJSList(QFileInfoList fileList){
     QJsonArray jsViewJArray;
     QString currentFileName ;
     QJsonObject obj;
-    QFileInfoList jsFolderFiles = js->getJSFolderInfoList();
-    QFileInfoList modelFolderFiles = js->getModelFileInfoList();
-    QFileInfoList viewFolderFiles = js->getViewFileInfoList();
+    QFileInfoList jsFolderFiles = m_js->getJSFolderInfoList();
+    QFileInfoList modelFolderFiles = m_js->getModelFileInfoList();
+    QFileInfoList viewFolderFiles = m_js->getViewFileInfoList();
 
     for(int i = 0 ; i < jsFolderFiles.count() ; i++ ){
         currentFileName = jsFolderFiles.at(i).fileName();
@@ -438,8 +438,8 @@ void MainWindow::updateJSList(QFileInfoList fileList){
         jsViewJArray.insert(addCnt +  i,obj);
     }    
     ui->jsViewList->setCurrentRow(0);
-    config->setJSJArray(syncJSList(jsViewJArray));
-    config->writeConfigJson();
+    m_config->setJSJArray(syncJSList(jsViewJArray));
+    m_config->writeConfigJson();
     jsFileListClicked(ui->jsViewList->currentItem());
 }
 
@@ -452,7 +452,7 @@ void MainWindow::on_jsViewNextLoadCheckBox_clicked()
     }
 
     QListWidgetItem *currentItem  = ui->jsViewList->currentItem();
-    QJsonArray jsViewJArray = config->getJSJArray();
+    QJsonArray jsViewJArray = m_config->getJSJArray();
     for(int i = 0; i < jsViewJArray.count() ; i++){
 
         QJsonObject obj = jsViewJArray.at(i).toObject();
@@ -462,8 +462,8 @@ void MainWindow::on_jsViewNextLoadCheckBox_clicked()
             jsViewJArray.replace(i,obj);
         }
     }
-    config->setJSJArray(jsViewJArray);
-    config->writeConfigJson();
+    m_config->setJSJArray(jsViewJArray);
+    m_config->writeConfigJson();
     // qDebug() << "ON CHECK BOX CLICKED : JS LIST \n" << jsViewJArray;
 }
 
@@ -472,7 +472,7 @@ QJsonArray MainWindow::syncJSList(QJsonArray newArray)
     bool isEntryFound = false;
     QList<int> removeIndexList ;
     QJsonObject tempNewObj,tempOrigObj;
-    QJsonArray jsOrigArray = config->getJSJArray();
+    QJsonArray jsOrigArray = m_config->getJSJArray();
     // SCAN ORIGINAL LIST TO REMOVE UNWANTED ENTRIES
     for(int i = 0 ; i < jsOrigArray.count() ; i++)
     {
@@ -545,7 +545,7 @@ void MainWindow::on_jsOneUpBtn_clicked()
         {
             return;
         }
-        QJsonArray jsJArray = config->getJSJArray();
+        QJsonArray jsJArray = m_config->getJSJArray();
         QJsonObject removedJObj = jsJArray.at(currentIndex).toObject();
         jsJArray.removeAt(currentIndex);
 
@@ -555,8 +555,8 @@ void MainWindow::on_jsOneUpBtn_clicked()
         ui->jsViewList->setCurrentRow(newIndex);
         jsJArray.insert(newIndex,removedJObj);
 
-        config->setJSJArray(jsJArray);
-        config->writeConfigJson();
+        m_config->setJSJArray(jsJArray);
+        m_config->writeConfigJson();
 }
 
 void MainWindow::on_jsOneDownBtn_clicked()
@@ -566,7 +566,7 @@ void MainWindow::on_jsOneDownBtn_clicked()
     {
         return;
     }
-    QJsonArray jsJArray = config->getJSJArray();
+    QJsonArray jsJArray = m_config->getJSJArray();
     QJsonObject removedJObj = jsJArray.at(currentIndex).toObject();
     jsJArray.removeAt(currentIndex);
 
@@ -576,8 +576,8 @@ void MainWindow::on_jsOneDownBtn_clicked()
     ui->jsViewList->setCurrentRow(newIndex);
     jsJArray.insert(newIndex,removedJObj);
 
-    config->setJSJArray(jsJArray);
-    config->writeConfigJson();
+    m_config->setJSJArray(jsJArray);
+    m_config->writeConfigJson();
 }
 
 
@@ -603,15 +603,15 @@ void MainWindow::updateCssList(QFileInfoList fileList){
         // qDebug() << fileList.at(i).fileName();
     }
     ui->cssList->setCurrentRow(0);
-    config->setCssJArray(syncCSSList(cssArray));
+    m_config->setCssJArray(syncCSSList(cssArray));
     cssFileListClicked(ui->cssList->currentItem());
-    config->writeConfigJson();
+    m_config->writeConfigJson();
 }
 
 QJsonArray MainWindow::syncCSSList(QJsonArray newArray)
 {
     QJsonObject tempNewObj,tempOrigObj;
-    QJsonArray cssJArray = config->getCssJArray();
+    QJsonArray cssJArray = m_config->getCssJArray();
     for(int i = 0 ; i < newArray.count() ; i++)
     {
         tempNewObj =  newArray.at(i).toObject();
@@ -633,7 +633,7 @@ void MainWindow::cssFileListClicked(QListWidgetItem *item){
     {
         return;
     }
-    QJsonArray cssJArray = config->getCssJArray();
+    QJsonArray cssJArray = m_config->getCssJArray();
     QString itemText = item->text();
     for(int i = 0; i < cssJArray.count() ; i++){
         QJsonObject obj = cssJArray.at(i).toObject();
@@ -651,7 +651,7 @@ void MainWindow::on_cssNextLoadCheckBox_clicked()
     {
         return;
     }
-    QJsonArray cssJArray = config->getCssJArray();
+    QJsonArray cssJArray = m_config->getCssJArray();
     QListWidgetItem *currentItem  = ui->cssList->currentItem();
     for(int i = 0; i < cssJArray.count() ; i++){
 
@@ -662,8 +662,8 @@ void MainWindow::on_cssNextLoadCheckBox_clicked()
             cssJArray.replace(i,obj);
         }
     }
-    config->setCssJArray(cssJArray);
-    config->writeConfigJson();
+    m_config->setCssJArray(cssJArray);
+    m_config->writeConfigJson();
     // qDebug() << "ON CHECK BOX CLICKED CSS: " << cssJArray;
 }
 
@@ -688,7 +688,7 @@ void MainWindow::on_addScreenBtn_clicked()
     QString screenName = ui->screenNameText_2->text();
     QStringList screenData;
     screenData << screenId << screenName;
-    QTreeWidgetItem *addedItem = locAcc->addScreen(screenData);
+    QTreeWidgetItem *addedItem = m_locAcc->addScreen(screenData);
     if(addedItem == NULL)
     {
         QMessageBox::critical(this,"Same screen Id exists","Same screen Id exists .Please use another Id.",QMessageBox::Cancel);
@@ -710,7 +710,7 @@ void MainWindow::on_addEleBtn_clicked()
     QString eleTabIndex = ui->eleTabIndexText->text();
     QStringList eleData;
     eleData << eleName << eleAccId << eleType << eleRole << eleTabIndex;
-    QTreeWidgetItem* addedItem = locAcc->addElement(eleData,ui->locTreeWidget->currentItem());
+    QTreeWidgetItem* addedItem = m_locAcc->addElement(eleData,ui->locTreeWidget->currentItem());
     if(addedItem == NULL)
     {
         QMessageBox::critical(this,"Same element Id exists in screen.","Same element Id exists .Please use another Id.",QMessageBox::Cancel);
@@ -730,7 +730,7 @@ void MainWindow::on_addMsgBtn_clicked()
 {
     QStringList msgData;
     msgData << ui->msgIdText->text() << ui->locMsgText->text() << ui->accMsgText->text();
-    QTreeWidgetItem* addedItem = locAcc->addMessage(msgData,ui->cb_isAccTextSame->isChecked(),ui->locTreeWidget->currentItem());
+    QTreeWidgetItem* addedItem = m_locAcc->addMessage(msgData,ui->cb_isAccTextSame->isChecked(),ui->locTreeWidget->currentItem());
     if(addedItem == NULL)
     {
         QMessageBox::critical(this,"Same message Id exists in element.","Same message Id exists .Please use another Id.",QMessageBox::Cancel);
@@ -755,7 +755,7 @@ void MainWindow::on_updtScreenBtn_clicked()
     QString screenName = ui->updtScreenNameText->text();
     QStringList screenData;
     screenData << screenId << screenName;
-    if(!locAcc->updateScreen(screenData,ui->locTreeWidget->currentItem()))
+    if(!m_locAcc->updateScreen(screenData,ui->locTreeWidget->currentItem()))
     {
         QMessageBox::critical(this,"Same screen Id exists","Same screen Id exists .Please use another Id.",QMessageBox::Cancel);
         return;
@@ -767,7 +767,7 @@ void MainWindow::on_updateMsgBtn_clicked()
 {
     QStringList msgData;
     msgData << ui->updtMsgidText->text() << ui->updtLocMsgText->text() << ui->updtAccMsgText->text();
-    if(!locAcc->updateMessage(msgData,ui->cb_isAccTextSameUpdt->isChecked(),ui->locTreeWidget->currentItem()))
+    if(!m_locAcc->updateMessage(msgData,ui->cb_isAccTextSameUpdt->isChecked(),ui->locTreeWidget->currentItem()))
     {
         QMessageBox::critical(this,"Same message Id exists in element.","Same message Id exists .Please use another Id.",QMessageBox::Cancel);
         return;
@@ -784,7 +784,7 @@ void MainWindow::on_updtEleBtn_clicked()
     QString eleTabIndex = ui->updTabIndexText->text();
     QStringList eleData;
     eleData << eleName << eleAccId << eleType << eleRole << eleTabIndex;
-    if(!locAcc->updateElement(eleData,ui->locTreeWidget->currentItem()))
+    if(!m_locAcc->updateElement(eleData,ui->locTreeWidget->currentItem()))
     {
         QMessageBox::critical(this,"Same element Id exists in screen.","Same element Id exists .Please use another Id.",QMessageBox::Cancel);
         return;
@@ -822,15 +822,15 @@ void MainWindow::updateLocDetails(int indentationLevel)
     QTreeWidgetItem *currentItem = ui->locTreeWidget->currentItem();
     switch (indentationLevel) {
     case 1:
-        dataList =locAcc->getScreenTreeData(currentItem);
+        dataList =m_locAcc->getScreenTreeData(currentItem);
         fillScreenDetail(dataList);
         break;
     case 2:
-        dataList =locAcc->getElementTreeData(currentItem);
+        dataList =m_locAcc->getElementTreeData(currentItem);
         fillElementDetail(dataList);
         break;
     case 3:
-        dataList =locAcc->getMessageTreeData(currentItem);
+        dataList =m_locAcc->getMessageTreeData(currentItem);
         fillMessageDetail(dataList);
         ui->locUtilityTabWidget->setCurrentIndex(1);  // Directly set tab to "Update" part for message.
         break;
@@ -920,10 +920,10 @@ void MainWindow::on_updtLocMsgText_textEdited(const QString &arg1)
  **********************************************/
 void MainWindow::on_searchLocBtn_clicked()
 {
-    QList<QTreeWidgetItem *> searchedList = locAcc->getSearchResult(ui->locSearchText->text());
+    QList<QTreeWidgetItem *> searchedList = m_locAcc->getSearchResult(ui->locSearchText->text());
     ui->totalIndexText->setText(QString::number(searchedList.length()));
-    QTreeWidgetItem *currentResult = locAcc->getCurrentSearchResult();
-    ui->currentIndexText->setText(QString::number(locAcc->getCurrentSearchIndex() + 1));
+    QTreeWidgetItem *currentResult = m_locAcc->getCurrentSearchResult();
+    ui->currentIndexText->setText(QString::number(m_locAcc->getCurrentSearchIndex() + 1));
     if(currentResult != NULL)
     {
         ui->locTreeWidget->setCurrentItem(currentResult);
@@ -941,23 +941,23 @@ void MainWindow::on_searchLocBtn_clicked()
 
 void MainWindow::on_goPrevSearchBtn_clicked()
 {
-    QTreeWidgetItem *itemToHighLight = locAcc->getPrevSeachResult();
+    QTreeWidgetItem *itemToHighLight = m_locAcc->getPrevSeachResult();
     if(itemToHighLight == NULL)
     {
         return;
     }
-    ui->currentIndexText->setText(QString::number(locAcc->getCurrentSearchIndex() + 1));
+    ui->currentIndexText->setText(QString::number(m_locAcc->getCurrentSearchIndex() + 1));
     ui->locTreeWidget->setCurrentItem(itemToHighLight);
 }
 
 void MainWindow::on_goNextSearchBtn_clicked()
 {
-    QTreeWidgetItem *itemToHighLight = locAcc->getNextSearchResult();
+    QTreeWidgetItem *itemToHighLight = m_locAcc->getNextSearchResult();
     if(itemToHighLight == NULL)
     {
         return;
     }
-    ui->currentIndexText->setText(QString::number(locAcc->getCurrentSearchIndex() + 1));
+    ui->currentIndexText->setText(QString::number(m_locAcc->getCurrentSearchIndex() + 1));
     ui->locTreeWidget->setCurrentItem(itemToHighLight);
 }
 
@@ -972,7 +972,7 @@ void MainWindow::deleteScreen()
                                       QMessageBox::Ok, QMessageBox::Cancel);
     if(result == QMessageBox::Ok)
     {
-        locAcc->deleteScreen(ui->locTreeWidget->currentItem());
+        m_locAcc->deleteScreen(ui->locTreeWidget->currentItem());
     }
 }
 
@@ -982,7 +982,7 @@ void MainWindow::deleteMessage()
                                       QMessageBox::Ok, QMessageBox::Cancel);
     if(result == QMessageBox::Ok)
     {
-        locAcc->deleteMessage(ui->locTreeWidget->currentItem());
+        m_locAcc->deleteMessage(ui->locTreeWidget->currentItem());
     }
 
 }
@@ -993,7 +993,7 @@ void MainWindow::deleteElement()
                                       QMessageBox::Ok, QMessageBox::Cancel);
     if(result == QMessageBox::Ok)
     {
-        locAcc->deleteElement(ui->locTreeWidget->currentItem());
+        m_locAcc->deleteElement(ui->locTreeWidget->currentItem());
     }
 }
 
@@ -1006,14 +1006,14 @@ void MainWindow::on_comboBox_Languages_currentIndexChanged(int index)
     if(index < 0){
         return;
     }
-    locAcc->changeLanguage(index);
+    m_locAcc->changeLanguage(index);
     ui->languageLabel->setText(ui->comboBox_Languages->currentText());
 }
 
 void MainWindow::on_addNewLangBtn_clicked()
 {
     QString newLangName = ui->newLangText->text();
-    if(!locAcc->addNewLanguage(newLangName))
+    if(!m_locAcc->addNewLanguage(newLangName))
     {
         QMessageBox::critical(this,"Same language exists","Same language exists. Please enter another language.",QMessageBox::Cancel);
         return;
@@ -1026,8 +1026,8 @@ void MainWindow::on_addNewLangBtn_clicked()
  ****************************************************************/
 void MainWindow::on_createNewInter_clicked()
 {
-    form->clearAllFormData();
-    form->show();
+    m_form->clearAllFormData();
+    m_form->show();
 }
 
 /****************************************************************
@@ -1036,12 +1036,12 @@ void MainWindow::on_createNewInter_clicked()
 
 void MainWindow::on_browsePathBtn_clicked()
 {
-    str_rootPath =  QFileDialog::getExistingDirectory(this, tr("Set DE-Interactives Path"),
+    m_strRootPath =  QFileDialog::getExistingDirectory(this, tr("Set DE-Interactives Path"),
                                                       "D:\\",QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
-    qfs_model->setRootPath(str_basePath);
-    ui->treeView->setModel(qfs_model);
-    ui->treeView->setRootIndex(qfs_model->index(str_rootPath));
-    ui->DEpathText->setText(str_rootPath);
+    m_qfsModel->setRootPath(m_strBasePath);
+    ui->treeView->setModel(m_qfsModel);
+    ui->treeView->setRootIndex(m_qfsModel->index(m_strRootPath));
+    ui->DEpathText->setText(m_strRootPath);
 }
 
 /****************************************************************
@@ -1051,12 +1051,12 @@ void MainWindow::on_browsePathBtn_clicked()
 
 void MainWindow::createLOCTreeContext()
 {
-    treeMenu = new QMenu(this);
+    m_qmTreeMenu = new QMenu(this);
     QSignalMapper *mapper = new QSignalMapper(this);
-    QAction *cutAction = treeMenu->addAction("Cut",mapper,SLOT(map()));
-    QAction *copyAction = treeMenu->addAction("Copy",mapper,SLOT(map()));
-    QAction *pasteAction = treeMenu->addAction("Paste",mapper,SLOT(map()));
-    QAction *deleteAction = treeMenu->addAction("Delete",mapper,SLOT(map()));
+    QAction *cutAction = m_qmTreeMenu->addAction("Cut",mapper,SLOT(map()));
+    QAction *copyAction = m_qmTreeMenu->addAction("Copy",mapper,SLOT(map()));
+    QAction *pasteAction = m_qmTreeMenu->addAction("Paste",mapper,SLOT(map()));
+    QAction *deleteAction = m_qmTreeMenu->addAction("Delete",mapper,SLOT(map()));
 
     mapper->setMapping(cutAction,0);
     mapper->setMapping(copyAction,1);
@@ -1075,39 +1075,39 @@ void MainWindow::performLocOpertions(int operation)
     qDebug() << "perform loc opertion has been called";
     switch (operation) {
         case 0:
-            sourceItem = ui->locTreeWidget->currentItem();
+            m_qtwiSource = ui->locTreeWidget->currentItem();
             m_eOperation = O_CUT;
             qDebug() << "CUT";
             break;
         case 1:
-            sourceItem = ui->locTreeWidget->currentItem();
+            m_qtwiSource = ui->locTreeWidget->currentItem();
             qDebug() << "COPY";
             m_eOperation = O_COPY;
             break;
         case 2:
-                if(sourceItem)
+                if(m_qtwiSource)
                 {
                     switch(indentationLevel)
                     {
                         case 0 :
-                            ui->locTreeWidget->setCurrentItem( locAcc->cloneScreen(sourceItem));
+                            ui->locTreeWidget->setCurrentItem( m_locAcc->cloneScreen(m_qtwiSource));
                             if(m_eOperation == O_CUT)
                             {
-                                locAcc->deleteScreen(sourceItem);
+                                m_locAcc->deleteScreen(m_qtwiSource);
                             }
                             break;
                         case 1 :
-                            ui->locTreeWidget->setCurrentItem( locAcc->cloneElement(sourceItem,currentItem));
+                            ui->locTreeWidget->setCurrentItem( m_locAcc->cloneElement(m_qtwiSource,currentItem));
                             if(m_eOperation == O_CUT)
                             {
-                                locAcc->deleteElement(sourceItem);
+                                m_locAcc->deleteElement(m_qtwiSource);
                             }
                             break;
                         case 2 :
-                            ui->locTreeWidget->setCurrentItem( locAcc->cloneMessage(sourceItem,currentItem));
+                            ui->locTreeWidget->setCurrentItem( m_locAcc->cloneMessage(m_qtwiSource,currentItem));
                             if(m_eOperation == O_CUT)
                             {
-                                locAcc->deleteMessage(sourceItem);
+                                m_locAcc->deleteMessage(m_qtwiSource);
                             }
                             break;
                     }
@@ -1127,7 +1127,7 @@ void MainWindow::performLocOpertions(int operation)
                                 deleteMessage();
                                 break;
                         }
-                    treeMenu->actions()[2]->setEnabled(false);
+                    m_qmTreeMenu->actions()[2]->setEnabled(false);
                     qDebug() << "DELETE";
                     break;
     }
@@ -1142,16 +1142,16 @@ void MainWindow::contextMenuVisibility()
     }
     int currentItemIndentation  = getTreeItemIndentationLevel(currentItem);
 
-    treeMenu->actions()[0]->setEnabled(currentItemIndentation != 0);
-    treeMenu->actions()[1]->setEnabled(currentItemIndentation != 0);
-    treeMenu->actions()[2]->setEnabled(currentItemIndentation != 0);
-    treeMenu->actions()[3]->setEnabled(currentItemIndentation != 0);
+    m_qmTreeMenu->actions()[0]->setEnabled(currentItemIndentation != 0);
+    m_qmTreeMenu->actions()[1]->setEnabled(currentItemIndentation != 0);
+    m_qmTreeMenu->actions()[2]->setEnabled(currentItemIndentation != 0);
+    m_qmTreeMenu->actions()[3]->setEnabled(currentItemIndentation != 0);
 
-    if(sourceItem != NULL)
+    if(m_qtwiSource != NULL)
     {
         int sourceItemIndentation = -1;
-        sourceItemIndentation = getTreeItemIndentationLevel(sourceItem);
-        treeMenu->actions()[2]->setEnabled(sourceItemIndentation - currentItemIndentation == 1);
+        sourceItemIndentation = getTreeItemIndentationLevel(m_qtwiSource);
+        m_qmTreeMenu->actions()[2]->setEnabled(sourceItemIndentation - currentItemIndentation == 1);
         qDebug() << "current : " << currentItemIndentation << " source : " << sourceItemIndentation;
     }
 }
@@ -1165,7 +1165,7 @@ void MainWindow::on_cb_stopJSMonitor_clicked()
     bool flagStatus = !ui->cb_stopJSMonitor->isChecked();
     if(flagStatus)
     {
-        js->scanChanges();
+        m_js->scanChanges();
     }
     ui->tabWidget->setTabEnabled(1,flagStatus);
 }
@@ -1175,7 +1175,7 @@ void MainWindow::on_cb_stopTmpltMonitir_clicked()
     bool flagStatus = !ui->cb_stopTmpltMonitir->isChecked();
     if(flagStatus)
     {
-       tmplt->scanChanges();
+       m_template->scanChanges();
     }
     ui->tabWidget->setTabEnabled(2,flagStatus);
 }
@@ -1185,7 +1185,7 @@ void MainWindow::on_cb_stopCSSMonitor_clicked()
     bool flagStatus = !ui->cb_stopCSSMonitor->isChecked();
     if(flagStatus)
     {
-       css->scanChanges();
+       m_css->scanChanges();
     }
     ui->tabWidget->setTabEnabled(3,flagStatus);
 }
@@ -1206,12 +1206,12 @@ void MainWindow::on_cb_stopMediaMonitor_clicked()
 
 QString MainWindow::getCommonFolderPath()
 {
-    return str_rootPath + "/common";
+    return m_strRootPath + "/common";
 }
 
 QString MainWindow::getToolsPath()
 {
-    return str_rootPath + "/common/tool";
+    return m_strRootPath + "/common/tool";
 }
 
 QString MainWindow::getMinificationFolderPath()
@@ -1261,7 +1261,7 @@ void MainWindow::on_deleteBranchesBtn_clicked()
 
 void MainWindow::on_openIntrFolderBtn_clicked()
 {
-    QDesktopServices::openUrl(str_basePath);
+    QDesktopServices::openUrl(m_strBasePath);
 }
 
 /*******************************************************
@@ -1273,7 +1273,7 @@ void MainWindow::on_screenUpBtn_clicked()
     QTreeWidgetItem* item = ui->locTreeWidget->currentItem();
     int  row  = ui->locTreeWidget->currentIndex().row();
 
-    locAcc->changeOrder(row,row-1,item);
+    m_locAcc->changeOrder(row,row-1,item);
     ui->locTreeWidget->setCurrentItem(item);
     return;
 
@@ -1284,7 +1284,7 @@ void MainWindow::on_screenDownBtn_clicked()
     QTreeWidgetItem* item = ui->locTreeWidget->currentItem();
     int  row  = ui->locTreeWidget->currentIndex().row();
 
-    if(locAcc->changeOrder(row,row+1,item)){
+    if(m_locAcc->changeOrder(row,row+1,item)){
 
         qDebug() << "success";
     }
@@ -1294,10 +1294,10 @@ void MainWindow::on_screenDownBtn_clicked()
 
 void MainWindow::on_cb_stopConfigModification_clicked()
 {
-    config->setConfigUpdateFlag(ui->cb_stopConfigModification->isChecked());
+    m_config->setConfigUpdateFlag(ui->cb_stopConfigModification->isChecked());
 }
 
 void MainWindow::on_saveLocAccBtn_clicked()
 {
-    locAcc->writeFile();
+    m_locAcc->writeFile();
 }

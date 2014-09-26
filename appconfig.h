@@ -20,10 +20,10 @@ public:
     const int MEDIA_TRUE = 8;
     const int CONFIG_STOP = 16;
     QString str_rootPath;
-    QString str_curIntrctvPath;
-    QFile fileAppConfig;
-    QJsonObject masterJObj;
-    int flagStatus = 0;
+    QString m_strCurIntrctvPath;
+    QFile m_fileAppConfig;
+    QJsonObject m_jsonMasterObj;
+    int m_bflagStatus = 0;
 
     void readSettings();
     void resetFlag();
@@ -34,7 +34,7 @@ public:
     QString getCurrentInteractivity();
     QString getConfigFileName();
 
-    void setFlags(int flagStatus);
+    void setFlags(int m_bflagStatus);
     bool monitorJS();
     bool monitorCSS();
     bool monitorTemplates();

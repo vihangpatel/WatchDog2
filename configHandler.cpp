@@ -21,103 +21,103 @@ ConfigHandler::ConfigHandler(QString strPath)
 
 void ConfigHandler::changeBasePath(QString strPath)
 {
-    str_basePath = strPath;
+    m_strBasePath = strPath;
     readConfigJson();
 }
 
 QString ConfigHandler::getConfigJSONFilePath()
 {
-    return str_basePath + "/" +  C_DATA_FOLDER + "/" + C_CONFIG_FILE_NAME;
+    return m_strBasePath + "/" +  C_DATA_FOLDER + "/" + C_CONFIG_FILE_NAME;
 }
 
 QJsonObject ConfigHandler::getConfigModule()
 {
-    return masterJObj["config"].toObject();
+    return m_jsonMasterObj["config"].toObject();
 }
 
 QJsonArray ConfigHandler::getCssJArray()
 {
-    return masterJObj["resources"].toObject().value("css").toArray();
+    return m_jsonMasterObj["resources"].toObject().value("css").toArray();
 }
 
 QJsonArray ConfigHandler::getJSJArray()
 {
-    return masterJObj["resources"].toObject().value("js").toArray();
+    return m_jsonMasterObj["resources"].toObject().value("js").toArray();
 }
 
 QJsonArray ConfigHandler::getTemplateJArray()
 {
-    return masterJObj["resources"].toObject().value("templates").toArray();
+    return m_jsonMasterObj["resources"].toObject().value("templates").toArray();
 }
 
 void ConfigHandler::setTemplateJArray(QJsonArray array)
 {
-    QJsonObject obj = masterJObj.find("resources").value().toObject();
+    QJsonObject obj = m_jsonMasterObj.find("resources").value().toObject();
     obj["templates"] = array;
-    masterJObj["resources"] = obj;
+    m_jsonMasterObj["resources"] = obj;
 }
 
 void ConfigHandler::setConfigModule(QJsonObject jObject)
 {
-    masterJObj["config"] = jObject;
+    m_jsonMasterObj["config"] = jObject;
 }
 
 void ConfigHandler::setCssJArray(QJsonArray array)
 {
-    QJsonObject obj = masterJObj.find("resources").value().toObject();
+    QJsonObject obj = m_jsonMasterObj.find("resources").value().toObject();
     obj["css"] = array;
-    masterJObj["resources"] = obj;
+    m_jsonMasterObj["resources"] = obj;
 }
 
 void ConfigHandler::setJSJArray(QJsonArray array)
 {
-    QJsonObject obj = masterJObj.find("resources").value().toObject();
+    QJsonObject obj = m_jsonMasterObj.find("resources").value().toObject();
     obj["js"] = array;
-    masterJObj["resources"] = obj;
+    m_jsonMasterObj["resources"] = obj;
 }
 
 void ConfigHandler::newInteractivityCreated(QJsonObject newObject)
 {
-    masterJObj = newObject;
+    m_jsonMasterObj = newObject;
     writeConfigJson();
 }
 
 void ConfigHandler::setConfigUpdateFlag(bool stopUpdate)
 {
-    b_stopUpdating = stopUpdate;
+    m_bStopUpdating = stopUpdate;
 }
 
 void ConfigHandler::readConfigJson()
 {
-    configJsonFIle.setFileName(getConfigJSONFilePath());
-    configJsonFIle.open(QIODevice::ReadOnly | QIODevice::Text);
-    if(!configJsonFIle.exists())
+    m_fileConfigJson.setFileName(getConfigJSONFilePath());
+    m_fileConfigJson.open(QIODevice::ReadOnly | QIODevice::Text);
+    if(!m_fileConfigJson.exists())
     {
         // qDebug() << " CONFIG READING FAILED :" << getConfigJSONFilePath();
        // QMessageBox::critical(this,"Config File Not Found","Config File doesn't exist",QMessageBox::Cancel);
     }
-    QByteArray rawData = configJsonFIle.readAll();
+    QByteArray rawData = m_fileConfigJson.readAll();
     QJsonDocument doc(QJsonDocument::fromJson(rawData));
-    masterJObj = doc.object();
+    m_jsonMasterObj = doc.object();
     // qDebug() << "READ : " << masterJObj;
-    configJsonFIle.close();
+    m_fileConfigJson.close();
 }
 
 void ConfigHandler::writeConfigJson()
 {
-    if(b_stopUpdating)
+    if(m_bStopUpdating)
     {
         return;
     }
-    configJsonFIle.setFileName(getConfigJSONFilePath());
-    configJsonFIle.remove();
-    configJsonFIle.open(QIODevice::ReadWrite | QIODevice::Text);
-    if(!configJsonFIle.exists())
+    m_fileConfigJson.setFileName(getConfigJSONFilePath());
+    m_fileConfigJson.remove();
+    m_fileConfigJson.open(QIODevice::ReadWrite | QIODevice::Text);
+    if(!m_fileConfigJson.exists())
     {
         // qDebug() << " CONFIG FAILED :" << getConfigJSONFilePath();
     }
     // qDebug() << "WRITE : \n" << masterJObj;
-    QJsonDocument doc(masterJObj);
-    configJsonFIle.write(doc.toJson());
-    configJsonFIle.close();
+    QJsonDocument doc(m_jsonMasterObj);
+    m_fileConfigJson.write(doc.toJson());
+    m_fileConfigJson.close();
 }

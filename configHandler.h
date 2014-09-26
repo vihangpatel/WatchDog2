@@ -15,11 +15,11 @@
 class ConfigHandler  : public  QObject{
     Q_OBJECT
 public:
-    bool isConfigLoaded;
-    QFile configJsonFIle;
-    QJsonObject masterJObj;
-    QString str_basePath;
-    bool b_stopUpdating;
+    bool m_bConfigLoaded;
+    QFile m_fileConfigJson;
+    QJsonObject m_jsonMasterObj;
+    QString m_strBasePath;
+    bool m_bStopUpdating;
 
     explicit ConfigHandler(QString);
     void changeBasePath(QString);

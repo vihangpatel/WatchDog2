@@ -6,68 +6,68 @@ const QString APP_CONFIG_FILE = "appconfig.json";
 AppConfig::AppConfig(QObject *parent) :
     QObject(parent)
 {
-    fileAppConfig.setFileName(getConfigFileName());
-    if(!fileAppConfig.exists())
+    m_fileAppConfig.setFileName(getConfigFileName());
+    if(!m_fileAppConfig.exists())
     {
         qDebug() << "New Config has been generated";
-        fileAppConfig.open(QIODevice::ReadWrite | QIODevice::Text);
-        fileAppConfig.close();
+        m_fileAppConfig.open(QIODevice::ReadWrite | QIODevice::Text);
+        m_fileAppConfig.close();
     }
     readSettings();
 }
 
 void AppConfig::setRootPath(QString strRootPath)
 {
-    masterJObj["root"] = strRootPath;
+    m_jsonMasterObj["root"] = strRootPath;
     writeSettings();
 }
 
 QString AppConfig::getRootPath()
 {
-    return masterJObj.value("root").toString();
+    return m_jsonMasterObj.value("root").toString();
 }
 
 void AppConfig::setCurrentInteractivity(QString intrctiveName)
 {
-    masterJObj["currentFolder"] = intrctiveName;
+    m_jsonMasterObj["currentFolder"] = intrctiveName;
     writeSettings();
 }
 
 void AppConfig::setFlags(int flags)
 {
-    flagStatus = flags;
+    m_bflagStatus = flags;
 }
 
 bool AppConfig::monitorJS()
 {
-       return (flagStatus & JS_TRUE) == JS_TRUE;
+       return (m_bflagStatus & JS_TRUE) == JS_TRUE;
 }
 
 bool AppConfig::monitorCSS()
 {
-       return (flagStatus & CSS_TRUE) == CSS_TRUE;
+       return (m_bflagStatus & CSS_TRUE) == CSS_TRUE;
 }
 
 bool AppConfig::monitorMedia()
 {
-    return (flagStatus & MEDIA_TRUE) == MEDIA_TRUE;
+    return (m_bflagStatus & MEDIA_TRUE) == MEDIA_TRUE;
 }
 
 bool AppConfig::monitorTemplates()
 {     
-     return (flagStatus & TEMPLATE_TRUE) == TEMPLATE_TRUE;
+     return (m_bflagStatus & TEMPLATE_TRUE) == TEMPLATE_TRUE;
 }
 
 bool AppConfig::monitorConfig()
 {
-    return (flagStatus & CONFIG_STOP) == CONFIG_STOP;
+    return (m_bflagStatus & CONFIG_STOP) == CONFIG_STOP;
 }
 
 void AppConfig::setJSFlag(bool isTrue)
 {
     if(isTrue)
     {
-        flagStatus = flagStatus | JS_TRUE;
+        m_bflagStatus = m_bflagStatus | JS_TRUE;
     }  
 }
 
@@ -75,7 +75,7 @@ void AppConfig::setCSSFlag(bool isTrue)
 {
     if(isTrue)
     {
-        flagStatus = flagStatus | CSS_TRUE;
+        m_bflagStatus = m_bflagStatus | CSS_TRUE;
     }   
 }
 
@@ -83,7 +83,7 @@ void AppConfig::setTemplateFlag(bool isTrue)
 {
     if(isTrue)
     {
-        flagStatus = flagStatus | TEMPLATE_TRUE;
+        m_bflagStatus = m_bflagStatus | TEMPLATE_TRUE;
     }  
 }
 
@@ -91,7 +91,7 @@ void AppConfig::setMediaFlag(bool isTrue)
 {
     if(isTrue)
     {
-        flagStatus = flagStatus | MEDIA_TRUE;
+        m_bflagStatus = m_bflagStatus | MEDIA_TRUE;
     }    
 }
 
@@ -99,13 +99,13 @@ void AppConfig::setConfigModificationFlag(bool isStop)
 {
     if(isStop)
     {
-        flagStatus = flagStatus | CONFIG_STOP;
+        m_bflagStatus = m_bflagStatus | CONFIG_STOP;
     }
 }
 
 QString AppConfig::getCurrentInteractivity()
 {
-    return masterJObj.value("currentFolder").toString();
+    return m_jsonMasterObj.value("currentFolder").toString();
 }
 
 
@@ -117,37 +117,37 @@ QString AppConfig::getConfigFileName()
 
 void AppConfig::resetFlag()
 {
-    flagStatus = 0;
+    m_bflagStatus = 0;
 }
 
 void AppConfig::readSettings()
 {
-    fileAppConfig.setFileName(getConfigFileName());
-    fileAppConfig.open(QIODevice::ReadOnly | QIODevice::Text);
-    if(!fileAppConfig.exists())
+    m_fileAppConfig.setFileName(getConfigFileName());
+    m_fileAppConfig.open(QIODevice::ReadOnly | QIODevice::Text);
+    if(!m_fileAppConfig.exists())
     {
         return;
     }
-    QByteArray rawData = fileAppConfig.readAll();
+    QByteArray rawData = m_fileAppConfig.readAll();
     QJsonDocument doc(QJsonDocument::fromJson(rawData));
-    masterJObj = doc.object();
-    flagStatus = masterJObj["flags"].toDouble();
-     qDebug() << "READ : " << flagStatus;
-    fileAppConfig.close();
+    m_jsonMasterObj = doc.object();
+    m_bflagStatus = m_jsonMasterObj["flags"].toDouble();
+     qDebug() << "READ : " << m_bflagStatus;
+    m_fileAppConfig.close();
 }
 
 void AppConfig::writeSettings()
 {
-    fileAppConfig.setFileName(getConfigFileName());
-    fileAppConfig.remove();
-    fileAppConfig.open(QIODevice::ReadWrite | QIODevice::Text);
-    if(!fileAppConfig.exists())
+    m_fileAppConfig.setFileName(getConfigFileName());
+    m_fileAppConfig.remove();
+    m_fileAppConfig.open(QIODevice::ReadWrite | QIODevice::Text);
+    if(!m_fileAppConfig.exists())
     {
         // qDebug() << " LOC ACC DO NOT EXIST . NEW WILL BE CREATED :" << getLocAccFilePath();
     }
-    masterJObj.insert("flags",flagStatus);
-    qDebug() << "WRITE : \n" << masterJObj;
-    QJsonDocument doc(masterJObj);
-    fileAppConfig.write(doc.toJson());
-    fileAppConfig.close();
+    m_jsonMasterObj.insert("flags",m_bflagStatus);
+    qDebug() << "WRITE : \n" << m_jsonMasterObj;
+    QJsonDocument doc(m_jsonMasterObj);
+    m_fileAppConfig.write(doc.toJson());
+    m_fileAppConfig.close();
 }

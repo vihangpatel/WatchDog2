@@ -13,10 +13,10 @@ class CSS : public QObject
     Q_OBJECT
 public:
     explicit CSS(QString basePath);
-    QString str_basePath;
-    QFileSystemWatcher *qfsw_css;
-    int fileCount ;
-    QDir *cssDir;
+    QString m_strBasePath;
+    QFileSystemWatcher *m_qfswCss;
+    int m_iFileCount ;
+    QDir *m_dirCss;
 
     void scanChanges();
     bool registerWatcher();

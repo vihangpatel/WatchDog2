@@ -17,11 +17,11 @@ class NewInterActivityForm : public QDialog
     Q_OBJECT
     
 public:
-    QString str_basePath;
-    QString str_newFolderName;
-    QJsonObject mainJson;
-    QJsonArray jArray;
-    QDir baseDir;
+    QString m_strBasePath;
+    QString m_strNewFolderName;
+    QJsonObject m_jsonMainObject;
+    QJsonArray m_jsonArray;
+    QDir m_dirBase;
 
 
     explicit NewInterActivityForm(QWidget *parent = 0);

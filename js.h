@@ -13,15 +13,15 @@ class JS  : public QObject{
 public :
 
     JS(QString);
-    QString str_basePath;
-    QFileSystemWatcher *qfsw_jsView;
-    QFileSystemWatcher *qfsw_jsModel;
-    int viewfileCount ;
-    int modelfileCount ;
-    QDir *jsDir;
-    QDir *viewDir;
-    QDir *modelDir;
-    QProcess *process;
+    QString m_strBasePath;
+    QFileSystemWatcher *m_qfswJsView;
+    QFileSystemWatcher *m_qfswJsModel;
+    int m_iViewFileCount ;
+    int m_iModelFileCount ;
+    QDir *m_dirJs;
+    QDir *m_dirView;
+    QDir *m_dirModel;
+    QProcess *m_process;
 
     void scanChanges();
     bool registerWatcher();

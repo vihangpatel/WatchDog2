@@ -29,24 +29,24 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    QFileDialog *fd_select;
-    QString str_basePath;
-    QString str_rootPath;
-    QFileSystemModel *qfs_model;
-    QFileSystemWatcher *qfsw;
-    JS *js;
-    CSS *css;
-    Templates *tmplt;
-    NewInterActivityForm *form;
-    ConfigHandler *config;
-    QSystemTrayIcon *trayIcon;
-    LOCACC *locAcc;
-    QMenu *trayMenu;
-    QMenu *treeMenu;
-    AppConfig *appConfig;
+    QFileDialog *m_fileDialogSelect;
+    QString m_strBasePath;
+    QString m_strRootPath;
+    QFileSystemModel *m_qfsModel;
+    QFileSystemWatcher *m_qfswMain;
+    JS *m_js;
+    CSS *m_css;
+    Templates *m_template;
+    NewInterActivityForm *m_form;
+    ConfigHandler *m_config;
+    QSystemTrayIcon *m_trayIcon;
+    LOCACC *m_locAcc;
+    QMenu *m_qmTrayMenu;
+    QMenu *m_qmTreeMenu;
+    AppConfig *m_appConfig;
     enum OperationType{ O_CUT , O_COPY  ,O_PASTE , O_DELETE} m_eOperation;
-    QTreeWidgetItem *sourceItem;
-    QTreeWidgetItem *destinationItem;
+    QTreeWidgetItem *m_qtwiSource;
+    QTreeWidgetItem *m_qtwiDestination;
 
 private :
     void initialize();    

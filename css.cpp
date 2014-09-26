@@ -4,14 +4,14 @@ QString CSS_SUFFIX = "css";
 QString CSS_FILE_EXTENSION = ".css";
 
 CSS::CSS(QString basePath) {
-    qfsw_css = new QFileSystemWatcher();
-    cssDir = new QDir(basePath);
+    m_qfswCss = new QFileSystemWatcher();
+    m_dirCss = new QDir(basePath);
     changeBasePath(basePath);
 }
 
 void CSS::connectSignals(){
-    this->connect(qfsw_css,SIGNAL(directoryChanged(QString)),SLOT(on_dir_changed(QString)));
-    this->connect(qfsw_css,SIGNAL(fileChanged(QString)),SLOT(on_file_changed(QString)));
+    this->connect(m_qfswCss,SIGNAL(directoryChanged(QString)),SLOT(on_dir_changed(QString)));
+    this->connect(m_qfswCss,SIGNAL(fileChanged(QString)),SLOT(on_file_changed(QString)));
 }
 
 void CSS::scanChanges()
@@ -20,9 +20,9 @@ void CSS::scanChanges()
 }
 
 void CSS::changeBasePath(QString strPath){
-    fileCount = 0;
-    str_basePath = strPath + "/" + CSS_SUFFIX;
-    cssDir->setPath(str_basePath);
+    m_iFileCount = 0;
+    m_strBasePath = strPath + "/" + CSS_SUFFIX;
+    m_dirCss->setPath(m_strBasePath);
     deRegisterWatcher();
     registerWatcher();
     emit filesChanged(getFileInfoList());
@@ -30,25 +30,25 @@ void CSS::changeBasePath(QString strPath){
 
 bool CSS::registerWatcher(){
 
-    QString fullPath = str_basePath;
-    if(!cssDir->exists()){
+    QString fullPath = m_strBasePath;
+    if(!m_dirCss->exists()){
         qWarning() << "Folder doesnt exists.";
         return false;
     }
 
-    if(qfsw_css != NULL){
-        delete qfsw_css;
-        qfsw_css = new QFileSystemWatcher();
+    if(m_qfswCss != NULL){
+        delete m_qfswCss;
+        m_qfswCss = new QFileSystemWatcher();
         connectSignals();
     }
 
     QFileInfoList lstFiles = getFileInfoList();
-    fileCount = lstFiles.length();
-    for(int i = 0 ; i < fileCount ; i++ ){
-        qfsw_css->addPath(lstFiles.at(i).filePath());
+    m_iFileCount = lstFiles.length();
+    for(int i = 0 ; i < m_iFileCount ; i++ ){
+        m_qfswCss->addPath(lstFiles.at(i).filePath());
     }
 
-    qfsw_css->addPath(str_basePath);
+    m_qfswCss->addPath(m_strBasePath);
     // qDebug() << "Files added : " << qfsw_css->files().length();
     return true;
 }
@@ -56,8 +56,8 @@ bool CSS::registerWatcher(){
 QFileInfoList CSS::getFileInfoList(){
     QStringList filters;
     filters << "*.css";
-    cssDir->setNameFilters(filters);
-    return cssDir->entryInfoList();
+    m_dirCss->setNameFilters(filters);
+    return m_dirCss->entryInfoList();
 }
 
 void CSS::on_file_changed(QString strFilePath){
@@ -84,10 +84,10 @@ void CSS::deRegisterWatcher(){
 }
 
 void CSS::deregisterFiles(){
-    qfsw_css->removePaths(qfsw_css->files());
+    m_qfswCss->removePaths(m_qfswCss->files());
 }
 
 void CSS :: deregisterDirs(){
-    qfsw_css->removePaths(qfsw_css->directories());
+    m_qfswCss->removePaths(m_qfswCss->directories());
 }
 

@@ -31,8 +31,8 @@ NewInterActivityForm::~NewInterActivityForm()
 }
 
 void NewInterActivityForm::changeBasePath(QString strBasePath){
-    str_basePath = strBasePath;
-    baseDir.setPath(str_basePath);
+    m_strBasePath = strBasePath;
+    m_dirBase.setPath(m_strBasePath);
 }
 
 void NewInterActivityForm::on_addTabBtn_clicked()
@@ -58,7 +58,7 @@ void NewInterActivityForm::on_saveBtn_clicked()
         QMessageBox::critical(this,"Error","Not all data is supplied",QMessageBox::Cancel);
         return;
     }
-    if(!baseDir.exists()){
+    if(!m_dirBase.exists()){
         QMessageBox::critical(this,"Error","Base directory doesn't exist.",QMessageBox::Cancel);
         return;
     }
@@ -69,7 +69,7 @@ void NewInterActivityForm::on_saveBtn_clicked()
 
     emit newInterActivityCreated(currentFolderPath());
     writeConfigJson();
-    emit newJSONPrepared(mainJson);
+    emit newJSONPrepared(m_jsonMainObject);
     emit newInterActivityCreated(currentFolderPath());
     this->close();
 }
@@ -82,17 +82,17 @@ bool NewInterActivityForm::createDirStructure(){
                               ,QMessageBox::Cancel);
         return false;
     }
-    baseDir.mkpath(currentPath);
-    baseDir.mkpath(currentPath + "/" + DATA_FOLDER);
-    baseDir.mkpath(currentPath + "/" + JS_FOLDER);
-    baseDir.mkpath(currentPath + "/" + JS_FOLDER + "/" + JS_VIEW_FOLDER);
-    baseDir.mkpath(currentPath + "/" + JS_FOLDER + "/" + JS_MODEL_FOLDER);
-    baseDir.mkpath(currentPath + "/" + CSS_FOLDER);
-    baseDir.mkpath(currentPath + "/" + MEDIA_FOLDER);
-    baseDir.mkpath(currentPath + "/" + MEDIA_FOLDER + "/" + IMAGES_FOLDER);
-    baseDir.mkpath(currentPath +  "/" + LANG_FOLDER);
-    baseDir.mkpath(currentPath + "/" +  LANG_FOLDER + "/" + EN_FOLDER + "/" + DATA_FOLDER);
-    baseDir.mkpath(currentPath + "/" + TEMPLATE_FOLDER);
+    m_dirBase.mkpath(currentPath);
+    m_dirBase.mkpath(currentPath + "/" + DATA_FOLDER);
+    m_dirBase.mkpath(currentPath + "/" + JS_FOLDER);
+    m_dirBase.mkpath(currentPath + "/" + JS_FOLDER + "/" + JS_VIEW_FOLDER);
+    m_dirBase.mkpath(currentPath + "/" + JS_FOLDER + "/" + JS_MODEL_FOLDER);
+    m_dirBase.mkpath(currentPath + "/" + CSS_FOLDER);
+    m_dirBase.mkpath(currentPath + "/" + MEDIA_FOLDER);
+    m_dirBase.mkpath(currentPath + "/" + MEDIA_FOLDER + "/" + IMAGES_FOLDER);
+    m_dirBase.mkpath(currentPath +  "/" + LANG_FOLDER);
+    m_dirBase.mkpath(currentPath + "/" +  LANG_FOLDER + "/" + EN_FOLDER + "/" + DATA_FOLDER);
+    m_dirBase.mkpath(currentPath + "/" + TEMPLATE_FOLDER);
     createFiles();
     return true;
 }
@@ -328,7 +328,7 @@ void NewInterActivityForm::emptyTabsTable()
 
 QString  NewInterActivityForm::currentFolderPath()
 {
-    return (str_basePath + "/" + ui->folderNameText->text());
+    return (m_strBasePath + "/" + ui->folderNameText->text());
 }
 
 void NewInterActivityForm::on_addComponentBtn_clicked()
@@ -383,7 +383,7 @@ void NewInterActivityForm::writeConfigJson()
     QJsonObject mainJSONObj;
     mainJSONObj["config"] = jObject;
     mainJSONObj["resources"] = resourceObj;
-    mainJson = mainJSONObj;
+    m_jsonMainObject = mainJSONObj;
     // qDebug() << "CONFIG : \n" << mainJson;
 }
 

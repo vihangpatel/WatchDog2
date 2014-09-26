@@ -17,16 +17,16 @@ class LOCACC : public QObject
     Q_OBJECT
 public:
     explicit LOCACC(QString);
-    QString str_basePath;
-    QFile locAccFile;
-    QJsonObject masterJObj;
-    QJsonArray masterArray;
-    QTreeWidgetItem *root;
-    QList<QTreeWidgetItem *> searchedResultList;
-    int currentSearchIndex = 0;
-    int currentLangIndex = 0;
-    QStringList availableLangList;
-    QDir *langDir;
+    QString m_strBasePath;
+    QFile m_fileLocAcc;
+    QJsonObject m_jsonMasterObj;
+    QJsonArray m_jsonMasterArray;
+    QTreeWidgetItem *m_qtwiRoot;
+    QList<QTreeWidgetItem *> m_listSearchedResult;
+    int m_iCurrentSearchIndex = 0;
+    int m_iCurrentLangIndex = 0;
+    QStringList m_strListAvailableLang;
+    QDir *m_dirLang;
 
     void changeBasePath(QString strPath);
     QString getLocAccFilePath();
@@ -78,7 +78,7 @@ public:
     QJsonObject fetchMessageJObject(QStringList messageData,QJsonArray parentEleJArray);
 
     bool addNewLanguage(QString lang);
-    bool changeLanguage(int currentLangIndex);
+    bool changeLanguage(int m_iCurrentLangIndex);
     void makeNewLangFolder(QString newLang);
     QStringList getAvailableLangugaes();
 

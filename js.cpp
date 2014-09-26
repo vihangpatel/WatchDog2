@@ -6,26 +6,26 @@ QString JS_VIEW_SUFFIX = "views";
 QString JS_MODEL_SUFFIX = "models";
 
 JS::JS(QString basePath){
-    qfsw_jsView = new QFileSystemWatcher();
-    qfsw_jsModel = new QFileSystemWatcher();
-    jsDir = new QDir();
-    viewDir = new QDir();
-    modelDir = new QDir();
-    process = new QProcess();
+    m_qfswJsView = new QFileSystemWatcher();
+    m_qfswJsModel = new QFileSystemWatcher();
+    m_dirJs = new QDir();
+    m_dirView = new QDir();
+    m_dirModel = new QDir();
+    m_process = new QProcess();
     changeBasePath(basePath);
 }
 
 void JS::connectSignals(){
-    this->connect(qfsw_jsView,SIGNAL(directoryChanged(QString)),SLOT(on_viewDir_changed(QString)));
-    this->connect(qfsw_jsModel,SIGNAL(directoryChanged(QString)),SLOT(on_modelDir_changed(QString)));
+    this->connect(m_qfswJsView,SIGNAL(directoryChanged(QString)),SLOT(on_viewDir_changed(QString)));
+    this->connect(m_qfswJsModel,SIGNAL(directoryChanged(QString)),SLOT(on_modelDir_changed(QString)));
 }
 
 QString JS::getViewDirPath(){
-    return str_basePath + "/" + JS_VIEW_SUFFIX;
+    return m_strBasePath + "/" + JS_VIEW_SUFFIX;
 }
 
 QString JS::getModelDirPath(){
-    return str_basePath + "/" + JS_MODEL_SUFFIX;
+    return m_strBasePath + "/" + JS_MODEL_SUFFIX;
 }
 
 void JS::scanChanges()
@@ -34,18 +34,18 @@ void JS::scanChanges()
 }
 
 void JS::setBasePath(QString basePath){
-    str_basePath = basePath + "/" + JS_SUFFIX;
+    m_strBasePath = basePath + "/" + JS_SUFFIX;
 }
 
 void JS::changeBasePath(QString strPath){
-    viewfileCount = 0;
-    modelfileCount = 0;
+    m_iViewFileCount = 0;
+    m_iModelFileCount = 0;
     setBasePath(strPath);
-    jsDir->setPath(str_basePath);
-    viewDir->setPath(getViewDirPath());
-    modelDir->setPath(getModelDirPath());
+    m_dirJs->setPath(m_strBasePath);
+    m_dirView->setPath(getViewDirPath());
+    m_dirModel->setPath(getModelDirPath());
     deRegisterWatcher();
-    if(!jsDir->exists()){
+    if(!m_dirJs->exists()){
         // qDebug() << "JS folder doesn't exist. : " << str_basePath;
         return;
     }
@@ -69,43 +69,43 @@ QFileInfoList JS::getJSFolderInfoList()
 {
     QStringList filters;
     filters << "*.js";
-    jsDir->setNameFilters(filters);
-    return jsDir->entryInfoList();
+    m_dirJs->setNameFilters(filters);
+    return m_dirJs->entryInfoList();
 }
 
 QFileInfoList JS::getViewFileInfoList(){
     QStringList filters;
     filters << "*.js";
-    viewDir->setNameFilters(filters);
-    return viewDir->entryInfoList();
+    m_dirView->setNameFilters(filters);
+    return m_dirView->entryInfoList();
 }
 
 QFileInfoList JS::getModelFileInfoList(){
     QStringList filters;
     filters << "*.js";
-    modelDir->setNameFilters(filters);
-    return modelDir->entryInfoList();
+    m_dirModel->setNameFilters(filters);
+    return m_dirModel->entryInfoList();
 }
 
 bool JS::registerWatcher(){
-    if(qfsw_jsView != NULL) {
-        delete qfsw_jsView;
+    if(m_qfswJsView != NULL) {
+        delete m_qfswJsView;
     }
-    if( qfsw_jsModel != NULL){
-        delete qfsw_jsModel;
+    if( m_qfswJsModel != NULL){
+        delete m_qfswJsModel;
     }
-    qfsw_jsView = new QFileSystemWatcher();
-    qfsw_jsView->addPath(getViewDirPath());
-    qfsw_jsModel = new QFileSystemWatcher();
-    qfsw_jsModel->addPath(getModelDirPath());
+    m_qfswJsView = new QFileSystemWatcher();
+    m_qfswJsView->addPath(getViewDirPath());
+    m_qfswJsModel = new QFileSystemWatcher();
+    m_qfswJsModel->addPath(getModelDirPath());
     disconnectSignals();
     connectSignals();
     return true;
 }
 
 void JS :: disconnectSignals(){
-    disconnect(qfsw_jsView,SIGNAL(directoryChanged(QString)),this,SLOT(on_viewDir_changed(QString)));
-    disconnect(qfsw_jsModel,SIGNAL(directoryChanged(QString)),this,SLOT(on_modelDir_changed(QString)));
+    disconnect(m_qfswJsView,SIGNAL(directoryChanged(QString)),this,SLOT(on_viewDir_changed(QString)));
+    disconnect(m_qfswJsModel,SIGNAL(directoryChanged(QString)),this,SLOT(on_modelDir_changed(QString)));
 }
 
 void JS::on_viewDir_changed(QString strFilePath){
@@ -121,9 +121,9 @@ void JS::on_modelDir_changed(QString strDirPath){
 }
 
 void JS::deRegisterWatcher(){
-    qfsw_jsModel->removePaths(qfsw_jsModel->directories());
-    qfsw_jsView->removePaths(qfsw_jsView->directories());
-    qfsw_jsView->disconnect(qfsw_jsView,SIGNAL(directoryChanged(QString)),this,SLOT(on_viewDir_changed(QString)));
-    qfsw_jsModel->disconnect(qfsw_jsModel,SIGNAL(directoryChanged(QString)),this,SLOT(on_modelDir_changed(QString)));
+    m_qfswJsModel->removePaths(m_qfswJsModel->directories());
+    m_qfswJsView->removePaths(m_qfswJsView->directories());
+    m_qfswJsView->disconnect(m_qfswJsView,SIGNAL(directoryChanged(QString)),this,SLOT(on_viewDir_changed(QString)));
+    m_qfswJsModel->disconnect(m_qfswJsModel,SIGNAL(directoryChanged(QString)),this,SLOT(on_modelDir_changed(QString)));
 }
 

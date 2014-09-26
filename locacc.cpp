@@ -9,19 +9,19 @@ LOCACC::LOCACC(QString strPath)
 {
     QStringList treeList;
     treeList << "locAccData";
-    langDir = new QDir("D:\DE");
-    root = new QTreeWidgetItem(treeList);
+    m_dirLang = new QDir("D:\DE");
+    m_qtwiRoot = new QTreeWidgetItem(treeList);
     changeBasePath(strPath);
 }
 
 void LOCACC::changeBasePath(QString strPath)
 {
-    str_basePath  = strPath;
-    langDir->setPath(getLangFolderPath());
+    m_strBasePath  = strPath;
+    m_dirLang->setPath(getLangFolderPath());
     getAvailableLangugaes();
-    emptyTreeWidget(root);
+    emptyTreeWidget(m_qtwiRoot);
     readFile();
-    root->takeChildren();
+    m_qtwiRoot->takeChildren();
     getLocAccTree();
 }
 
@@ -41,7 +41,7 @@ QTreeWidgetItem* LOCACC::addScreen(QStringList screenData)
 {
     QJsonObject newJObjScreen;
 
-    if(screenExistance(screenData,masterJObj["locAccData"].toArray()))
+    if(screenExistance(screenData,m_jsonMasterObj["locAccData"].toArray()))
     {
         qDebug() << "screen can not be added";
         return NULL;
@@ -50,20 +50,20 @@ QTreeWidgetItem* LOCACC::addScreen(QStringList screenData)
     newJObjScreen["name"] = screenData.at(1);
     QJsonArray tempJArray;
     newJObjScreen["elements"] = tempJArray;
-    QJsonArray locDataJArray = masterJObj["locAccData"].toArray();
+    QJsonArray locDataJArray = m_jsonMasterObj["locAccData"].toArray();
     locDataJArray.append(newJObjScreen);
-    masterJObj["locAccData"] = locDataJArray;
+    m_jsonMasterObj["locAccData"] = locDataJArray;
     QStringList newScreen;
     newScreen << screenData.at(0); ;
     QTreeWidgetItem *newScreenWidget = new QTreeWidgetItem(newScreen);
-    root->addChild(newScreenWidget);
+    m_qtwiRoot->addChild(newScreenWidget);
     writeFile();
     return newScreenWidget;
 }
 
 QTreeWidgetItem* LOCACC::addElement(QStringList elementData, QTreeWidgetItem *parent)
 {
-    QJsonArray jArray = masterJObj["locAccData"].toArray();
+    QJsonArray jArray = m_jsonMasterObj["locAccData"].toArray();
     QString parentScreen = parent->text(0);
     QJsonObject tempObj ;
     QTreeWidgetItem *newEleWidget;
@@ -89,7 +89,7 @@ QTreeWidgetItem* LOCACC::addElement(QStringList elementData, QTreeWidgetItem *pa
             break;
         }
     }
-    masterJObj["locAccData"] = jArray;
+    m_jsonMasterObj["locAccData"] = jArray;
     writeFile();
     return newEleWidget;
 }
@@ -97,7 +97,7 @@ QTreeWidgetItem* LOCACC::addElement(QStringList elementData, QTreeWidgetItem *pa
 QTreeWidgetItem* LOCACC::addMessage(QStringList msgData, bool isAccTextSame, QTreeWidgetItem *parent)
 {
     QString eleId = parent->text(0);
-    QJsonArray jArray = masterJObj["locAccData"].toArray();
+    QJsonArray jArray = m_jsonMasterObj["locAccData"].toArray();
     QString parentScreen = parent->parent()->text(0);
     QJsonObject tempObj ;
     QTreeWidgetItem *newMsg;
@@ -134,7 +134,7 @@ QTreeWidgetItem* LOCACC::addMessage(QStringList msgData, bool isAccTextSame, QTr
             }
         }
     }
-    masterJObj["locAccData"] = jArray;
+    m_jsonMasterObj["locAccData"] = jArray;
     writeFile();
     return newMsg;
 }
@@ -154,7 +154,7 @@ QJsonObject LOCACC::getMessageJson(QStringList msgData,bool isAccTextSame)
 QJsonObject LOCACC::fetchScreenJObject(QStringList screenData)
 {
     QString screenId = screenData.at(0);
-    QJsonArray locArray = masterJObj["locAccData"].toArray();
+    QJsonArray locArray = m_jsonMasterObj["locAccData"].toArray();
     QJsonObject tempObj;
     for(int i = 0 ; i < locArray.count() ; i++)
     {
@@ -244,14 +244,14 @@ bool LOCACC::messageExistance(QStringList messageData, QJsonArray msgsArray)
 
 QTreeWidgetItem * LOCACC::getLocAccTree()
 {
-    QJsonArray locAccArray = masterJObj["locAccData"].toArray();
+    QJsonArray locAccArray = m_jsonMasterObj["locAccData"].toArray();
     QJsonObject screenJObj;
     for(int i = 0 ; i < locAccArray.count() ; i++)
     {
         screenJObj = locAccArray.at(i).toObject();
-        root->addChild(generateScreenTree(screenJObj));
+        m_qtwiRoot->addChild(generateScreenTree(screenJObj));
     }
-    return root;
+    return m_qtwiRoot;
 }
 
 QTreeWidgetItem* LOCACC::generateScreenTree(QJsonObject screenJObj)
@@ -321,7 +321,7 @@ QJsonObject LOCACC::getElementJson(QStringList elementData)
 bool LOCACC::deleteScreen(QTreeWidgetItem *currentItem)
 {
     QString screenId = currentItem->text(0);
-    QJsonArray locArray = masterJObj["locAccData"].toArray();
+    QJsonArray locArray = m_jsonMasterObj["locAccData"].toArray();
     QJsonObject tempObj;
     for(int i = 0 ; i < locArray.count() ; i++)
     {
@@ -332,7 +332,7 @@ bool LOCACC::deleteScreen(QTreeWidgetItem *currentItem)
             break;
         }
     }
-    masterJObj["locAccData"] = locArray;
+    m_jsonMasterObj["locAccData"] = locArray;
     currentItem->parent()->removeChild(currentItem);
     emptyTreeWidget(currentItem);
     writeFile();
@@ -342,7 +342,7 @@ bool LOCACC::deleteScreen(QTreeWidgetItem *currentItem)
 bool LOCACC::deleteElement(QTreeWidgetItem *currentItem)
 {
     QString elementId = currentItem->text(0);
-    QJsonArray jArray = masterJObj["locAccData"].toArray();
+    QJsonArray jArray = m_jsonMasterObj["locAccData"].toArray();
     QString parentScreen = currentItem->parent()->text(0);
     QJsonObject tempObj ;
     for(int i = 0 ; i < jArray.count() ; i++ )
@@ -365,7 +365,7 @@ bool LOCACC::deleteElement(QTreeWidgetItem *currentItem)
             }
         }
     }
-    masterJObj["locAccData"] = jArray;
+    m_jsonMasterObj["locAccData"] = jArray;
     currentItem->parent()->removeChild(currentItem);
     emptyTreeWidget(currentItem);
     writeFile();
@@ -376,7 +376,7 @@ bool LOCACC::deleteMessage(QTreeWidgetItem *currentItem)
 {
     QString messageId = currentItem->text(0);
     QString eleId = currentItem->parent()->text(0);
-    QJsonArray jArray = masterJObj["locAccData"].toArray();
+    QJsonArray jArray = m_jsonMasterObj["locAccData"].toArray();
     QString parentScreen = currentItem->parent()->parent()->text(0);
     QJsonObject tempObj ;
     for(int i = 0 ; i < jArray.count() ; i++ )
@@ -410,7 +410,7 @@ bool LOCACC::deleteMessage(QTreeWidgetItem *currentItem)
             }
         }
     }
-    masterJObj["locAccData"] = jArray;
+    m_jsonMasterObj["locAccData"] = jArray;
     currentItem->parent()->removeChild(currentItem);
     emptyTreeWidget(currentItem);
     writeFile();
@@ -461,7 +461,7 @@ QStringList LOCACC::getMessageTreeData(QTreeWidgetItem *messageItem)
 bool LOCACC::updateScreen(QStringList newScreenData, QTreeWidgetItem *currentItem)
 {
     QString screenId = currentItem->text(0);
-    QJsonArray locArray = masterJObj["locAccData"].toArray();
+    QJsonArray locArray = m_jsonMasterObj["locAccData"].toArray();
     QJsonObject tempObj;
     for(int i = 0 ; i < locArray.count() ; i++)
     {
@@ -479,7 +479,7 @@ bool LOCACC::updateScreen(QStringList newScreenData, QTreeWidgetItem *currentIte
             break;
         }
     }
-    masterJObj["locAccData"] = locArray;
+    m_jsonMasterObj["locAccData"] = locArray;
     currentItem->setText(0,newScreenData.at(0));
     writeFile();
     return true;
@@ -488,7 +488,7 @@ bool LOCACC::updateScreen(QStringList newScreenData, QTreeWidgetItem *currentIte
 bool LOCACC::updateElement(QStringList newElementData, QTreeWidgetItem *currentItem)
 {
     QString elementId = currentItem->text(0);
-    QJsonArray jArray = masterJObj["locAccData"].toArray();
+    QJsonArray jArray = m_jsonMasterObj["locAccData"].toArray();
     QString parentScreen = currentItem->parent()->text(0);
     QJsonObject tempObj ;
     for(int i = 0 ; i < jArray.count() ; i++ )
@@ -518,7 +518,7 @@ bool LOCACC::updateElement(QStringList newElementData, QTreeWidgetItem *currentI
             }
         }
     }
-    masterJObj["locAccData"] = jArray;
+    m_jsonMasterObj["locAccData"] = jArray;
     currentItem->setText(0,newElementData.at(0));
     writeFile();
     return true;
@@ -528,7 +528,7 @@ bool LOCACC::updateMessage(QStringList newMessageData, bool isAccTextSame, QTree
 {
     QString messageId = currentItem->text(0);
     QString eleId = currentItem->parent()->text(0);
-    QJsonArray jArray = masterJObj["locAccData"].toArray();
+    QJsonArray jArray = m_jsonMasterObj["locAccData"].toArray();
     QString parentScreen = currentItem->parent()->parent()->text(0);
     QJsonObject tempObj ;
     for(int i = 0 ; i < jArray.count() ; i++ )
@@ -569,7 +569,7 @@ bool LOCACC::updateMessage(QStringList newMessageData, bool isAccTextSame, QTree
             }
         }
     }
-    masterJObj["locAccData"] = jArray;
+    m_jsonMasterObj["locAccData"] = jArray;
     currentItem->setText(0,newMessageData.at(0));
     writeFile();
     return true;
@@ -584,9 +584,9 @@ QList<QTreeWidgetItem *> LOCACC::getSearchResult(QString searchText)
     QList<QTreeWidgetItem *> searchedResult;
     QTreeWidgetItem *currentScreenItem, *currentElementItem , *currentMessageItem;
     QStringList msgStringList;
-    for(int i = 0 ; i < root->childCount() ; i++)
+    for(int i = 0 ; i < m_qtwiRoot->childCount() ; i++)
     {
-        currentScreenItem = root->child(i);
+        currentScreenItem = m_qtwiRoot->child(i);
         // qDebug() << "TOP : " << currentScreenItem->text(0);
         for( int j = 0 ; j < currentScreenItem->childCount() ; j++)
         {
@@ -606,54 +606,54 @@ QList<QTreeWidgetItem *> LOCACC::getSearchResult(QString searchText)
             }
         }
     }
-    searchedResultList = searchedResult;
-    currentSearchIndex = searchedResult.length() > 0 ? 0 : -1;
+    m_listSearchedResult = searchedResult;
+    m_iCurrentSearchIndex = searchedResult.length() > 0 ? 0 : -1;
     return searchedResult;
 }
 
 QTreeWidgetItem *LOCACC::getCurrentSearchResult()
 {
-    return currentSearchIndex > 0 && currentSearchIndex < searchedResultList.length() ? searchedResultList.at(currentSearchIndex) : NULL;
+    return m_iCurrentSearchIndex > 0 && m_iCurrentSearchIndex < m_listSearchedResult.length() ? m_listSearchedResult.at(m_iCurrentSearchIndex) : NULL;
 }
 
 QTreeWidgetItem *LOCACC::getPrevSeachResult()
 {
-    currentSearchIndex =  currentSearchIndex > 0 ? currentSearchIndex - 1 : 0;
-    return searchedResultList.length() > currentSearchIndex ?
-                searchedResultList.at(currentSearchIndex) : NULL;
+    m_iCurrentSearchIndex =  m_iCurrentSearchIndex > 0 ? m_iCurrentSearchIndex - 1 : 0;
+    return m_listSearchedResult.length() > m_iCurrentSearchIndex ?
+                m_listSearchedResult.at(m_iCurrentSearchIndex) : NULL;
 }
 
 QTreeWidgetItem *LOCACC::getNextSearchResult()
 {
-    currentSearchIndex =  currentSearchIndex < searchedResultList.length() - 1  ? currentSearchIndex + 1 : searchedResultList.length();
-    return searchedResultList.length() > currentSearchIndex ?
-                searchedResultList.at(currentSearchIndex) :  NULL;
+    m_iCurrentSearchIndex =  m_iCurrentSearchIndex < m_listSearchedResult.length() - 1  ? m_iCurrentSearchIndex + 1 : m_listSearchedResult.length();
+    return m_listSearchedResult.length() > m_iCurrentSearchIndex ?
+                m_listSearchedResult.at(m_iCurrentSearchIndex) :  NULL;
 }
 
 int LOCACC::getCurrentSearchIndex()
 {
-    return currentSearchIndex;
+    return m_iCurrentSearchIndex;
 }
 
 bool LOCACC::changeOrder(int currentIndex, int newIndex, QTreeWidgetItem *item)
 {
       qDebug() << "informal :" << currentIndex  ;
-    if (item && ((currentIndex < newIndex &&  currentIndex < root->childCount() - 1)
+    if (item && ((currentIndex < newIndex &&  currentIndex < m_qtwiRoot->childCount() - 1)
                   ||  (currentIndex > 0 && currentIndex > newIndex)))
     {
         // Visual Update
         qDebug() << currentIndex  ;
-       QList<QTreeWidgetItem *> items = root->takeChildren();
+       QList<QTreeWidgetItem *> items = m_qtwiRoot->takeChildren();
        items.removeAt(currentIndex);
        items.insert(newIndex,item);
-       root->insertChildren(0,items);
+       m_qtwiRoot->insertChildren(0,items);
 
         // Actual Update
-       QJsonArray locAccArray = masterJObj.find("locAccData").value().toArray();
+       QJsonArray locAccArray = m_jsonMasterObj.find("locAccData").value().toArray();
        QJsonObject objectToRemove = locAccArray.at(currentIndex).toObject();
        locAccArray.removeAt(currentIndex);
        locAccArray.insert(newIndex,objectToRemove);
-       masterJObj["locAccData"] = locAccArray;
+       m_jsonMasterObj["locAccData"] = locAccArray;
        //writeFile();  // Do not update file on change in order.
        return true;
     }
@@ -677,24 +677,24 @@ void LOCACC::setMessageTooltip(QTreeWidgetItem *messageItem, QJsonObject message
 
 bool LOCACC::addNewLanguage(QString lang)
 {
-   bool contains =  availableLangList.contains(lang,Qt::CaseSensitive);
+   bool contains =  m_strListAvailableLang.contains(lang,Qt::CaseSensitive);
    if(contains)
    {
         return false;
    }
-   langDir->setPath(getLangFolderPath());
+   m_dirLang->setPath(getLangFolderPath());
    makeNewLangFolder(lang);
-   availableLangList.append(lang);
+   m_strListAvailableLang.append(lang);
    return true;
 }
 
 void LOCACC::makeNewLangFolder(QString newLang)
 {
-    QString newLangFolderPath = str_basePath + "/" +  LOC_LANG_FOLDER + "/" + newLang + "/" + LOC_DATA_FOLDER;
+    QString newLangFolderPath = m_strBasePath + "/" +  LOC_LANG_FOLDER + "/" + newLang + "/" + LOC_DATA_FOLDER;
     QDir dir(newLangFolderPath);
     if(!dir.exists())
     {
-        langDir->mkpath(newLangFolderPath);
+        m_dirLang->mkpath(newLangFolderPath);
     }
     QFile file(newLangFolderPath + "/" + LOC_FILE_NAME);
     file.open(QIODevice::ReadWrite | QIODevice::Text);
@@ -703,71 +703,71 @@ void LOCACC::makeNewLangFolder(QString newLang)
 
 QStringList LOCACC::getAvailableLangugaes()
 {
-    availableLangList.clear();
-    currentLangIndex = 0;
-    availableLangList = langDir->entryList();
-    availableLangList.removeOne(".");
-    availableLangList.removeOne("..");
+    m_strListAvailableLang.clear();
+    m_iCurrentLangIndex = 0;
+    m_strListAvailableLang = m_dirLang->entryList();
+    m_strListAvailableLang.removeOne(".");
+    m_strListAvailableLang.removeOne("..");
     // qDebug() << availableLangList;
-    return availableLangList;
+    return m_strListAvailableLang;
 }
 
 bool LOCACC::changeLanguage(int currentIndex)
 {
-    currentLangIndex = currentLangIndex > availableLangList.count() ?  0 :  currentIndex;
+    m_iCurrentLangIndex = m_iCurrentLangIndex > m_strListAvailableLang.count() ?  0 :  currentIndex;
     // qDebug() << currentLangIndex;
-    emptyTreeWidget(root);
+    emptyTreeWidget(m_qtwiRoot);
     readFile();
-    root->takeChildren();
+    m_qtwiRoot->takeChildren();
     getLocAccTree();
 }
 
 QString LOCACC :: getLocAccFilePath()
 {
     QString lang;
-    lang = currentLangIndex >= availableLangList.length() ? LOC_EN_FOLDER :  availableLangList.at(currentLangIndex);
-    return str_basePath + "/" + LOC_LANG_FOLDER
+    lang = m_iCurrentLangIndex >= m_strListAvailableLang.length() ? LOC_EN_FOLDER :  m_strListAvailableLang.at(m_iCurrentLangIndex);
+    return m_strBasePath + "/" + LOC_LANG_FOLDER
             + "/"  +   lang
             + "/" + LOC_DATA_FOLDER  + "/" + LOC_FILE_NAME;
 }
 
 QString LOCACC::getLangFolderPath()
 {
-    return str_basePath + "/" + LOC_LANG_FOLDER;
+    return m_strBasePath + "/" + LOC_LANG_FOLDER;
 }
 
 void LOCACC::readFile()
 {
-    locAccFile.setFileName(getLocAccFilePath());
-    locAccFile.close();
-    locAccFile.open(QIODevice::ReadOnly | QIODevice::Text);
-    if(!locAccFile.exists())
+    m_fileLocAcc.setFileName(getLocAccFilePath());
+    m_fileLocAcc.close();
+    m_fileLocAcc.open(QIODevice::ReadOnly | QIODevice::Text);
+    if(!m_fileLocAcc.exists())
     {
         // qDebug() << " LOC ACC READING FAILED :" << getLocAccFilePath();
         return;
     }
     // qDebug() << " LOC ACC READING  :" << getLocAccFilePath();
-    QByteArray rawData = locAccFile.readAll();
+    QByteArray rawData = m_fileLocAcc.readAll();
     QJsonDocument doc(QJsonDocument::fromJson(rawData));
-    masterJObj = doc.object();
+    m_jsonMasterObj = doc.object();
     // qDebug() << "READ : " << masterJObj;
-    locAccFile.close();
+    m_fileLocAcc.close();
 }
 
 void LOCACC :: writeFile()
 {
     QString filePath = getLocAccFilePath();
-    locAccFile.setFileName(filePath);
-    locAccFile.remove();
-    locAccFile.open(QIODevice::ReadWrite | QIODevice::Text);
-    if(!locAccFile.exists())
+    m_fileLocAcc.setFileName(filePath);
+    m_fileLocAcc.remove();
+    m_fileLocAcc.open(QIODevice::ReadWrite | QIODevice::Text);
+    if(!m_fileLocAcc.exists())
     {
         // qDebug() << " LOC ACC DO NOT EXIST . NEW WILL BE CREATED :" << getLocAccFilePath();
     }
     // qDebug() << "WRITE : \n" << masterJObj;
-    QJsonDocument doc(masterJObj);
-    locAccFile.write(doc.toJson());
-    locAccFile.close();
+    QJsonDocument doc(m_jsonMasterObj);
+    m_fileLocAcc.write(doc.toJson());
+    m_fileLocAcc.close();
 }
 
 QTreeWidgetItem* LOCACC :: cloneScreen(QTreeWidgetItem *itemToClone)
