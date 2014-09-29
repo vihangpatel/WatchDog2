@@ -91,6 +91,8 @@ public:
     bool replaceAll();
 
     void writeLogFile(QJsonArray logArray);
+    void writeHtmlLogFile(QJsonArray logArray);
+    QString getLogFilePath();
 
  signals:
     void treeUpdated(QTreeWidgetItem *);

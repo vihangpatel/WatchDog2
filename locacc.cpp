@@ -921,6 +921,7 @@ bool LOCACC::replaceAll()
     m_jsonMasterObj["locAccData"] = scrnJArray;
     writeFile();
     writeLogFile(jsonLog);
+    writeHtmlLogFile(jsonLog);
     return true;
 }
 
@@ -929,14 +930,45 @@ void LOCACC::writeLogFile(QJsonArray logArray)
     QJsonObject jObject;
     jObject.insert("logEntries",logArray);
 
-    QDir dir(m_strBasePath);
-    dir.mkpath("D:\\DE-ReplaceLog");
-
-    QString str_logFilePath = "D:\\DE-ReplaceLog\\" + dir.dirName() + ".log" ;
-    QFile logFile(str_logFilePath);
-    logFile.open(QIODevice::ReadWrite | QIODevice::Text);
+    QFile logFile(getLogFilePath() + ".log");
+    logFile.remove();
+    logFile.open(QIODevice::ReadWrite | QIODevice::Text);    
 
     QJsonDocument doc(jObject);
     logFile.write(doc.toJson());
     logFile.close();
+}
+
+void LOCACC::writeHtmlLogFile(QJsonArray logArray)
+{
+    QString logText = "<html><head><title>"+ getLogFilePath() + "</title></head><body><h1>Replacement Log</h1>"
+            "<table border='1' style='text-align: center;margin: auto'>"
+            "<thead style='font-weight: bold;'><td>Screen</td><td>Element</td><td>Message</td><td>Text</td><td>CommonId</td></thead>";
+    for(int i = 0 ; i < logArray.count() ; i++)
+    {
+        QJsonObject obj = logArray.at(i).toObject();
+        logText += "<tr><td>" + obj["screenId"].toString()
+                     + "</td><td>" + obj["elementId"].toString()
+                     + "</td><td>" + obj["messageId"].toString()
+                     + "</td><td>" + obj["originalText"].toString()
+                     + "</td><td>" + obj["commonId"].toString()
+                     + "</td></tr>";
+    }
+    logText += "</table></body></html>";
+
+    QFile htmlLogFile(getLogFilePath() + ".htm");
+    htmlLogFile.remove();
+    htmlLogFile.open(QIODevice::ReadWrite | QIODevice::Text);
+    QTextStream out(&htmlLogFile);
+    out << logText;
+    htmlLogFile.close();
+}
+
+QString LOCACC::getLogFilePath()
+{
+    QDir dir(m_strBasePath);
+    dir.mkpath("D:\\DE-ReplaceLog");
+
+    QString str_logFilePath = "D:\\DE-ReplaceLog\\" + dir.dirName()  ;
+    return str_logFilePath;
 }
