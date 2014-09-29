@@ -1435,6 +1435,55 @@ font-weight:bold;</string>
        <attribute name="title">
         <string>Utitlities</string>
        </attribute>
+       <widget class="QLabel" name="label_41">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>20</y>
+          <width>51</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>File Path :</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="replacementFilePat">
+        <property name="geometry">
+         <rect>
+          <x>60</x>
+          <y>20</y>
+          <width>285</width>
+          <height>20</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="replacementUploadBtn">
+        <property name="geometry">
+         <rect>
+          <x>350</x>
+          <y>19</y>
+          <width>31</width>
+          <height>23</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>...</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="replaceAllLocBtn">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>70</y>
+          <width>75</width>
+          <height>23</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Replace All</string>
+        </property>
+       </widget>
       </widget>
      </widget>
      <widget class="QLabel" name="label_25">

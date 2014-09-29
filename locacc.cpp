@@ -845,4 +845,98 @@ QTreeWidgetItem* LOCACC :: cloneMessage(QTreeWidgetItem *itemToClone, QTreeWidge
     return clonedMessage;
 }
 
+/*****************************************************************
+ * REPLACEMENT POLICY *******************************************
+ *****************************************************************/
 
+void LOCACC::setReplacementFilePath(QString replacementFilePath)
+{
+    m_strReplacementFilePath = replacementFilePath;
+}
+
+bool LOCACC::replaceAll()
+{
+    QFile file(m_strReplacementFilePath);
+    if(!file.exists())
+    {
+        qDebug() << "Replacement file is not found";
+        return false;
+    }
+    file.open(QIODevice::ReadOnly | QIODevice::Text);
+    QByteArray rawData = file.readAll();
+    QJsonDocument doc(QJsonDocument::fromJson(rawData));
+    QJsonObject replacementJSON = doc.object();
+    QJsonArray replacementArray = replacementJSON["replacementArray"].toArray();
+    file.close();
+
+    QJsonArray jsonLog;
+    QJsonArray scrnJArray = m_jsonMasterObj["locAccData"].toArray();
+    QJsonObject tempScrnObj ;
+    for(int i = 0 ; i < scrnJArray.count() ; i++ )
+    {
+        tempScrnObj = scrnJArray.at(i).toObject();
+        QJsonArray eleJArray = tempScrnObj["elements"].toArray();
+        QJsonObject tempEleObj;
+        for(int j = 0 ; j < eleJArray.count(); j++)
+        {
+            tempEleObj = eleJArray.at(j).toObject();
+            QJsonArray msgsArray = tempEleObj["messages"].toArray();
+            QJsonObject tempMsgObj;
+            for(int k = 0; k < msgsArray.count() ; k++)
+            {
+                tempMsgObj = msgsArray.at(k).toObject();
+                QJsonObject tempLocAccObj = tempMsgObj["message"].toObject();
+                QJsonObject tempReplaceObj;
+                for(int l = 0 ; l < replacementArray.count() ; l++ )
+                {
+                    tempReplaceObj = replacementArray.at(l).toObject();
+                    if(tempLocAccObj["loc"] == tempReplaceObj["text"])
+                    {
+                        // Generate Log Object
+                        QJsonObject logObject ;
+                        logObject["screenId"] = tempScrnObj["id"];
+                        logObject["elementId"] = tempEleObj["id"];
+                        logObject["messageId"] = tempMsgObj["id"];
+                        logObject["originalText"] = tempLocAccObj["loc"];
+                        logObject["commonId"] = tempReplaceObj["commonId"];
+                        jsonLog.append(logObject);
+                        qDebug() << "replaced ";
+
+                        // Actual Change
+                        tempLocAccObj["loc"] = QString("");
+                        tempLocAccObj["acc"] = QString("");
+                        tempLocAccObj["commonId"] = tempReplaceObj["commonId"];
+                    }
+                }
+                tempMsgObj["message"] = tempLocAccObj;
+                msgsArray.replace(k,tempMsgObj);
+            }
+            tempEleObj["messages"] = msgsArray;
+            eleJArray.replace(j,tempEleObj);
+        }
+        tempScrnObj["elements"] = eleJArray;
+        scrnJArray.replace(i,tempScrnObj);
+    }
+
+    m_jsonMasterObj["locAccData"] = scrnJArray;
+    writeFile();
+    writeLogFile(jsonLog);
+    return true;
+}
+
+void LOCACC::writeLogFile(QJsonArray logArray)
+{
+    QJsonObject jObject;
+    jObject.insert("logEntries",logArray);
+
+    QDir dir(m_strBasePath);
+    dir.mkpath("D:\\DE-ReplaceLog");
+
+    QString str_logFilePath = "D:\\DE-ReplaceLog\\" + dir.dirName() + ".log" ;
+    QFile logFile(str_logFilePath);
+    logFile.open(QIODevice::ReadWrite | QIODevice::Text);
+
+    QJsonDocument doc(jObject);
+    logFile.write(doc.toJson());
+    logFile.close();
+}

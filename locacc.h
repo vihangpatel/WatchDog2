@@ -18,6 +18,7 @@ class LOCACC : public QObject
 public:
     explicit LOCACC(QString);
     QString m_strBasePath;
+    QString m_strReplacementFilePath;
     QFile m_fileLocAcc;
     QJsonObject m_jsonMasterObj;
     QJsonArray m_jsonMasterArray;
@@ -85,6 +86,11 @@ public:
     QTreeWidgetItem *cloneScreen(QTreeWidgetItem *itemToClone);
     QTreeWidgetItem *cloneElement(QTreeWidgetItem *itemToClone,QTreeWidgetItem *parent);
     QTreeWidgetItem *cloneMessage(QTreeWidgetItem *itemToClone,QTreeWidgetItem *parent);
+
+    void setReplacementFilePath(QString replacementFilePath);
+    bool replaceAll();
+
+    void writeLogFile(QJsonArray logArray);
 
  signals:
     void treeUpdated(QTreeWidgetItem *);

@@ -1301,3 +1301,16 @@ void MainWindow::on_saveLocAccBtn_clicked()
 {
     m_locAcc->writeFile();
 }
+
+void MainWindow::on_replaceAllLocBtn_clicked()
+{
+    m_locAcc->replaceAll();
+}
+
+void MainWindow::on_replacementUploadBtn_clicked()
+{
+    m_strReplacementFilePath =  QFileDialog::getOpenFileName(this, tr("Set DE-Interactives Path"),
+                                                      "D:\\");
+    ui->replacementFilePat->setText(m_strReplacementFilePath);
+    m_locAcc->setReplacementFilePath(m_strReplacementFilePath);
+}

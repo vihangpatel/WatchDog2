@@ -32,6 +32,7 @@ public:
     QFileDialog *m_fileDialogSelect;
     QString m_strBasePath;
     QString m_strRootPath;
+    QString m_strReplacementFilePath;
     QFileSystemModel *m_qfsModel;
     QFileSystemWatcher *m_qfswMain;
     JS *m_js;
@@ -178,6 +179,10 @@ private slots:
     void on_saveLocAccBtn_clicked();
 
     void performLocOpertions(int operation);
+
+    void on_replaceAllLocBtn_clicked();
+
+    void on_replacementUploadBtn_clicked();
 
 public slots:
     void updateTemplateList(QFileInfoList);
