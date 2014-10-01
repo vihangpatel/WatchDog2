@@ -450,7 +450,8 @@ QStringList LOCACC::getMessageTreeData(QTreeWidgetItem *messageItem)
     QStringList messageData ;
     messageData << messageObj["id"].toString()  << (messageObj["isAccTextSame"].toBool() ? "true" : "false")
             << messageObj["message"].toObject().value("loc").toString()
-            <<  messageObj["message"].toObject().value("acc").toString()  ;
+            <<  messageObj["message"].toObject().value("acc").toString()
+            << messageObj["message"].toObject().value("commonId").toString();
     return messageData;
 }
 

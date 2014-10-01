@@ -860,6 +860,12 @@ void MainWindow::fillMessageDetail(QStringList data)
     ui->cb_isAccTextSameUpdt->setChecked(data.at(1) == "true" ? true : false);
     ui->updtLocMsgText->setText(data.at(2));
     ui->updtAccMsgText->setText(data.at(3));
+    ui->label_commonId->setVisible(data.at(4).length() > 0);
+
+    if(data.at(4).length() > 0)
+    {
+        ui->label_commonId->setText("CommonId : " + data.at(4));
+    }
     // qDebug() << "Message detail updated : " << data.at(1);
     on_cb_isAccTextSameUpdt_clicked();
 }
