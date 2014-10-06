@@ -12,6 +12,10 @@
 #include <QFile>
 #include <QString>
 #include <QDir>
+#include <QUrl>
+#include <QDesktopServices>
+#include <QHash>
+
 class LOCACC : public QObject
 {
     Q_OBJECT
@@ -28,6 +32,7 @@ public:
     int m_iCurrentLangIndex = 0;
     QStringList m_strListAvailableLang;
     QDir *m_dirLang;
+    QStringList m_strListMandatoryScreens;
 
     void changeBasePath(QString strPath);
     QString getLocAccFilePath();
@@ -89,10 +94,12 @@ public:
 
     void setReplacementFilePath(QString replacementFilePath);
     bool replaceAll();
+    bool validateLocAccJson();
 
     void writeLogFile(QJsonArray logArray);
     void writeHtmlLogFile(QJsonArray logArray);
     QString getLogFilePath();
+    QString getInteractivityName();
 
  signals:
     void treeUpdated(QTreeWidgetItem *);

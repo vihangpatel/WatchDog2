@@ -1311,5 +1311,16 @@ void MainWindow::on_saveLocAccBtn_clicked()
 void MainWindow::on_replaceAllLocBtn_clicked()
 {
     m_locAcc->replaceAll();
+    on_validateLOCBtn_clicked();
 }
 
+
+void MainWindow::on_validateLOCBtn_clicked()
+{
+    bool returnFlag = m_locAcc->validateLocAccJson();
+    if(!returnFlag)
+    {
+        QMessageBox::critical(this,"Duplicate Entries are found.","Duplicate entries are found for message/element or screen missing.Refer log file.");
+        return;
+    }
+}

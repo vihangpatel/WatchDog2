@@ -7,6 +7,7 @@ QString LOC_FILE_NAME = "loc-acc.json";
 
 LOCACC::LOCACC(QString strPath)
 {
+    m_strListMandatoryScreens << "title-screen" <<	"tab-contents" <<	"overview-tab" <<	"help-screen";
     QStringList treeList;
     treeList << "locAccData";
     m_dirLang = new QDir("D:\DE");
@@ -938,7 +939,8 @@ void LOCACC::writeLogFile(QJsonArray logArray)
 
 void LOCACC::writeHtmlLogFile(QJsonArray logArray)
 {
-    QString logText = "<html><head><title>"+ getLogFilePath() + "</title></head><body><h1>Replacement Log</h1>"
+    QString logText = "<html><head><title>"+ getInteractivityName() +
+            "</title></head><body><h1 style='text-align:center;'>Replacement Log for " + getInteractivityName() +"</h1>"
             "<table border='1' style='text-align: center;margin: auto'>"
             "<thead style='font-weight: bold;'><td>Screen</td><td>Element</td><td>Message</td><td>Text</td><td>CommonId</td></thead>";
     for(int i = 0 ; i < logArray.count() ; i++)
@@ -951,14 +953,16 @@ void LOCACC::writeHtmlLogFile(QJsonArray logArray)
                      + "</td><td>" + obj["commonId"].toString()
                      + "</td></tr>";
     }
-    logText += "</table></body></html>";
+    logText += "</table><h1 style='text-align:center;'>Total changes :" + QString::number(logArray.count()) + "</body></html>";
 
-    QFile htmlLogFile(getLogFilePath() + ".htm");
+    QString str_htmlFilePath = getLogFilePath() + ".htm";
+    QFile htmlLogFile(str_htmlFilePath);
     htmlLogFile.remove();
     htmlLogFile.open(QIODevice::ReadWrite | QIODevice::Text);
     QTextStream out(&htmlLogFile);
     out << logText;
-    htmlLogFile.close();
+    htmlLogFile.close();    
+    QDesktopServices::openUrl(QUrl(str_htmlFilePath.replace("\\","/")));
 }
 
 QString LOCACC::getLogFilePath()
@@ -968,4 +972,104 @@ QString LOCACC::getLogFilePath()
 
     QString str_logFilePath = "D:\\DE-ReplaceLog\\" + dir.dirName()  ;
     return str_logFilePath;
+}
+
+QString LOCACC::getInteractivityName()
+{
+    QDir dir(m_strBasePath);
+    dir.mkpath("D:\\DE-ReplaceLog");
+
+    return dir.dirName();
+}
+
+bool LOCACC::validateLocAccJson()
+{
+    bool returnFlag = true;
+    QString logText = "<html><head><title>"+ getInteractivityName() + " Validation-Report"
+            "</title></head><body><h1 style='text-align:center;'>Validation Log for " + getInteractivityName() +"</h1>";
+
+    QString messageLogText = "<div><h3 style='text-align: center;'>Repeated Message IDs</h3>"
+            "<table border='1' style='text-align: center;margin: auto'>"
+            "<thead><tr><th>Screen Id</th><th>Element Id</th><th>Message Id</th><th>Frequency</th></tr></thead>";
+
+    QString elementLogText = "<div><h3 style='text-align: center;'>Repeated Element IDs</h3>"
+            "<table border='1' style='text-align: center;margin: auto'>"
+            "<thead><tr><th>Screen Id</th><th>Element Id</th><th>Frequency</th></tr></thead>";
+
+    QTreeWidgetItem *screenItem,*elementItem,*messageItem;
+    QHash<QString,int> screenMap,elementMap,messageMap ;
+    for(int i = 0 ; i < m_qtwiRoot->childCount(); i++)
+    {
+        screenItem = m_qtwiRoot->child(i);
+        screenMap[screenItem->text(0)] = screenMap[screenItem->text(0)] + 1;
+        elementMap.clear();
+        // Scan each element for duplicate ID entry
+        for(int j = 0 ; j < screenItem->childCount() ; j++)
+        {
+            elementItem = screenItem->child(j);
+            elementMap[elementItem->text(0)] = elementMap[elementItem->text(0)] + 1;
+            messageMap.clear();
+            // Scan each message for duplicate ID entry
+            for(int k = 0 ; k < elementItem->childCount() ; k++)
+            {
+                messageItem = elementItem->child(k);
+                messageMap[messageItem->text(0)] = messageMap[messageItem->text(0)] + 1;
+            }
+            QList<QString> messageIds = messageMap.keys();
+            for(int k = 0 ; k < messageIds.length() ; k++)
+            {
+                int freq = messageMap[messageIds[k]];
+                if(freq > 1)
+                {
+                    messageLogText += "<tr><td>" + screenItem->text(0) + "</td>"
+                                       + "<td>" + elementItem->text(0) + "</td>"
+                                       + "<td>" + messageIds[k] + "</td>"
+                                       + "<td>" + QString::number(freq) + "</td></tr>";
+                    returnFlag = false;
+                }
+            }
+        }
+        QList<QString> elementIds = elementMap.keys();
+        for(int j = 0 ; j < elementIds.length(); j++)
+        {
+            int freq = elementMap[elementIds[j]];
+            if(freq > 1)
+            {
+                returnFlag = false;
+                elementLogText += "<tr><td>" + screenItem->text(0) + "</td>"
+                        + "<td>" + elementIds[j] + "</td>"
+                        + "<td>" + QString::number(freq) + "</td></tr>";
+            }
+        }
+    }
+
+    messageLogText += "</table></div>";
+    elementLogText += "</table></div>";
+
+
+    QString missingScreenLog = "<h3 style = 'text-align : center'>Missing Screens</h3>"
+            "<table border='1' style='text-align: center;margin: auto'>"
+            "<thead><tr><th>Index</th><th>Missing Screen Id</th></tr></thead>";
+    for(int i = 0 ; i < m_strListMandatoryScreens.length() ; i++)
+    {
+        if(!screenMap.contains(m_strListMandatoryScreens.at(i)))
+        {
+            missingScreenLog += "<tr><td>" + QString::number(i+1) + "</td>"
+                             + "<td>" + m_strListMandatoryScreens.at(i) + "</td></tr>";
+            returnFlag = false;
+        }
+    }
+
+    missingScreenLog += "</table>";
+    logText += messageLogText + "</br>" + elementLogText + "<br>" + missingScreenLog;
+
+    QString str_htmlFilePath = getLogFilePath() + "-validation.htm";
+    QFile htmlLogFile(str_htmlFilePath);
+    htmlLogFile.remove();
+    htmlLogFile.open(QIODevice::ReadWrite | QIODevice::Text);
+    QTextStream out(&htmlLogFile);
+    out << logText;
+    htmlLogFile.close();
+    QDesktopServices::openUrl(QUrl(str_htmlFilePath.replace("\\","/")));
+    return returnFlag;
 }

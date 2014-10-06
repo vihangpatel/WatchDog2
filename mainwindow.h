@@ -182,6 +182,8 @@ private slots:
 
     void on_replaceAllLocBtn_clicked();
 
+    void on_validateLOCBtn_clicked();
+
 public slots:
     void updateTemplateList(QFileInfoList);
     void templateFileListClicked(QListWidgetItem *);
