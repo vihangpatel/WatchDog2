@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT      +=  core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -12,7 +12,7 @@ TARGET = WatchDog2
 TEMPLATE = app
 
 
-SOURCES += main.cpp\
+SOURCES +=  main.cpp\
     mainwindow.cpp \
     template.cpp \
     newinteractivityform.cpp \

@@ -850,13 +850,9 @@ QTreeWidgetItem* LOCACC :: cloneMessage(QTreeWidgetItem *itemToClone, QTreeWidge
  * REPLACEMENT POLICY *******************************************
  *****************************************************************/
 
-void LOCACC::setReplacementFilePath(QString replacementFilePath)
-{
-    m_strReplacementFilePath = replacementFilePath;
-}
-
 bool LOCACC::replaceAll()
 {
+    m_strReplacementFilePath = "validation.json";
     QFile file(m_strReplacementFilePath);
     if(!file.exists())
     {

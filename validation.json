@@ -1,0 +1,56 @@
+{
+	"replacementArray" : [
+		{
+			"text" : "Try another",
+			"commonId" : "misc1"
+		},
+		{
+			"text" : "Go",
+			"commonId" : "misc2"
+		},
+		{
+			"text" : "Jump",
+			"commonId" : "misc3"
+		},
+		{
+			"text" : "Okay",
+			"commonId" : "misc4"
+		},
+		{
+			"text" : "Wait",
+			"commonId" : "misc5"
+		},
+		{
+			"text" : "Ok",
+			"commonId" : "misc6"
+		},
+		{
+			"text" : "Retry",
+			"commonId" : "misc7"
+		},
+		{
+			"text" : "Play",
+			"commonId" : "misc8"
+		},
+		{
+			"text" : "Pause",
+			"commonId" : "misc9"
+		},
+		{
+			"text" : "Cancel",
+			"commonId" : "misc10"
+		},
+		{
+			"text" : "Close",
+			"commonId" : "misc11"
+		},
+		{
+			"text" : "Open",
+			"commonId" : "misc12"
+		},
+		{
+			"text" : "Zoom",
+			"commonId" : "misc13"
+		}		
+	]
+}
