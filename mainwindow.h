@@ -68,9 +68,10 @@ public:
     void setCheckBoxStatus(bool checked);
     void refreshTabStatus();
     QString getCommonFolderPath();
+    QString getCommonLocAccFilePath();
     QString getMinificationFolderPath();
     QString getToolsPath();
-    QString getCurrentInteractivityName();
+    QString getCurrentInteractivityName();    
 
     QJsonArray syncTmpltList(QJsonArray jTemplateArray);
     QJsonArray syncJSList(QJsonArray jJSArray);

@@ -11,16 +11,17 @@ MainWindow::MainWindow(QWidget *parent) :
     initialize();
 }
 
-void MainWindow::loadSavedSettings(){
-        m_strRootPath= m_appConfig->getRootPath();
-        m_strBasePath = m_appConfig->getCurrentInteractivity();
-        ui->cb_stopCSSMonitor->setChecked(m_appConfig->monitorCSS());
-        ui->cb_stopJSMonitor->setChecked(m_appConfig->monitorJS());
-        ui->cb_stopMediaMonitor->setChecked(m_appConfig->monitorMedia());
-        ui->cb_stopTmpltMonitir->setChecked(m_appConfig->monitorTemplates());
-        ui->statusBar->showMessage("Current interactivity : " + getCurrentInteractivityName());
-        ui->cb_stopConfigModification->setChecked(m_appConfig->monitorConfig());
-        ui->label_interActiveName->setText(getCurrentInteractivityName());
+void MainWindow::loadSavedSettings()
+{
+    m_strRootPath= m_appConfig->getRootPath();
+    m_strBasePath = m_appConfig->getCurrentInteractivity();
+    ui->cb_stopCSSMonitor->setChecked(m_appConfig->monitorCSS());
+    ui->cb_stopJSMonitor->setChecked(m_appConfig->monitorJS());
+    ui->cb_stopMediaMonitor->setChecked(m_appConfig->monitorMedia());
+    ui->cb_stopTmpltMonitir->setChecked(m_appConfig->monitorTemplates());
+    ui->statusBar->showMessage("Current interactivity : " + getCurrentInteractivityName());
+    ui->cb_stopConfigModification->setChecked(m_appConfig->monitorConfig());
+    ui->label_interActiveName->setText(getCurrentInteractivityName());
 }
 
 QString MainWindow::getCurrentInteractivityName()
@@ -1215,6 +1216,11 @@ QString MainWindow::getCommonFolderPath()
     return m_strRootPath + "/common";
 }
 
+QString MainWindow::getCommonLocAccFilePath()
+{
+    return m_strRootPath + "/common/lang/en/data/loc-acc.json";
+}
+
 QString MainWindow::getToolsPath()
 {
     return m_strRootPath + "/common/tool";
@@ -1310,7 +1316,8 @@ void MainWindow::on_saveLocAccBtn_clicked()
 
 void MainWindow::on_replaceAllLocBtn_clicked()
 {
-    m_locAcc->replaceAll();
+    QString str_locAccFilePath = getCommonLocAccFilePath();
+    m_locAcc->replaceAll(str_locAccFilePath);
     on_validateLOCBtn_clicked();
 }
 

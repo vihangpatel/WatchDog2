@@ -15,6 +15,7 @@
 #include <QUrl>
 #include <QDesktopServices>
 #include <QHash>
+#include <QDateTime>
 
 class LOCACC : public QObject
 {
@@ -22,7 +23,6 @@ class LOCACC : public QObject
 public:
     explicit LOCACC(QString);
     QString m_strBasePath;
-    QString m_strReplacementFilePath;
     QFile m_fileLocAcc;
     QJsonObject m_jsonMasterObj;
     QJsonArray m_jsonMasterArray;
@@ -93,7 +93,7 @@ public:
     QTreeWidgetItem *cloneMessage(QTreeWidgetItem *itemToClone,QTreeWidgetItem *parent);
 
     void setReplacementFilePath(QString replacementFilePath);
-    bool replaceAll();
+    bool replaceAll(QString commonLocAccFilePath);
     bool validateLocAccJson();
 
     void writeLogFile(QJsonArray logArray);

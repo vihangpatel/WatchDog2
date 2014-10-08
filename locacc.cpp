@@ -4,6 +4,7 @@ QString LOC_LANG_FOLDER = "lang";
 QString LOC_EN_FOLDER = "en";
 QString LOC_DATA_FOLDER = "data";
 QString LOC_FILE_NAME = "loc-acc.json";
+QString STR_MISCCEL_SCREEN = "miscellaneous-screen";
 
 LOCACC::LOCACC(QString strPath)
 {
@@ -851,10 +852,9 @@ QTreeWidgetItem* LOCACC :: cloneMessage(QTreeWidgetItem *itemToClone, QTreeWidge
  * REPLACEMENT POLICY *******************************************
  *****************************************************************/
 
-bool LOCACC::replaceAll()
-{
-    m_strReplacementFilePath = "validation.json";
-    QFile file(m_strReplacementFilePath);
+bool LOCACC::replaceAll(QString commonLocAccFilePath)
+{        
+    QFile file(commonLocAccFilePath);
     if(!file.exists())
     {
         qDebug() << "Replacement file is not found";
@@ -864,8 +864,19 @@ bool LOCACC::replaceAll()
     QByteArray rawData = file.readAll();
     QJsonDocument doc(QJsonDocument::fromJson(rawData));
     QJsonObject replacementJSON = doc.object();
-    QJsonArray replacementArray = replacementJSON["replacementArray"].toArray();
+    QJsonArray replacementArray = replacementJSON["locAccData"].toArray();
     file.close();
+
+    QJsonObject jsonObj_currentScreen;
+    for(int i = 0 ; i < replacementArray.count() ; i++)
+    {
+        jsonObj_currentScreen = replacementArray.at(i).toObject();
+        if(jsonObj_currentScreen["id"] == STR_MISCCEL_SCREEN)
+        {
+            replacementArray = jsonObj_currentScreen["elements"].toArray();
+            break;
+        }
+    }
 
     QJsonArray jsonLog;
     QJsonArray scrnJArray = m_jsonMasterObj["locAccData"].toArray();
@@ -888,26 +899,36 @@ bool LOCACC::replaceAll()
                 for(int l = 0 ; l < replacementArray.count() ; l++ )
                 {
                     tempReplaceObj = replacementArray.at(l).toObject();
-                    if(tempLocAccObj["loc"] == tempReplaceObj["text"])
+                    QJsonArray messageArray = tempReplaceObj["messages"].toArray();
+                    for(int m = 0 ; m < messageArray.count() ; m++)
                     {
-                        // Generate Log Object
-                        QJsonObject logObject ;
-                        logObject["screenId"] = tempScrnObj["id"];
-                        logObject["elementId"] = tempEleObj["id"];
-                        logObject["messageId"] = tempMsgObj["id"];
-                        logObject["originalText"] = tempLocAccObj["loc"];
-                        logObject["commonId"] = tempReplaceObj["commonId"];
-                        jsonLog.append(logObject);
-                        qDebug() << "replaced ";
+                        QJsonObject messageObject = messageArray.at(m).toObject();
+                        QString str_locText = tempLocAccObj["loc"].toString();
+                        bool b_compareResult = str_locText.compare(messageObject["message"].toObject()["loc"].toString());
+                        qDebug() << b_compareResult << " " << str_locText
+                                 << "  " << messageObject["message"].toObject()["loc"].toString();
+                        if(b_compareResult == 0)
+                        {
+                            // Generate Log Object
+                            QJsonObject logObject ;
+                            logObject["screenId"] = tempScrnObj["id"];
+                            logObject["elementId"] = tempEleObj["id"];
+                            logObject["messageId"] = tempMsgObj["id"];
+                            logObject["originalText"] = tempLocAccObj["loc"];
+                            logObject["commonId"] = tempReplaceObj["id"];
+                            jsonLog.append(logObject);
+                            qDebug() << "replaced ";
 
-                        // Actual Change
-                        tempLocAccObj["loc"] = QString("");
-                        tempLocAccObj["acc"] = QString("");
-                        tempLocAccObj["commonId"] = tempReplaceObj["commonId"];
+                            // Actual Change
+                            tempLocAccObj["loc"] = QString("");
+                            tempLocAccObj["acc"] = QString("");
+                            tempLocAccObj["commonId"] = tempReplaceObj["id"];
+
+                            tempMsgObj["message"] = tempLocAccObj;
+                            msgsArray.replace(k,tempMsgObj);
+                        }
                     }
-                }
-                tempMsgObj["message"] = tempLocAccObj;
-                msgsArray.replace(k,tempMsgObj);
+                }               
             }
             tempEleObj["messages"] = msgsArray;
             eleJArray.replace(j,tempEleObj);
@@ -942,7 +963,7 @@ void LOCACC::writeHtmlLogFile(QJsonArray logArray)
     QString logText = "<html><head><title>"+ getInteractivityName() +
             "</title></head><body><h1 style='text-align:center;'>Replacement Log for " + getInteractivityName() +"</h1>"
             "<table border='1' style='text-align: center;margin: auto'>"
-            "<thead style='font-weight: bold;'><td>Screen</td><td>Element</td><td>Message</td><td>Text</td><td>CommonId</td></thead>";
+            "<thead style='font-weight: bold;'><td>Screen</td><td>Element</td><td>Message</td><td>LOC Text</td><td>CommonId</td></thead>";
     for(int i = 0 ; i < logArray.count() ; i++)
     {
         QJsonObject obj = logArray.at(i).toObject();
@@ -968,9 +989,11 @@ void LOCACC::writeHtmlLogFile(QJsonArray logArray)
 QString LOCACC::getLogFilePath()
 {
     QDir dir(m_strBasePath);
-    dir.mkpath("D:\\DE-ReplaceLog");
+    QString str_logDirPath = "D:\\DE-ReplaceLog\\" + dir.dirName();
+    dir.mkpath(str_logDirPath);
 
-    QString str_logFilePath = "D:\\DE-ReplaceLog\\" + dir.dirName()  ;
+    QString str_logFilePath = str_logDirPath + "\\" + dir.dirName() +
+            "_" + QDateTime::currentDateTime().toString("yyyyMMdd_HHmmss");
     return str_logFilePath;
 }
 
