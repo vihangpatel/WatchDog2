@@ -98,7 +98,7 @@ void MainWindow::initTrayIcon()
     m_qmTrayMenu->addAction("Compile Handlebars",this,SLOT(compileAllHandleBars()));
     m_qmTrayMenu->addAction(QIcon(":/images/refresh-48.png"),"Refresh",this,SLOT(scanChanges()));
     // TODO : Remove setEnabled from the following two lines
-    m_qmTrayMenu->addAction(QIcon(":/images/lock-48.png"),"Stop monitoring",this,SLOT(stopMonitoring()))->setEnabled(false);
+    m_qmTrayMenu->addAction(QIcon(":/images/lock-48.png"),"Stop monitoring",this,SLOT(stopMonitoring()))->setEnabled(true);
     m_qmTrayMenu->addAction(QIcon(":/images/unlock-48.png"),"Start monitoring",this,SLOT(startMonitoring()))->setEnabled(false);
     m_qmTrayMenu->addAction("Open Loc-acc Tab",this,SLOT(openLocAccTab()));
     m_qmTrayMenu->addAction("Open Folder Location",this,SLOT(on_openIntrFolderBtn_clicked()));
@@ -253,6 +253,8 @@ void MainWindow::changeBasePath(QString strBasePath)
     ui->comboBox_Languages->addItems(m_locAcc->getAvailableLangugaes());
     ui->languageLabel->setText(ui->comboBox_Languages->currentText());
     on_comboBox_Languages_currentIndexChanged(0);
+    ui->label_interActiveName->setText(getCurrentInteractivityName());
+    ui->statusBar->showMessage("Current interactivity : " + getCurrentInteractivityName());
 }
 
 void MainWindow::on_openDialog_clicked()
@@ -261,8 +263,6 @@ void MainWindow::on_openDialog_clicked()
     QString folderName =  m_qfsModel->itemData(ui->treeView->currentIndex())[Qt::DisplayRole].toString();
     m_strBasePath = m_strRootPath + "/" + folderName;
 
-    ui->statusBar->showMessage("Current interactivity : " + folderName);
-    ui->label_interActiveName->setText(folderName);
     changeBasePath(m_strBasePath);
     m_form->changeBasePath(m_strRootPath);
 }
@@ -1273,7 +1273,8 @@ void MainWindow::on_deleteBranchesBtn_clicked()
 
 void MainWindow::on_openIntrFolderBtn_clicked()
 {
-    QDesktopServices::openUrl(m_strBasePath);
+    QUrl url(m_strBasePath.replace("\\","/"));
+    QDesktopServices::openUrl(url);
 }
 
 /*******************************************************

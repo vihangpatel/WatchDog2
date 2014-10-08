@@ -79,7 +79,10 @@ void ConfigHandler::setJSJArray(QJsonArray array)
 void ConfigHandler::newInteractivityCreated(QJsonObject newObject)
 {
     m_jsonMasterObj = newObject;
+    bool b_configUpdate = m_bStopUpdating;
+    m_bStopUpdating = false;
     writeConfigJson();
+    m_bStopUpdating = b_configUpdate;
 }
 
 void ConfigHandler::setConfigUpdateFlag(bool stopUpdate)

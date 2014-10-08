@@ -192,14 +192,26 @@ void NewInterActivityForm::createJSs()
         return ;
     }
     // Create Initialize File
+    QFile initializeSampleFile("pristineInitialize.txt");
     jsInitializeFile.open(QIODevice::ReadWrite | QIODevice::Text);
+    if(initializeSampleFile.exists())
+    {
+        // Replace placeholder by the actual class name.
+        initializeSampleFile.open(QIODevice::ReadOnly | QIODevice::Text);
+        QByteArray byteArrayData= initializeSampleFile.readAll();
+        QString stringData(byteArrayData);
+        stringData.replace(MODULE_PLACE_HOLDER,ui->moduleText->text());
+        QTextStream stream(&jsInitializeFile);
+        stream <<  stringData;
+        initializeSampleFile.close();
+    }
     jsInitializeFile.close();
 
     // Create view File
     QList<QStringList> tableEntries = getTemplateTableData();
     for(int i = 0 ; i < tableEntries.length() ; i++ )
     {
-        createJSFile(tableEntries.at(i));
+        createJSFile(tableEntries.at(i),i);
     }
 
     // Create model File
@@ -207,7 +219,7 @@ void NewInterActivityForm::createJSs()
     QFile modelFile(modelFilePath);
     modelFile.open(QIODevice::ReadWrite | QIODevice::Text);
     QString sampleFileData = "";
-    QFile sampleFile("pristineJsSample.txt");
+    QFile sampleFile("pristineMainModel.txt");
     if(sampleFile.exists())
     {
         // Replace placeholder by the actual class name.
@@ -225,7 +237,7 @@ void NewInterActivityForm::createJSs()
     modelFile.close();
 }
 
-bool NewInterActivityForm::createJSFile(QStringList tableEntry)
+bool NewInterActivityForm::createJSFile(QStringList tableEntry, int fileType)
 {
     QString viewFilePath = currentFolderPath() + "/" + JS_FOLDER + "/" + JS_VIEW_FOLDER + "/" + tableEntry.at(1) + ".js";
     QFile newJsFile(viewFilePath);
@@ -234,7 +246,8 @@ bool NewInterActivityForm::createJSFile(QStringList tableEntry)
         return false;
     }
     QString sampleFileData = "";
-    QFile sampleFile("pristineJsSample.txt");
+    QFile sampleFile;
+    sampleFile.setFileName(fileType > 0 ? "pristineJsSample.txt" : "pristineOverViewSample.txt");
     if(sampleFile.exists())
     {
         // Replace placeholder by the actual class name.
@@ -256,10 +269,45 @@ bool NewInterActivityForm::createJSFile(QStringList tableEntry)
 
 void NewInterActivityForm::createHandleBars()
 {
+    // Create handlebar files for each tab view.
     QList<QStringList> tableEntries = getTemplateTableData();
     for(int i = 0 ; i < tableEntries.length() ; i++ )
     {
         createHandleBarFile(tableEntries.at(i));
+    }
+
+    // Create inidividual compiler file for handlebar to support automatic compilation of the handlebar.
+    QFile indiCompilerSampleFile("individual_compilation.bat");
+    if(indiCompilerSampleFile.exists())
+    {
+        indiCompilerSampleFile.open(QIODevice::ReadOnly | QIODevice::Text);
+        QByteArray byteArrayData= indiCompilerSampleFile.readAll();
+        QString stringData(byteArrayData);
+        stringData.replace(MODULE_PLACE_HOLDER,ui->moduleText->text());
+        QString filePath = currentFolderPath() + "/" + TEMPLATE_FOLDER + "/" + "individual_compilation.bat";
+        QFile handleBarCompiler(filePath);
+        handleBarCompiler.open(QIODevice::ReadWrite | QIODevice::Text);
+        QTextStream stream(&handleBarCompiler);
+        stream << stringData;;
+        handleBarCompiler.close();
+        indiCompilerSampleFile.close();
+    }
+
+    // Create compiler file for handlebar to compile all the handlebars in the templates folder.
+    QFile handlebarCompilerSampleFile("compile_handlebars_in_folder.bat");
+    if(handlebarCompilerSampleFile.exists())
+    {
+        handlebarCompilerSampleFile.open(QIODevice::ReadOnly | QIODevice::Text);
+        QByteArray byteArrayData= handlebarCompilerSampleFile.readAll();
+        QString stringData(byteArrayData);
+        stringData.replace(MODULE_PLACE_HOLDER,ui->moduleText->text());
+        QString filePath = currentFolderPath() + "/" + TEMPLATE_FOLDER + "/" + "compile_handlebars_in_folder.bat";
+        QFile handleBarCompiler(filePath);
+        handleBarCompiler.open(QIODevice::ReadWrite | QIODevice::Text);
+        QTextStream stream(&handleBarCompiler);
+        stream << stringData;;
+        handleBarCompiler.close();
+        handlebarCompilerSampleFile.close();
     }
 }
 

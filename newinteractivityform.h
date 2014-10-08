@@ -45,7 +45,7 @@ public:
     void createHandleBars();
     bool createHandleBarFile(QStringList tableEntry);
     void createJSs();
-    bool createJSFile(QStringList tableEntry);
+    bool createJSFile(QStringList tableEntry,int fileType);
     void createCSS();
     ~NewInterActivityForm();
     
