@@ -11,8 +11,7 @@ JS::JS(QString basePath){
     m_dirJs = new QDir();
     m_dirView = new QDir();
     m_dirModel = new QDir();
-    m_process = new QProcess();
-    changeBasePath(basePath);
+    m_process = new QProcess();    
 }
 
 void JS::connectSignals(){
@@ -125,5 +124,17 @@ void JS::deRegisterWatcher(){
     m_qfswJsView->removePaths(m_qfswJsView->directories());
     m_qfswJsView->disconnect(m_qfswJsView,SIGNAL(directoryChanged(QString)),this,SLOT(on_viewDir_changed(QString)));
     m_qfswJsModel->disconnect(m_qfswJsModel,SIGNAL(directoryChanged(QString)),this,SLOT(on_modelDir_changed(QString)));
+}
+
+JS::~JS()
+{
+    return;
+    deRegisterWatcher();
+    delete m_qfswJsModel;
+    delete m_qfswJsModel;
+    delete m_dirJs;
+    delete m_dirView;
+    delete m_dirModel;
+    delete m_process;
 }
 

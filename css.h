@@ -13,6 +13,7 @@ class CSS : public QObject
     Q_OBJECT
 public:
     explicit CSS(QString basePath);
+    ~CSS();
     QString m_strBasePath;
     QFileSystemWatcher *m_qfswCss;
     int m_iFileCount ;

@@ -22,6 +22,7 @@ public:
     bool m_bStopUpdating;
 
     explicit ConfigHandler(QString);
+    ~ConfigHandler();
     void changeBasePath(QString);
     QJsonArray getTemplateJArray();
     QJsonArray getJSJArray();
@@ -36,6 +37,7 @@ public:
 
     QString getConfigJSONFilePath();
 
+    void changeLoadStepOfFiles();
     void readConfigJson();
     void writeConfigJson();
 

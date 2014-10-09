@@ -10,13 +10,14 @@ QString JS_VIEW_FOLDER = "views";
 QString JS_MODEL_FOLDER = "models";
 QString CSS_FOLDER = "css";
 QString DATA_FOLDER = "data";
-QString  LANG_FOLDER = "lang";
+QString LANG_FOLDER = "lang";
 QString MEDIA_FOLDER = "media";
 QString IMAGES_FOLDER = "image";
 QString EN_FOLDER = "en";
 QString MODULE_PLACE_HOLDER = "%@module#%";
 QString VIEW_PLACE_HOLDER = "%@view/model#%";
 QString CLASS_PLACE_HOLDER = "%@class#%";
+QString OVERVIEW_BG_IMAGE = "overview-bg.png";
 
 NewInterActivityForm::NewInterActivityForm(QWidget *parent) :
     QDialog(parent),
@@ -84,17 +85,56 @@ bool NewInterActivityForm::createDirStructure(){
     }
     m_dirBase.mkpath(currentPath);
     m_dirBase.mkpath(currentPath + "/" + DATA_FOLDER);
-    m_dirBase.mkpath(currentPath + "/" + JS_FOLDER);
-    m_dirBase.mkpath(currentPath + "/" + JS_FOLDER + "/" + JS_VIEW_FOLDER);
-    m_dirBase.mkpath(currentPath + "/" + JS_FOLDER + "/" + JS_MODEL_FOLDER);
-    m_dirBase.mkpath(currentPath + "/" + CSS_FOLDER);
-    m_dirBase.mkpath(currentPath + "/" + MEDIA_FOLDER);
-    m_dirBase.mkpath(currentPath + "/" + MEDIA_FOLDER + "/" + IMAGES_FOLDER);
-    m_dirBase.mkpath(currentPath +  "/" + LANG_FOLDER);
-    m_dirBase.mkpath(currentPath + "/" +  LANG_FOLDER + "/" + EN_FOLDER + "/" + DATA_FOLDER);
-    m_dirBase.mkpath(currentPath + "/" + TEMPLATE_FOLDER);
+    m_dirBase.mkpath(getJSFolderPath());
+    m_dirBase.mkpath(getJSViewFolderPath());
+    m_dirBase.mkpath(getJSModelFolderPath());
+    m_dirBase.mkpath(getCSSFolderPath());
+    m_dirBase.mkpath(getMediaFolderPath());
+    m_dirBase.mkpath(getImageFolderPath());
+    m_dirBase.mkpath(getLocAccFolderPath());
+    m_dirBase.mkpath(getTemplateFolderPath());
     createFiles();
     return true;
+}
+
+QString NewInterActivityForm::getJSFolderPath()
+{
+    return currentFolderPath() + "/" + JS_FOLDER;
+}
+
+QString NewInterActivityForm::getJSViewFolderPath()
+{
+    return currentFolderPath() + "/" + JS_FOLDER + "/" + JS_VIEW_FOLDER;
+}
+
+QString NewInterActivityForm::getJSModelFolderPath()
+{
+    return currentFolderPath()+ "/" + JS_FOLDER + "/" + JS_MODEL_FOLDER;
+}
+
+QString NewInterActivityForm::getCSSFolderPath()
+{
+    return currentFolderPath() + "/" + CSS_FOLDER;
+}
+
+QString NewInterActivityForm::getMediaFolderPath()
+{
+    return currentFolderPath() + "/" + MEDIA_FOLDER;
+}
+
+QString NewInterActivityForm::getTemplateFolderPath()
+{
+    return currentFolderPath() + "/" + TEMPLATE_FOLDER;
+}
+
+QString NewInterActivityForm::getImageFolderPath()
+{
+    return getMediaFolderPath() + "/" + IMAGES_FOLDER;
+}
+
+QString NewInterActivityForm::getLocAccFolderPath()
+{
+    return currentFolderPath() + "/" +  LANG_FOLDER + "/" + EN_FOLDER + "/" + DATA_FOLDER;
 }
 
 void NewInterActivityForm::createFiles()
@@ -103,6 +143,13 @@ void NewInterActivityForm::createFiles()
     createCSS();
     createJSs();
     createLocAccFile();
+    createImageFile();
+}
+
+void NewInterActivityForm::createImageFile()
+{
+    QFile bgImageFile(OVERVIEW_BG_IMAGE);
+    bgImageFile.copy(getImageFolderPath() + "/" + OVERVIEW_BG_IMAGE);
 }
 
 void NewInterActivityForm::createLocAccFile()
@@ -173,7 +220,7 @@ void NewInterActivityForm::createLocAccFile()
 
 void NewInterActivityForm::createCSS()
 {
-    QString filePath = currentFolderPath() + "/" + CSS_FOLDER + "/" + ui->idPrefixText->text() +  ".css";
+    QString filePath = getCSSFolderPath() + "/" + ui->idPrefixText->text() +  ".css";
     QFile cssFile(filePath);
     if(cssFile.exists())
     {
@@ -185,7 +232,7 @@ void NewInterActivityForm::createCSS()
 
 void NewInterActivityForm::createJSs()
 {
-    QString filePath = currentFolderPath() + "/" + JS_FOLDER + "/" + "initialize.js";
+    QString filePath = getJSFolderPath() + "/" + "initialize.js";
     QFile jsInitializeFile(filePath);
     if(jsInitializeFile.exists())
     {
@@ -215,7 +262,7 @@ void NewInterActivityForm::createJSs()
     }
 
     // Create model File
-    QString modelFilePath = currentFolderPath() + "/" + JS_FOLDER + "/" + JS_MODEL_FOLDER + "/" + ui->idPrefixText->text() + ".js";
+    QString modelFilePath = getJSModelFolderPath() + "/" + ui->idPrefixText->text() + ".js";
     QFile modelFile(modelFilePath);
     modelFile.open(QIODevice::ReadWrite | QIODevice::Text);
     QString sampleFileData = "";
@@ -239,7 +286,7 @@ void NewInterActivityForm::createJSs()
 
 bool NewInterActivityForm::createJSFile(QStringList tableEntry, int fileType)
 {
-    QString viewFilePath = currentFolderPath() + "/" + JS_FOLDER + "/" + JS_VIEW_FOLDER + "/" + tableEntry.at(1) + ".js";
+    QString viewFilePath = getJSViewFolderPath() + "/" + tableEntry.at(1) + ".js";
     QFile newJsFile(viewFilePath);
     if(newJsFile.exists())
     {
@@ -284,7 +331,7 @@ void NewInterActivityForm::createHandleBars()
         QByteArray byteArrayData= indiCompilerSampleFile.readAll();
         QString stringData(byteArrayData);
         stringData.replace(MODULE_PLACE_HOLDER,ui->moduleText->text());
-        QString filePath = currentFolderPath() + "/" + TEMPLATE_FOLDER + "/" + "individual_compilation.bat";
+        QString filePath = getTemplateFolderPath() + "/" + "individual_compilation.bat";
         QFile handleBarCompiler(filePath);
         handleBarCompiler.open(QIODevice::ReadWrite | QIODevice::Text);
         QTextStream stream(&handleBarCompiler);
@@ -301,7 +348,7 @@ void NewInterActivityForm::createHandleBars()
         QByteArray byteArrayData= handlebarCompilerSampleFile.readAll();
         QString stringData(byteArrayData);
         stringData.replace(MODULE_PLACE_HOLDER,ui->moduleText->text());
-        QString filePath = currentFolderPath() + "/" + TEMPLATE_FOLDER + "/" + "compile_handlebars_in_folder.bat";
+        QString filePath = getTemplateFolderPath() + "/" + "compile_handlebars_in_folder.bat";
         QFile handleBarCompiler(filePath);
         handleBarCompiler.open(QIODevice::ReadWrite | QIODevice::Text);
         QTextStream stream(&handleBarCompiler);
@@ -313,7 +360,7 @@ void NewInterActivityForm::createHandleBars()
 
 bool NewInterActivityForm::createHandleBarFile(QStringList tableEntry)
 {
-    QString filePath = currentFolderPath() + "/" + TEMPLATE_FOLDER + "/" + tableEntry.at(1) + ".handlebars";
+    QString filePath = getTemplateFolderPath() + "/" + tableEntry.at(1) + ".handlebars";
     QFile newHandleBarFile(filePath);
     if(newHandleBarFile.exists())
     {
@@ -419,14 +466,24 @@ void NewInterActivityForm::writeConfigJson()
     jObject["model"] = dataObject;
 
     QJsonObject resourceObj;
-    QJsonArray tempArray;
-    QJsonObject tempObject;
+    QJsonArray tempArray;    
     resourceObj["isNewJsonType"] = ui->cb_isNewJsonType->isChecked();
     resourceObj["css"]= tempArray;
-    resourceObj["js"]= tempArray;
-    resourceObj["media"]= tempObject;
+    resourceObj["js"]= tempArray;    
     resourceObj["templates"]= tempArray;
     resourceObj["json"]= tempArray;
+
+    // Insert background-image entry in config
+    QJsonArray imageJArray;
+    QJsonObject imageJObject;
+    QJsonObject mediaJObject;
+    imageJObject["url"] = QString(OVERVIEW_BG_IMAGE);
+    imageJObject["id"] = QString(ui->leftImageId->text());
+    imageJObject["isNextStepLoad"] = false;
+
+    imageJArray.append(imageJObject);
+    mediaJObject["image"] = imageJArray;
+    resourceObj["media"]= mediaJObject;
 
     QJsonObject mainJSONObj;
     mainJSONObj["config"] = jObject;

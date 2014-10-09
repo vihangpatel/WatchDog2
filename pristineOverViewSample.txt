@@ -7,7 +7,7 @@
 	*	
 	* @class %@class#%
 	* @namespace MathInteractives.Interactivities.%@module#%.Views
-    * @extends MathInteractives.Common.Player.Views.Base
+    * @extends MathInteractives.Common.Player.Views.Base.extend
 	* @constructor
 	*/
 	

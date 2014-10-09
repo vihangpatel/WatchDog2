@@ -81,8 +81,23 @@ void ConfigHandler::newInteractivityCreated(QJsonObject newObject)
     m_jsonMasterObj = newObject;
     bool b_configUpdate = m_bStopUpdating;
     m_bStopUpdating = false;
+    changeLoadStepOfFiles();
     writeConfigJson();
     m_bStopUpdating = b_configUpdate;
+}
+
+void ConfigHandler::changeLoadStepOfFiles()
+{
+    // Set CSS file's next step load to false which is the first entry in css object.
+    m_jsonMasterObj["resources"].toObject()["css"].toArray().at(0).toObject()["isNextStepLoad"] = false;
+
+    // Set JS files' next step load to false.
+    m_jsonMasterObj["resources"].toObject()["js"].toArray().at(0).toObject()["isNextStepLoad"] = false; // initialize.js
+    m_jsonMasterObj["resources"].toObject()["js"].toArray().at(1).toObject()["isNextStepLoad"] = false; // models/model.js
+    m_jsonMasterObj["resources"].toObject()["js"].toArray().at(1).toObject()["isNextStepLoad"] = false; // views/view.js
+
+    // Set overview TEMPLATE entry next step load to false.
+    m_jsonMasterObj["resources"].toObject()["templates"].toArray().at(0).toObject()["isNextStepLoad"] = false; // templates/overview.js
 }
 
 void ConfigHandler::setConfigUpdateFlag(bool stopUpdate)
@@ -120,7 +135,14 @@ void ConfigHandler::writeConfigJson()
         // qDebug() << " CONFIG FAILED :" << getConfigJSONFilePath();
     }
     // qDebug() << "WRITE : \n" << masterJObj;
+    changeLoadStepOfFiles();
     QJsonDocument doc(m_jsonMasterObj);
     m_fileConfigJson.write(doc.toJson());
     m_fileConfigJson.close();
 }
+
+ConfigHandler::~ConfigHandler()
+{
+
+}
+

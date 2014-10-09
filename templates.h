@@ -12,6 +12,7 @@ class Templates : public QObject{
     Q_OBJECT
 public:
     Templates(QString);
+    ~Templates();
     QString str_basePath;
     QFileSystemWatcher *qfsw_tmplt;
     int fileCount ;

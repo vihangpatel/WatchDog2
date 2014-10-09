@@ -72,6 +72,9 @@
     <string>Flags</string>
    </property>
    <widget class="QCheckBox" name="cb_isNewJsonType">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>20</x>
@@ -83,8 +86,14 @@
     <property name="text">
      <string>isNewJsonType</string>
     </property>
+    <property name="checked">
+     <bool>true</bool>
+    </property>
    </widget>
    <widget class="QCheckBox" name="cb_newSaveState">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>20</x>
@@ -95,6 +104,9 @@
     </property>
     <property name="text">
      <string>newSaveState</string>
+    </property>
+    <property name="checked">
+     <bool>true</bool>
     </property>
    </widget>
    <widget class="QCheckBox" name="cb_isSaveStateAllowed">
@@ -111,6 +123,9 @@
     </property>
    </widget>
    <widget class="QCheckBox" name="cb_isTwoStepLoad">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>20</x>
@@ -121,6 +136,9 @@
     </property>
     <property name="text">
      <string>isTwoStepLoad</string>
+    </property>
+    <property name="checked">
+     <bool>true</bool>
     </property>
    </widget>
   </widget>
@@ -185,7 +203,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>modelClass</string>
+     <string>CamelCaseData</string>
     </property>
    </widget>
   </widget>
@@ -301,7 +319,7 @@
       </rect>
      </property>
      <property name="text">
-      <string>#overview-tab</string>
+      <string>#overview-tab-holder</string>
      </property>
     </widget>
    </widget>
@@ -340,7 +358,7 @@
       </rect>
      </property>
      <property name="text">
-      <string>overview-screen</string>
+      <string>overview-sreen</string>
      </property>
     </widget>
     <widget class="QLabel" name="label_11">
@@ -366,7 +384,7 @@
       </rect>
      </property>
      <property name="text">
-      <string>background-image</string>
+      <string>overview_bg</string>
      </property>
     </widget>
    </widget>
@@ -500,7 +518,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>module</string>
+    <string>CamelCase</string>
    </property>
   </widget>
   <widget class="QLineEdit" name="idPrefixText">
@@ -513,7 +531,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>idPrefix</string>
+    <string>camel-case</string>
    </property>
   </widget>
   <widget class="QLineEdit" name="playerThemeText">
@@ -591,7 +609,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>test</string>
+    <string>ge-u#-c#-i#-interactivity-name</string>
    </property>
   </widget>
   <widget class="QLabel" name="label_14">

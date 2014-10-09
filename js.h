@@ -13,6 +13,7 @@ class JS  : public QObject{
 public :
 
     JS(QString);
+    ~JS();
     QString m_strBasePath;
     QFileSystemWatcher *m_qfswJsView;
     QFileSystemWatcher *m_qfswJsModel;

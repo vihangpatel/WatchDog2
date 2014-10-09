@@ -11,13 +11,13 @@ LOCACC::LOCACC(QString strPath)
     m_strListMandatoryScreens << "title-screen" <<	"tab-contents" <<	"overview-tab" <<	"help-screen";
     QStringList treeList;
     treeList << "locAccData";
-    m_dirLang = new QDir("D:\DE");
+    m_dirLang = new QDir(strPath);
     m_qtwiRoot = new QTreeWidgetItem(treeList);
-    changeBasePath(strPath);
 }
 
 void LOCACC::changeBasePath(QString strPath)
 {
+    return;
     m_strBasePath  = strPath;
     m_dirLang->setPath(getLangFolderPath());
     getAvailableLangugaes();
@@ -246,13 +246,18 @@ bool LOCACC::messageExistance(QStringList messageData, QJsonArray msgsArray)
 
 QTreeWidgetItem * LOCACC::getLocAccTree()
 {
+    QFile file("debug.txt");
+    file.open(QIODevice::Append | QIODevice::Text);
+    QTextStream out(&file);
     QJsonArray locAccArray = m_jsonMasterObj["locAccData"].toArray();
     QJsonObject screenJObj;
     for(int i = 0 ; i < locAccArray.count() ; i++)
     {
         screenJObj = locAccArray.at(i).toObject();
+        out << locAccArray.at(i).toString();
         m_qtwiRoot->addChild(generateScreenTree(screenJObj));
     }
+    file.close();
     return m_qtwiRoot;
 }
 
@@ -640,12 +645,11 @@ int LOCACC::getCurrentSearchIndex()
 
 bool LOCACC::changeOrder(int currentIndex, int newIndex, QTreeWidgetItem *item)
 {
-      qDebug() << "informal :" << currentIndex  ;
+     // qDebug() << "informal :" << currentIndex  ;
     if (item && ((currentIndex < newIndex &&  currentIndex < m_qtwiRoot->childCount() - 1)
                   ||  (currentIndex > 0 && currentIndex > newIndex)))
     {
-        // Visual Update
-        qDebug() << currentIndex  ;
+        // Visual Update        
        QList<QTreeWidgetItem *> items = m_qtwiRoot->takeChildren();
        items.removeAt(currentIndex);
        items.insert(newIndex,item);
@@ -905,8 +909,8 @@ bool LOCACC::replaceAll(QString commonLocAccFilePath)
                         QJsonObject messageObject = messageArray.at(m).toObject();
                         QString str_locText = tempLocAccObj["loc"].toString();
                         bool b_compareResult = str_locText.compare(messageObject["message"].toObject()["loc"].toString());
-                        qDebug() << b_compareResult << " " << str_locText
-                                 << "  " << messageObject["message"].toObject()["loc"].toString();
+                       /* qDebug() << b_compareResult << " " << str_locText
+                                 << "  " << messageObject["message"].toObject()["loc"].toString();*/
                         if(b_compareResult == 0)
                         {
                             // Generate Log Object
@@ -916,8 +920,7 @@ bool LOCACC::replaceAll(QString commonLocAccFilePath)
                             logObject["messageId"] = tempMsgObj["id"];
                             logObject["originalText"] = tempLocAccObj["loc"];
                             logObject["commonId"] = tempReplaceObj["id"];
-                            jsonLog.append(logObject);
-                            qDebug() << "replaced ";
+                            jsonLog.append(logObject);                            
 
                             // Actual Change
                             tempLocAccObj["loc"] = QString("");
@@ -1095,4 +1098,11 @@ bool LOCACC::validateLocAccJson()
     htmlLogFile.close();
     QDesktopServices::openUrl(QUrl(str_htmlFilePath.replace("\\","/")));
     return returnFlag;
+}
+
+LOCACC::~LOCACC()
+{
+    return;
+    delete m_qtwiRoot;
+    delete m_dirLang;
 }

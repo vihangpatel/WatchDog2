@@ -22,6 +22,7 @@ class LOCACC : public QObject
     Q_OBJECT
 public:
     explicit LOCACC(QString);
+    ~LOCACC();
     QString m_strBasePath;
     QFile m_fileLocAcc;
     QJsonObject m_jsonMasterObj;

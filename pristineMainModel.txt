@@ -7,11 +7,11 @@
 	*	
 	* @class %@class#%
 	* @namespace MathInteractives.Interactivities.%@module#%.Views
-    * @extends MathInteractives.Common.Player.Views.Base
+    * @extends MathInteractives.Common.Player.Models.BaseInteractive
 	* @constructor
 	*/
 	
-    MathInteractives.Interactivities.%@module#%.%@view/model#%.%@class#% = MathInteractives.Common.Player.Views.Base.extend({
+    MathInteractives.Interactivities.%@module#%.%@view/model#%.%@class#% = MathInteractives.Common.Player.Models.BaseInteractive.extend({
 
         /**
         * Initialises %@class#%
@@ -19,7 +19,7 @@
         * @method initialize
         **/
         initialize: function () {
-			this.initializeDefaultProperties();
+			
         }
     });
 })();

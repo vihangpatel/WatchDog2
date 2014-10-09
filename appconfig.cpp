@@ -9,7 +9,7 @@ AppConfig::AppConfig(QObject *parent) :
     m_fileAppConfig.setFileName(getConfigFileName());
     if(!m_fileAppConfig.exists())
     {
-        qDebug() << "New Config has been generated";
+        //qDebug() << "New Config has been generated";
         m_fileAppConfig.open(QIODevice::ReadWrite | QIODevice::Text);
         m_fileAppConfig.close();
     }
@@ -132,7 +132,7 @@ void AppConfig::readSettings()
     QJsonDocument doc(QJsonDocument::fromJson(rawData));
     m_jsonMasterObj = doc.object();
     m_bflagStatus = m_jsonMasterObj["flags"].toDouble();
-     qDebug() << "READ : " << m_bflagStatus;
+  //qDebug() << "READ : " << m_bflagStatus;
     m_fileAppConfig.close();
 }
 
@@ -146,8 +146,13 @@ void AppConfig::writeSettings()
         // qDebug() << " LOC ACC DO NOT EXIST . NEW WILL BE CREATED :" << getLocAccFilePath();
     }
     m_jsonMasterObj.insert("flags",m_bflagStatus);
-    qDebug() << "WRITE : \n" << m_jsonMasterObj;
+    //qDebug() << "WRITE : \n" << m_jsonMasterObj;
     QJsonDocument doc(m_jsonMasterObj);
     m_fileAppConfig.write(doc.toJson());
     m_fileAppConfig.close();
+}
+
+AppConfig::~AppConfig()
+{
+
 }

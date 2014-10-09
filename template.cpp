@@ -8,8 +8,7 @@ QString TEMPLATE_FOLDER_COMPILE_COMMAND = "compile_handlebars_in_folder.bat";
 Templates::Templates(QString basePath) {
     qfsw_tmplt = new QFileSystemWatcher();
     tmpltDir = new QDir(basePath);
-    process = new QProcess();
-    changeBasePath(basePath);
+    process = new QProcess();    
 }
 
 void Templates::connectSignals(){
@@ -115,4 +114,12 @@ void Templates::deregisterFiles(){
 
 void Templates :: deregisterDirs(){
     qfsw_tmplt->removePaths(qfsw_tmplt->directories());
+}
+
+Templates::~Templates()
+{
+    return;
+    delete qfsw_tmplt;
+    delete process;
+    delete tmpltDir;
 }

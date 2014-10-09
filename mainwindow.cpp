@@ -105,8 +105,7 @@ void MainWindow::initTrayIcon()
     m_qmTrayMenu->addAction("Exit",this,SLOT(close()));
     m_trayIcon->setContextMenu(m_qmTrayMenu);
     m_trayIcon->show();
-    showApp();
-    //stopMonitoring();
+    showApp();    
 }
 
 void MainWindow::compileAllHandleBars()
@@ -182,7 +181,7 @@ void MainWindow::connectSignals(){
     connect(m_css,SIGNAL(filesChanged(QFileInfoList)),this,SLOT(updateCssList(QFileInfoList)));
     connect(ui->cssList,SIGNAL(itemClicked(QListWidgetItem*)),this,SLOT(cssFileListClicked(QListWidgetItem*)));
 
-    connect(m_form,SIGNAL(newInterActivityCreated(QString)),this,SLOT(changeBasePath(QString)));
+    connect(m_form,SIGNAL(newInterActivityCreated(QString)),this,SLOT(newInterActivityCreated(QString)));
     connect(m_form,SIGNAL(newJSONPrepared(QJsonObject)),m_config,SLOT(newInteractivityCreated(QJsonObject)));
 
     connect(ui->locTreeWidget,SIGNAL(customContextMenuRequested(QPoint)),this,SLOT(onCustomContextMenuRequested(QPoint)));
@@ -198,8 +197,7 @@ void MainWindow::onCustomContextMenuRequested(const QPoint &pos)
 }
 
 void MainWindow::showLocTreeCustomMenu(QTreeWidgetItem *item, const QPoint &globalPos)
-{
-    qDebug() << "show request sent";
+{    
     m_qmTreeMenu->show();
     m_qmTreeMenu->popup(globalPos);
 }
@@ -214,6 +212,7 @@ MainWindow::~MainWindow()
     delete m_css;
     delete m_template;
     delete m_config;
+    delete m_form;
     delete ui;
 }
 
@@ -237,6 +236,17 @@ void MainWindow::deregisterWatcher(){
  *
  **************************************************************/
 
+void MainWindow::newInterActivityCreated(QString path)
+{
+    changeBasePath(path);
+    bool b_StopConfigUpdate = m_config->m_bStopUpdating;
+    m_config->setConfigUpdateFlag(false);
+    m_config->writeConfigJson();
+    m_config->setConfigUpdateFlag(b_StopConfigUpdate);
+    stopMonitoring();
+    startMonitoring();
+}
+
 void MainWindow::changeBasePath(QString strBasePath)
 {
     deregisterWatcher();
@@ -245,7 +255,7 @@ void MainWindow::changeBasePath(QString strBasePath)
     m_template->changeBasePath(m_strBasePath);
     m_js->changeBasePath(m_strBasePath);
     m_css->changeBasePath(m_strBasePath);
-    m_locAcc->changeBasePath(m_strBasePath);    
+    m_locAcc->changeBasePath(m_strBasePath);
     updateDirTree();
     setWindowTitle("DE-Interactives " + m_strBasePath);
     on_searchLocBtn_clicked();
@@ -1078,17 +1088,14 @@ void MainWindow::createLOCTreeContext()
 void MainWindow::performLocOpertions(int operation)
 {
     QTreeWidgetItem *currentItem = ui->locTreeWidget->currentItem();
-    int indentationLevel = getTreeItemIndentationLevel(currentItem);
-    qDebug() << "perform loc opertion has been called";
+    int indentationLevel = getTreeItemIndentationLevel(currentItem);    
     switch (operation) {
         case 0:
             m_qtwiSource = ui->locTreeWidget->currentItem();
-            m_eOperation = O_CUT;
-            qDebug() << "CUT";
+            m_eOperation = O_CUT;           
             break;
         case 1:
-            m_qtwiSource = ui->locTreeWidget->currentItem();
-            qDebug() << "COPY";
+            m_qtwiSource = ui->locTreeWidget->currentItem();            
             m_eOperation = O_COPY;
             break;
         case 2:
@@ -1118,8 +1125,7 @@ void MainWindow::performLocOpertions(int operation)
                             }
                             break;
                     }
-                }
-                qDebug() << "PASTE";
+                }                
                 break;
         case 3:
                         switch(indentationLevel)
@@ -1134,8 +1140,7 @@ void MainWindow::performLocOpertions(int operation)
                                 deleteMessage();
                                 break;
                         }
-                    m_qmTreeMenu->actions()[2]->setEnabled(false);
-                    qDebug() << "DELETE";
+                    m_qmTreeMenu->actions()[2]->setEnabled(false);                    
                     break;
     }
 }
@@ -1158,8 +1163,7 @@ void MainWindow::contextMenuVisibility()
     {
         int sourceItemIndentation = -1;
         sourceItemIndentation = getTreeItemIndentationLevel(m_qtwiSource);
-        m_qmTreeMenu->actions()[2]->setEnabled(sourceItemIndentation - currentItemIndentation == 1);
-        qDebug() << "current : " << currentItemIndentation << " source : " << sourceItemIndentation;
+        m_qmTreeMenu->actions()[2]->setEnabled(sourceItemIndentation - currentItemIndentation == 1);        
     }
 }
 
@@ -1249,8 +1253,7 @@ void MainWindow::on_minifyInterActBtn_clicked()
     QStringList args;
     args << getCurrentInteractivityName();
     process->startDetached(str_MiniFyPath + "/" + "minify_interactive.bat",args);
-    process->deleteLater();
-    qDebug() << str_MiniFyPath;
+    process->deleteLater();    
 }
 
 void MainWindow::on_minifyPreLoadBtn_clicked()
@@ -1299,7 +1302,6 @@ void MainWindow::on_screenDownBtn_clicked()
 
     if(m_locAcc->changeOrder(row,row+1,item)){
 
-        qDebug() << "success";
     }
     ui->locTreeWidget->setCurrentItem(item);
     return;

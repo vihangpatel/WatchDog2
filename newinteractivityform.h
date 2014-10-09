@@ -41,12 +41,23 @@ public:
     void setComponentTableDate(QList<QStringList>);
     QJsonArray getTemplateJSON();
     void createFiles();
+    void createImageFile();
     void createLocAccFile();
     void createHandleBars();
     bool createHandleBarFile(QStringList tableEntry);
     void createJSs();
     bool createJSFile(QStringList tableEntry,int fileType);
     void createCSS();
+
+    QString getJSFolderPath();
+    QString getJSViewFolderPath();
+    QString getJSModelFolderPath();
+    QString getCSSFolderPath();
+    QString getMediaFolderPath();
+    QString getTemplateFolderPath();
+    QString getImageFolderPath();
+    QString getLocAccFolderPath();
+
     ~NewInterActivityForm();
     
 private slots:

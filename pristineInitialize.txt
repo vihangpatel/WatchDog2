@@ -1,0 +1,29 @@
+/** Initialize File**/
+
+(function (MathInteractives) {
+    'use strict';
+    /**
+    * Packages all the Interactivities under one namespace
+    * @module %@module#%
+    * @namespace MathInteractives.Interactivities
+    **/
+    MathInteractives.Interactivities.%@module#% = {};
+
+    /**
+    * Packages all the models used in the %@module#% module.
+    * @module %@module#%
+    * @submodule Models
+    * @namespace MathInteractives.Interactivities.%@module#%
+    **/
+    MathInteractives.Interactivities.%@module#%.Models = {};
+
+    /**
+    * Packages all the views used in the %@module#% module.
+    * @module %@module#%
+    * @submodule Views
+    * @namespace MathInteractives.Interactivities.%@module#%
+    **/
+    MathInteractives.Interactivities.%@module#%.Views = {};
+
+
+})(window.MathInteractives);

@@ -14,6 +14,7 @@ class AppConfig : public QObject
     Q_OBJECT
 public:
     explicit AppConfig(QObject *parent = 0);
+    ~AppConfig();
     const int JS_TRUE = 1;
     const int TEMPLATE_TRUE = 2;
     const int CSS_TRUE = 4;

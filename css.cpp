@@ -5,8 +5,7 @@ QString CSS_FILE_EXTENSION = ".css";
 
 CSS::CSS(QString basePath) {
     m_qfswCss = new QFileSystemWatcher();
-    m_dirCss = new QDir(basePath);
-    changeBasePath(basePath);
+    m_dirCss = new QDir(basePath);    
 }
 
 void CSS::connectSignals(){
@@ -91,3 +90,10 @@ void CSS :: deregisterDirs(){
     m_qfswCss->removePaths(m_qfswCss->directories());
 }
 
+CSS::~CSS()
+{
+    return;
+    deRegisterWatcher();
+    delete m_qfswCss;
+    delete m_dirCss;
+}

@@ -201,6 +201,7 @@ public slots:
     void stopMonitoring();
     void startMonitoring();
     void compileAllHandleBars();
+    void newInterActivityCreated(QString path);
 
 private:
     Ui::MainWindow *ui;
