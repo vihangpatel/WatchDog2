@@ -45,6 +45,7 @@ void MainWindow::storeSetting()
 
 void MainWindow::initialize(){
 
+    m_qtwiSource = NULL;
     m_appConfig = new AppConfig(this);
     initTrayIcon();
     loadSavedSettings();
@@ -831,6 +832,7 @@ void MainWindow::updateLocDetails(int indentationLevel)
 {
     QStringList dataList;
     QTreeWidgetItem *currentItem = ui->locTreeWidget->currentItem();
+
     switch (indentationLevel) {
     case 1:
         dataList =m_locAcc->getScreenTreeData(currentItem);
@@ -1075,6 +1077,11 @@ void MainWindow::createLOCTreeContext()
     QAction *pasteAction = m_qmTreeMenu->addAction("Paste",mapper,SLOT(map()));
     QAction *deleteAction = m_qmTreeMenu->addAction("Delete",mapper,SLOT(map()));
 
+    cutAction->setEnabled(false);
+    copyAction->setEnabled(false);
+    pasteAction->setEnabled(false);
+    deleteAction->setEnabled(false);
+
     mapper->setMapping(cutAction,0);
     mapper->setMapping(copyAction,1);
     mapper->setMapping(pasteAction,2);
@@ -1154,16 +1161,21 @@ void MainWindow::contextMenuVisibility()
     }
     int currentItemIndentation  = getTreeItemIndentationLevel(currentItem);
 
-    m_qmTreeMenu->actions()[0]->setEnabled(currentItemIndentation != 0);
-    m_qmTreeMenu->actions()[1]->setEnabled(currentItemIndentation != 0);
-    m_qmTreeMenu->actions()[2]->setEnabled(currentItemIndentation != 0);
-    m_qmTreeMenu->actions()[3]->setEnabled(currentItemIndentation != 0);
+    QList<QAction *> locTreeMenu = m_qmTreeMenu->actions();
+    for(int i=0; i < locTreeMenu.length(); i++)
+    {
+        m_qmTreeMenu->actions()[i]->setEnabled(currentItemIndentation != 0);
+    }
 
     if(m_qtwiSource != NULL)
     {
         int sourceItemIndentation = -1;
         sourceItemIndentation = getTreeItemIndentationLevel(m_qtwiSource);
-        m_qmTreeMenu->actions()[2]->setEnabled(sourceItemIndentation - currentItemIndentation == 1);        
+        m_qmTreeMenu->actions()[2]->setEnabled((sourceItemIndentation - currentItemIndentation) == 1);
+    }
+    else
+    {
+        m_qmTreeMenu->actions()[2]->setEnabled(false);
     }
 }
 
