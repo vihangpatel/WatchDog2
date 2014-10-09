@@ -18,6 +18,7 @@ QString MODULE_PLACE_HOLDER = "%@module#%";
 QString VIEW_PLACE_HOLDER = "%@view/model#%";
 QString CLASS_PLACE_HOLDER = "%@class#%";
 QString OVERVIEW_BG_IMAGE = "overview-bg.png";
+QString OVERVIEW_SCREEN_LOAD_HOLDER = "%@load-screen#%" ;
 
 NewInterActivityForm::NewInterActivityForm(QWidget *parent) :
     QDialog(parent),
@@ -301,6 +302,7 @@ bool NewInterActivityForm::createJSFile(QStringList tableEntry, int fileType)
         sampleFile.open(QIODevice::ReadOnly | QIODevice::Text);
         QByteArray byteArrayData= sampleFile.readAll();
         QString stringData(byteArrayData);
+        stringData.replace(OVERVIEW_SCREEN_LOAD_HOLDER,ui->overViewScreenId->text());
         stringData.replace(VIEW_PLACE_HOLDER,"Views");
         stringData.replace(CLASS_PLACE_HOLDER,tableEntry.at(2));
         stringData.replace(MODULE_PLACE_HOLDER,ui->moduleText->text());
