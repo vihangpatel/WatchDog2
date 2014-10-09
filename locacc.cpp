@@ -244,21 +244,14 @@ bool LOCACC::messageExistance(QStringList messageData, QJsonArray msgsArray)
 }
 
 QTreeWidgetItem * LOCACC::getLocAccTree()
-{
-    QFile file("debug.txt");
-    file.remove();
-    file.open(QIODevice::ReadWrite | QIODevice::Text);
-    QTextStream out(&file);
+{ 
     QJsonArray locAccArray = m_jsonMasterObj["locAccData"].toArray();
     QJsonObject screenJObj;
     for(int i = 0 ; i < locAccArray.count() ; i++)
     {
         screenJObj = locAccArray.at(i).toObject();
-        out << locAccArray.at(i).toObject()["id"].toString() << "\n";
         m_qtwiRoot->addChild(generateScreenTree(screenJObj));
     }
-    out << "successul";
-    file.close();
     return m_qtwiRoot;
 }
 
