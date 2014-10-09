@@ -66,7 +66,7 @@ void MainWindow::initialize(){
     m_css = new CSS(m_strBasePath);
     m_locAcc = new LOCACC(m_strBasePath);
 
-    ui->locTreeWidget->addTopLevelItem(m_locAcc->getLocAccTree());
+    ui->locTreeWidget->addTopLevelItem(m_locAcc->m_qtwiRoot);
     ui->DEpathText->setText(m_strRootPath);
     createLOCTreeContext();
 
