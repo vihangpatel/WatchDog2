@@ -2,6 +2,11 @@
 #include "ui_mainwindow.h"
 #include <QDebug>
 
+QString MINIFY_COMMON = "minify_common.bat";
+QString MINIFY_INTERACTIVITY = "minify_interactive.bat";
+QString MINIFY_PRELOADER = "minify_preloader.bat";
+QString DELETE_ORIG_FILES = "delete-orig-files.bat";
+QString DELETE_UNUSED_BRANCH = "delete-unused-branches.bat";
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -21,7 +26,7 @@ void MainWindow::loadSavedSettings()
     ui->cb_stopTmpltMonitir->setChecked(m_appConfig->monitorTemplates());
     ui->statusBar->showMessage("Current interactivity : " + getCurrentInteractivityName());
     ui->cb_stopConfigModification->setChecked(m_appConfig->monitorConfig());
-    ui->label_interActiveName->setText(getCurrentInteractivityName());
+    ui->label_interActiveName->setText(getCurrentInteractivityName());        
 }
 
 QString MainWindow::getCurrentInteractivityName()
@@ -168,6 +173,7 @@ void MainWindow::refreshTabStatus()
     on_cb_stopJSMonitor_clicked();
     on_cb_stopTmpltMonitir_clicked();
     on_cb_stopMediaMonitor_clicked();
+    on_cb_stopConfigModification_clicked();
 }
 
 // ////////////////////////////////////////////////////////////////////////////////////
@@ -239,13 +245,13 @@ void MainWindow::deregisterWatcher(){
 
 void MainWindow::newInterActivityCreated(QString path)
 {
-    changeBasePath(path);
-    bool b_StopConfigUpdate = m_config->m_bStopUpdating;
+    changeBasePath(path);    
     m_config->setConfigUpdateFlag(false);
-    m_config->writeConfigJson();
-    m_config->setConfigUpdateFlag(b_StopConfigUpdate);
+    m_config->changeLoadStepOfFiles();
+    m_config->writeConfigJson();    
     stopMonitoring();
     startMonitoring();
+    compileAllHandleBars();
 }
 
 void MainWindow::changeBasePath(QString strBasePath)
@@ -1250,11 +1256,13 @@ QString MainWindow::getMinificationFolderPath()
 /***************************************************
  * M I N I F I C A T I O N    R E L A T E D
 ***************************************************/
+
 void MainWindow::on_miniFyCommonBtn_clicked()
 {
     QString str_MiniFyPath = getMinificationFolderPath();
-    QProcess *process = new QProcess();
-    process->startDetached(str_MiniFyPath + "/" + "minify_common.bat");
+    QProcess *process = new QProcess();    
+    process->startDetached(str_MiniFyPath + "/" + MINIFY_COMMON,QStringList(),
+                           str_MiniFyPath);
     process->deleteLater();
 }
 
@@ -1264,7 +1272,7 @@ void MainWindow::on_minifyInterActBtn_clicked()
     QProcess *process = new QProcess();
     QStringList args;
     args << getCurrentInteractivityName();
-    process->startDetached(str_MiniFyPath + "/" + "minify_interactive.bat",args);
+    process->startDetached(str_MiniFyPath + "/" + MINIFY_INTERACTIVITY,args,str_MiniFyPath);
     process->deleteLater();    
 }
 
@@ -1272,18 +1280,27 @@ void MainWindow::on_minifyPreLoadBtn_clicked()
 {
     QString str_MiniFyPath = getMinificationFolderPath();
     QProcess *process = new QProcess();
-    process->startDetached(str_MiniFyPath + "/" + "minify_preloader.bat");
+    process->startDetached(str_MiniFyPath + "/" + MINIFY_PRELOADER,QStringList(),
+                           str_MiniFyPath);
     process->deleteLater();
 }
 
 void MainWindow::on_deleteOrigFilesBtn_clicked()
 {
     QString str_ToolPath = getToolsPath();
+    QProcess *process = new QProcess();
+    process->startDetached(str_ToolPath + "/" + DELETE_ORIG_FILES,QStringList(),
+                           str_ToolPath);
+    process->deleteLater();
 }
 
 void MainWindow::on_deleteBranchesBtn_clicked()
 {
     QString str_ToolPath = getToolsPath();
+    QProcess *process = new QProcess();
+    process->startDetached(str_ToolPath + "/" + DELETE_UNUSED_BRANCH,QStringList(),
+                           str_ToolPath);
+    process->deleteLater();
 }
 
 void MainWindow::on_openIntrFolderBtn_clicked()
@@ -1322,6 +1339,7 @@ void MainWindow::on_screenDownBtn_clicked()
 void MainWindow::on_cb_stopConfigModification_clicked()
 {
     m_config->setConfigUpdateFlag(ui->cb_stopConfigModification->isChecked());
+    m_config->writeConfigJson();
 }
 
 void MainWindow::on_saveLocAccBtn_clicked()

@@ -95,7 +95,7 @@ void Templates::compileAllHandleBars()
 {
     QString compilePath = getAllTemplateCompilePath();
     compilePath.replace("/","\\");
-    process->startDetached(compilePath);
+    process->startDetached(compilePath,QStringList(),str_basePath.replace("/","\\"));
 }
 
 QString Templates::getAllTemplateCompilePath()

@@ -31,7 +31,7 @@
      <string notr="true"/>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>6</number>
     </property>
     <widget class="QWidget" name="tab">
      <attribute name="icon">
@@ -207,7 +207,7 @@ font-weight:bold;</string>
         <normaloff>:/images/lock-48.png</normaloff>:/images/lock-48.png</iconset>
       </property>
       <property name="checked">
-       <bool>true</bool>
+       <bool>false</bool>
       </property>
      </widget>
      <widget class="QCheckBox" name="cb_stopTmpltMonitir">
@@ -227,7 +227,7 @@ font-weight:bold;</string>
         <normaloff>:/images/lock-48.png</normaloff>:/images/lock-48.png</iconset>
       </property>
       <property name="checked">
-       <bool>true</bool>
+       <bool>false</bool>
       </property>
      </widget>
      <widget class="QCheckBox" name="cb_stopCSSMonitor">
@@ -247,7 +247,7 @@ font-weight:bold;</string>
         <normaloff>:/images/lock-48.png</normaloff>:/images/lock-48.png</iconset>
       </property>
       <property name="checked">
-       <bool>true</bool>
+       <bool>false</bool>
       </property>
      </widget>
      <widget class="QCheckBox" name="cb_stopMediaMonitor">
@@ -267,7 +267,7 @@ font-weight:bold;</string>
         <normaloff>:/images/lock-48.png</normaloff>:/images/lock-48.png</iconset>
       </property>
       <property name="checked">
-       <bool>true</bool>
+       <bool>false</bool>
       </property>
      </widget>
      <widget class="QPushButton" name="openIntrFolderBtn">
@@ -300,7 +300,7 @@ font-weight:bold;</string>
         <normaloff>:/images/lock-48.png</normaloff>:/images/lock-48.png</iconset>
       </property>
       <property name="checked">
-       <bool>true</bool>
+       <bool>false</bool>
       </property>
      </widget>
     </widget>

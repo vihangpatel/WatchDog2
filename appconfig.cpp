@@ -60,6 +60,7 @@ bool AppConfig::monitorTemplates()
 
 bool AppConfig::monitorConfig()
 {
+
     return (m_bflagStatus & CONFIG_STOP) == CONFIG_STOP;
 }
 
