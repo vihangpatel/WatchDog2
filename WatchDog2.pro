@@ -20,20 +20,17 @@ SOURCES +=  main.cpp\
     configHandler.cpp \
     css.cpp \
     locacc.cpp \
-    appconfig.cpp \
-    cutcopypaste.cpp
+    appconfig.cpp
 
 HEADERS  += mainwindow.h \
     templates.h \
     newinteractivityform.h \
     js.h \
-    Monitor.h \
     configHandler.h \
     css.h \
     locacc.h \
     messages.h \
-    appconfig.h \
-    cutcopypaste.h
+    appconfig.h
 
 FORMS    += \
     newinteractivityform.ui \

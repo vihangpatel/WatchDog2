@@ -62,6 +62,10 @@ void MainWindow::initialize(){
     ui->treeView->setIndentation(20);
     ui->treeView->setSortingEnabled(true);
     ui->locSearchText->setAutoFillBackground(true);
+    ui->treeView->setColumnHidden(1,true);
+    ui->treeView->setColumnHidden(2,true);
+    ui->treeView->setColumnHidden(3,true);
+
     m_qfswMain = new QFileSystemWatcher(this);
     m_form = new NewInterActivityForm(this);
     m_form->changeBasePath(m_strRootPath);
