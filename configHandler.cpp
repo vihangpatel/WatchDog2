@@ -45,6 +45,11 @@ QJsonArray ConfigHandler::getJSJArray()
     return m_jsonMasterObj["resources"].toObject().value("js").toArray();
 }
 
+QJsonArray ConfigHandler::getImagesJArray()
+{
+    return m_jsonMasterObj["resources"].toObject().value("media").toObject()["image"].toArray();
+}
+
 QJsonArray ConfigHandler::getTemplateJArray()
 {
     return m_jsonMasterObj["resources"].toObject().value("templates").toArray();
@@ -73,6 +78,15 @@ void ConfigHandler::setJSJArray(QJsonArray array)
 {
     QJsonObject obj = m_jsonMasterObj.find("resources").value().toObject();
     obj["js"] = array;
+    m_jsonMasterObj["resources"] = obj;
+}
+
+void ConfigHandler::setImagesJArray(QJsonArray array)
+{
+    QJsonObject obj = m_jsonMasterObj.find("resources").value().toObject();
+    QJsonObject mediaObj = obj["media"].toObject();
+    mediaObj["image"] = array;
+    obj["media"] = mediaObj;
     m_jsonMasterObj["resources"] = obj;
 }
 

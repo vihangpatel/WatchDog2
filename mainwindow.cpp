@@ -75,6 +75,7 @@ void MainWindow::initialize(){
     m_config = new ConfigHandler(m_strBasePath);
     m_css = new CSS(m_strBasePath);
     m_locAcc = new LOCACC(m_strBasePath);
+    m_images = new MediaImages(m_strBasePath);
 
     ui->locTreeWidget->addTopLevelItem(m_locAcc->m_qtwiRoot);
     ui->DEpathText->setText(m_strRootPath);
@@ -192,6 +193,9 @@ void MainWindow::connectSignals(){
     connect(m_css,SIGNAL(filesChanged(QFileInfoList)),this,SLOT(updateCssList(QFileInfoList)));
     connect(ui->cssList,SIGNAL(itemClicked(QListWidgetItem*)),this,SLOT(cssFileListClicked(QListWidgetItem*)));
 
+    connect(m_images,SIGNAL(filesChanged(QFileInfoList)),this,SLOT(updateMediaList(QFileInfoList)));
+    connect(ui->mediaList,SIGNAL(itemClicked(QListWidgetItem*)),this,SLOT(mediaFileListClicked(QListWidgetItem*)));
+
     connect(m_form,SIGNAL(newInterActivityCreated(QString)),this,SLOT(newInterActivityCreated(QString)));
     connect(m_form,SIGNAL(newJSONPrepared(QJsonObject)),m_config,SLOT(newInteractivityCreated(QJsonObject)));
 
@@ -267,6 +271,7 @@ void MainWindow::changeBasePath(QString strBasePath)
     m_js->changeBasePath(m_strBasePath);
     m_css->changeBasePath(m_strBasePath);
     m_locAcc->changeBasePath(m_strBasePath);
+    m_images->changeBasePath(m_strBasePath);
     updateDirTree();
     setWindowTitle("DE-Interactives " + m_strBasePath);
     on_searchLocBtn_clicked();
@@ -694,6 +699,142 @@ void MainWindow::on_cssList_itemSelectionChanged()
     cssFileListClicked(ui->cssList->currentItem());
 }
 
+/***************************************************************
+ *                         M E D I A      I M A G E S      H A N D L I N G
+ ***************************************************************/
+
+void MainWindow::updateMediaList(QFileInfoList fileList){
+    if(ui->cb_stopMediaMonitor->isChecked())
+    {
+        return;
+    }
+    ui->mediaList->clear();
+    QJsonObject obj;
+    QJsonArray imgesArray ;
+    QString currentFileName ;
+    for(int i = 0 ; i < fileList.length() ; i++){
+        currentFileName = fileList.at(i).fileName();
+        obj["id"] = currentFileName.split(".")[0];
+        obj["url"] = currentFileName;
+        obj["isNextStepLoad"] = true;
+        obj["forceLoad"] = false;
+        imgesArray.insert(i,obj);
+        ui->mediaList->addItem(currentFileName);
+        // qDebug() << fileList.at(i).fileName();
+    }
+    ui->mediaList->setCurrentRow(0);
+    m_config->setImagesJArray(syncImgsList(imgesArray));
+    mediaFileListClicked(ui->mediaList->currentItem());
+    m_config->writeConfigJson();
+}
+
+QJsonArray MainWindow::syncImgsList(QJsonArray newArray)
+{
+    QJsonObject tempNewObj,tempOrigObj;
+    QJsonArray mediaJArray = m_config->getImagesJArray();
+    for(int i = 0 ; i < newArray.count() ; i++)
+    {
+        tempNewObj =  newArray.at(i).toObject();
+        for(int j = 0 ; j < mediaJArray.count() ; j ++)
+        {
+            tempOrigObj = mediaJArray.at(j).toObject();
+            if(tempNewObj["url"] == tempOrigObj["url"]){
+                tempNewObj["isNextStepLoad"] = tempOrigObj["isNextStepLoad"];
+                tempNewObj["forceLoad"] = tempOrigObj["forceLoad"];
+                newArray.replace(i,tempNewObj);
+                // qDebug() <<"replced";
+            }
+        }
+    }
+    return newArray;
+}
+
+void MainWindow::mediaFileListClicked(QListWidgetItem *item){
+    if(item == NULL || ui->cb_stopMediaMonitor->isChecked())
+    {
+        return;
+    }
+    QJsonArray imagesJArray = m_config->getImagesJArray();
+    QString itemText = item->text();
+    for(int i = 0; i < imagesJArray.count() ; i++){
+        QJsonObject obj = imagesJArray.at(i).toObject();
+        if(obj["url"] == itemText){
+            ui->cb_mediaIsNextStopLoad->setChecked(obj["isNextStepLoad"].toBool());
+            ui->cb_mediaForceLoad->setChecked(obj["forceLoad"].toBool());
+            ui->imageIdText->setText(obj["id"].toString());
+            break;
+        }
+    }
+}
+
+void MainWindow::on_cb_mediaForceLoad_clicked()
+{
+    if(ui->cb_stopMediaMonitor->isChecked())
+    {
+        return;
+    }
+    QJsonArray mediaJArray = m_config->getImagesJArray();
+    QListWidgetItem *currentItem  = ui->mediaList->currentItem();
+    for(int i = 0; i < mediaJArray.count() ; i++){
+
+        QJsonObject obj = mediaJArray.at(i).toObject();
+        if(obj["url"] == currentItem->text())
+        {
+            obj["forceLoad"] = ui->cb_mediaForceLoad->isChecked();
+            mediaJArray.replace(i,obj);
+        }
+    }
+    m_config->setImagesJArray(mediaJArray);
+    m_config->writeConfigJson();
+}
+
+void MainWindow::on_cb_mediaIsNextStopLoad_clicked()
+{
+    if(ui->cb_stopMediaMonitor->isChecked())
+    {
+        return;
+    }
+    QJsonArray mediaJArray = m_config->getImagesJArray();
+    QListWidgetItem *currentItem  = ui->mediaList->currentItem();
+    for(int i = 0; i < mediaJArray.count() ; i++){
+
+        QJsonObject obj = mediaJArray.at(i).toObject();
+        if(obj["url"] == currentItem->text())
+        {
+            obj["isNextStepLoad"] = ui->cb_mediaIsNextStopLoad->isChecked();
+            mediaJArray.replace(i,obj);
+        }
+    }
+    m_config->setImagesJArray(mediaJArray);
+    m_config->writeConfigJson();
+    // qDebug() << "ON CHECK BOX CLICKED CSS: " << cssJArray;
+}
+
+void MainWindow::on_mediaList_itemSelectionChanged()
+{
+    mediaFileListClicked(ui->mediaList->currentItem());
+}
+
+void MainWindow::on_updateImgBtn_clicked()
+{
+    if(ui->cb_stopMediaMonitor->isChecked())
+    {
+        return;
+    }
+    QJsonArray mediaJArray = m_config->getImagesJArray();
+    QListWidgetItem *currentItem  = ui->mediaList->currentItem();
+    for(int i = 0; i < mediaJArray.count() ; i++){
+
+        QJsonObject obj = mediaJArray.at(i).toObject();
+        if(obj["url"] == currentItem->text())
+        {
+            obj["id"] = ui->imageIdText->text();
+            mediaJArray.replace(i,obj);
+        }
+    }
+    m_config->setImagesJArray(mediaJArray);
+    m_config->writeConfigJson();
+}
 
 
 /***************************************************************

@@ -17,6 +17,7 @@
 #include "css.h"
 #include "QSystemTrayIcon"
 #include "locacc.h"
+#include "mediaimages.h"
 #include "appconfig.h"
 #include <QBrush>
 
@@ -42,6 +43,7 @@ public:
     ConfigHandler *m_config;
     QSystemTrayIcon *m_trayIcon;
     LOCACC *m_locAcc;
+    MediaImages *m_images;
     QMenu *m_qmTrayMenu;
     QMenu *m_qmTreeMenu;
     AppConfig *m_appConfig;
@@ -76,6 +78,7 @@ public:
     QJsonArray syncTmpltList(QJsonArray jTemplateArray);
     QJsonArray syncJSList(QJsonArray jJSArray);
     QJsonArray syncCSSList(QJsonArray cssArray);
+    QJsonArray syncImgsList(QJsonArray imgesArray);
 
     void updateLocDetails(int indentationLevel = -1);
     void fillScreenDetail(QStringList data);
@@ -185,6 +188,14 @@ private slots:
 
     void on_validateLOCBtn_clicked();
 
+    void on_cb_mediaIsNextStopLoad_clicked();
+
+    void on_mediaList_itemSelectionChanged();
+
+    void on_cb_mediaForceLoad_clicked();
+
+    void on_updateImgBtn_clicked();
+
 public slots:
     void updateTemplateList(QFileInfoList);
     void templateFileListClicked(QListWidgetItem *);
@@ -194,6 +205,9 @@ public slots:
 
     void updateCssList(QFileInfoList);
     void cssFileListClicked(QListWidgetItem *);
+
+    void updateMediaList(QFileInfoList);
+    void mediaFileListClicked(QListWidgetItem *);
 
     void changeBasePath(QString);
     void showApp();

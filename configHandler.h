@@ -26,11 +26,13 @@ public:
     void changeBasePath(QString);
     QJsonArray getTemplateJArray();
     QJsonArray getJSJArray();
+    QJsonArray getImagesJArray();
     QJsonArray getCssJArray();
     QJsonObject getConfigModule();
 
     void setTemplateJArray(QJsonArray);
     void setJSJArray(QJsonArray);
+    void setImagesJArray(QJsonArray);
     void setCssJArray(QJsonArray);
     void setConfigModule(QJsonObject);
     void setConfigUpdateFlag(bool stopUpdate);
