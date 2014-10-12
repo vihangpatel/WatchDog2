@@ -264,6 +264,7 @@ void MainWindow::newInterActivityCreated(QString path)
 
 void MainWindow::changeBasePath(QString strBasePath)
 {
+    ui->imageIdText->setText("");
     deregisterWatcher();
     m_strBasePath = strBasePath;
     m_config->changeBasePath(m_strBasePath);
@@ -1369,7 +1370,7 @@ void MainWindow::on_cb_stopMediaMonitor_clicked()
     bool flagStatus = !ui->cb_stopMediaMonitor->isChecked();
     if(flagStatus)
     {
-       //->scanChanges();
+       m_images->scanChanges();
     }
     ui->tabWidget->setTabEnabled(4,flagStatus);
 }
