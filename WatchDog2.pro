@@ -21,7 +21,8 @@ SOURCES +=  main.cpp\
     css.cpp \
     locacc.cpp \
     appconfig.cpp \
-    mediaimages.cpp
+    mediaimages.cpp \
+    components.cpp
 
 HEADERS  += mainwindow.h \
     templates.h \
@@ -32,7 +33,8 @@ HEADERS  += mainwindow.h \
     locacc.h \
     messages.h \
     appconfig.h \
-    mediaimages.h
+    mediaimages.h \
+    components.h
 
 FORMS    += \
     newinteractivityform.ui \
