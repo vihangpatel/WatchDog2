@@ -310,10 +310,24 @@ QJsonObject LOCACC::getElementJson(QStringList elementData)
     QJsonArray tempMsgArray;
     QJsonObject eleObj ;
     eleObj["id"] = elementData.at(0);
-    eleObj["accId"] =  elementData.at(1);
+    eleObj["accId"] =  elementData.at(1);    
     eleObj["type"] = elementData.at(2);
-    eleObj["role"] =  elementData.at(3);
-    eleObj["tabIndex"] =  elementData.at(4).toInt();
+    if(elementData.at(3).length() != 0)
+    {
+        eleObj["role"] =  elementData.at(3);
+    }
+    if(elementData.at(4).length() != 0)
+    {
+        eleObj["tabIndex"] =  elementData.at(4).toInt();
+    }
+    if(elementData.length() > 5 && elementData.at(5).length() != 0)
+    {
+        eleObj["offsetTop"] =  elementData.at(5).toInt();
+    }
+    if(elementData.length() > 6 && elementData.at(6).length() != 0)
+    {
+        eleObj["offsetLeft"] =  elementData.at(6).toInt();
+    }
     eleObj["messages"] = tempMsgArray;
     return eleObj;
 }
@@ -440,7 +454,9 @@ QStringList LOCACC :: getElementTreeData(QTreeWidgetItem *elementItem)
     QStringList elementData;
     elementData << elementObj["id"].toString()  << elementObj["accId"].toString()  << elementObj["type"].toString()
             << elementObj["role"].toString()
-            << elementObj["tabIndex"].toString() ;
+            << (elementObj.contains("tabIndex") ? QString::number(elementObj["tabIndex"].toInt()) : "")
+            << (elementObj.contains("offsetTop") ? QString::number(elementObj["offsetTop"].toInt()) : "")
+            << (elementObj.contains("offsetLeft") ? QString::number(elementObj["offsetLeft"].toInt()) : "");
     return elementData;
 }
 

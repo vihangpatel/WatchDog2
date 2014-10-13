@@ -955,8 +955,10 @@ void MainWindow::on_updtEleBtn_clicked()
     QString eleRole = ui->updtEleRoleText->text();
     QString eleType = ui->updtEleTypeText->text();
     QString eleTabIndex = ui->updTabIndexText->text();
+    QString eleOffsetTop = ui->updtOffTopText->text();
+    QString eleOffsetLeft = ui->updtOffLeftText->text();
     QStringList eleData;
-    eleData << eleName << eleAccId << eleType << eleRole << eleTabIndex;
+    eleData << eleName << eleAccId << eleType << eleRole << eleTabIndex << eleOffsetTop << eleOffsetLeft;
     if(!m_locAcc->updateElement(eleData,ui->locTreeWidget->currentItem()))
     {
         QMessageBox::critical(this,"Same element Id exists in screen.","Same element Id exists .Please use another Id.",QMessageBox::Cancel);
@@ -1026,6 +1028,8 @@ void MainWindow::fillElementDetail(QStringList data)
     ui->updtEleTypeText->setText(data.at(2));
     ui->updtEleRoleText->setText(data.at(3));
     ui->updTabIndexText->setText(data.at(4));
+    ui->updtOffTopText->setText(data.at(5));
+    ui->updtOffLeftText->setText(data.at(6));
 }
 
 void MainWindow::fillMessageDetail(QStringList data)
