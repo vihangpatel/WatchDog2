@@ -19,6 +19,7 @@
 #include "locacc.h"
 #include "mediaimages.h"
 #include "appconfig.h"
+#include "components.h"
 #include <QBrush>
 
 namespace Ui {
@@ -44,6 +45,7 @@ public:
     QSystemTrayIcon *m_trayIcon;
     LOCACC *m_locAcc;
     MediaImages *m_images;
+    components *m_components;
     QMenu *m_qmTrayMenu;
     QMenu *m_qmTreeMenu;
     AppConfig *m_appConfig;
@@ -198,6 +200,10 @@ private slots:
 
     void on_refreshBtn_clicked();
 
+    void on_useComponentBtn_clicked();
+
+    void on_removeComponentBtn_clicked();
+
 public slots:
     void updateTemplateList(QFileInfoList);
     void templateFileListClicked(QListWidgetItem *);
@@ -218,6 +224,7 @@ public slots:
     void startMonitoring();
     void compileAllHandleBars();
     void newInterActivityCreated(QString path);
+    void componentsChanged();
 
 private:
     Ui::MainWindow *ui;

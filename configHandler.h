@@ -29,15 +29,17 @@ public:
     QJsonArray getImagesJArray();
     QJsonArray getCssJArray();
     QJsonObject getConfigModule();
+    QList<QString> getComponentList();
 
     void setTemplateJArray(QJsonArray);
     void setJSJArray(QJsonArray);
     void setImagesJArray(QJsonArray);
     void setCssJArray(QJsonArray);
     void setConfigModule(QJsonObject);
+    void setComponentList(QList<QString> components);
     void setConfigUpdateFlag(bool stopUpdate);
 
-    QString getConfigJSONFilePath();
+    QString getConfigJSONFilePath();    
 
     void changeLoadStepOfFiles();
     void readConfigJson();

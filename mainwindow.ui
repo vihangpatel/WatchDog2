@@ -2402,27 +2402,27 @@ font-weight:bold;</string>
      <widget class="QListWidget" name="origCompList">
       <property name="geometry">
        <rect>
-        <x>100</x>
-        <y>20</y>
-        <width>211</width>
-        <height>351</height>
+        <x>130</x>
+        <y>40</y>
+        <width>271</width>
+        <height>331</height>
        </rect>
       </property>
      </widget>
      <widget class="QListWidget" name="usedCompList">
       <property name="geometry">
        <rect>
-        <x>470</x>
-        <y>20</y>
-        <width>211</width>
-        <height>351</height>
+        <x>495</x>
+        <y>40</y>
+        <width>281</width>
+        <height>331</height>
        </rect>
       </property>
      </widget>
      <widget class="QPushButton" name="useComponentBtn">
       <property name="geometry">
        <rect>
-        <x>350</x>
+        <x>410</x>
         <y>120</y>
         <width>75</width>
         <height>23</height>
@@ -2435,7 +2435,7 @@ font-weight:bold;</string>
      <widget class="QPushButton" name="removeComponentBtn">
       <property name="geometry">
        <rect>
-        <x>350</x>
+        <x>410</x>
         <y>180</y>
         <width>75</width>
         <height>23</height>
@@ -2443,6 +2443,32 @@ font-weight:bold;</string>
       </property>
       <property name="text">
        <string>&lt;---</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_44">
+      <property name="geometry">
+       <rect>
+        <x>210</x>
+        <y>10</y>
+        <width>171</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Available Components</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_48">
+      <property name="geometry">
+       <rect>
+        <x>590</x>
+        <y>10</y>
+        <width>171</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Used components</string>
       </property>
      </widget>
     </widget>

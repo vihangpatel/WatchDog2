@@ -155,6 +155,31 @@ void ConfigHandler::writeConfigJson()
     m_fileConfigJson.close();
 }
 
+QList<QString> ConfigHandler::getComponentList()
+{
+    QList<QString> components;
+    QJsonArray jArray_component = m_jsonMasterObj["resources"].toObject()["components"].toArray();
+    for(int i = 0 ;i < jArray_component.count(); i++)
+    {
+        components.append(jArray_component.at(i).toString());
+    }
+    return components;
+}
+
+void ConfigHandler::setComponentList(QList<QString> components)
+{
+    QJsonArray jarray;
+    for(int i = 0 ; i < components.length();i++)
+    {
+        jarray.append(components.at(i));
+    }
+
+    QJsonObject jObj_resources = m_jsonMasterObj["resources"].toObject();
+    jObj_resources["components"] = jarray;
+    m_jsonMasterObj["resources"] = jObj_resources;
+    qDebug() << jarray;
+}
+
 ConfigHandler::~ConfigHandler()
 {
 

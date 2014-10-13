@@ -76,6 +76,7 @@ void MainWindow::initialize(){
     m_css = new CSS(m_strBasePath);
     m_locAcc = new LOCACC(m_strBasePath);
     m_images = new MediaImages(m_strBasePath);
+    m_components = new components(m_strBasePath);
 
     ui->locTreeWidget->addTopLevelItem(m_locAcc->m_qtwiRoot);
     ui->DEpathText->setText(m_strRootPath);
@@ -200,6 +201,7 @@ void MainWindow::connectSignals(){
     connect(m_form,SIGNAL(newJSONPrepared(QJsonObject)),m_config,SLOT(newInteractivityCreated(QJsonObject)));
 
     connect(ui->locTreeWidget,SIGNAL(customContextMenuRequested(QPoint)),this,SLOT(onCustomContextMenuRequested(QPoint)));
+    connect(m_components,SIGNAL(componentsChanged()),this,SLOT(componentsChanged()));
 }
 
 void MainWindow::onCustomContextMenuRequested(const QPoint &pos)
@@ -273,6 +275,8 @@ void MainWindow::changeBasePath(QString strBasePath)
     m_css->changeBasePath(m_strBasePath);
     m_locAcc->changeBasePath(m_strBasePath);
     m_images->changeBasePath(m_strBasePath);
+    m_components->setCommonPath(getCommonFolderPath());
+    m_components->setUsedComponentList(m_config->getComponentList());
     updateDirTree();
     setWindowTitle("DE-Interactives " + m_strBasePath);
     on_searchLocBtn_clicked();
@@ -1514,4 +1518,41 @@ void MainWindow::on_validateLOCBtn_clicked()
 void MainWindow::on_refreshBtn_clicked()
 {
     scanChanges();
+}
+
+/********************************************************
+ *  H A N D L E   C O M P O N E N T S
+ * ****************************************************/
+
+void MainWindow::componentsChanged()
+{
+    ui->origCompList->clear();
+    ui->origCompList->addItems(m_components->getUnusedComponentList());
+
+    ui->usedCompList->clear();
+    ui->usedCompList->addItems(m_components->getUsedComponentList());
+
+    ui->origCompList->setCurrentRow(0);
+    ui->usedCompList->setCurrentRow(0);
+
+    m_config->setComponentList(m_components->getUsedComponentList());
+    m_config->writeConfigJson();
+}
+
+void MainWindow::on_useComponentBtn_clicked()
+{
+    int currentSelectedCompIndex = ui->origCompList->currentRow();
+    if(ui->origCompList->count() > 0 )
+    {
+        m_components->useComponent(currentSelectedCompIndex);
+    }
+}
+
+void MainWindow::on_removeComponentBtn_clicked()
+{
+    int currentSelectedCompIndex = ui->usedCompList->currentRow();
+    if(ui->usedCompList->count() > 0)
+    {
+        m_components->removeComponent(currentSelectedCompIndex);
+    }
 }
