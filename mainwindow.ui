@@ -43,7 +43,7 @@
      <string notr="true"/>
     </property>
     <property name="currentIndex">
-     <number>5</number>
+     <number>7</number>
     </property>
     <widget class="QWidget" name="tab">
      <attribute name="icon">
@@ -2571,7 +2571,7 @@ font-weight:bold;</string>
         </rect>
        </property>
        <property name="styleSheet">
-        <string notr="true">background-color: rgb(255, 85, 0);</string>
+        <string notr="true"/>
        </property>
        <property name="text">
         <string>Common</string>
