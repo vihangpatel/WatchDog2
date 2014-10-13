@@ -637,6 +637,32 @@
     <string>ge-u#-c#-i#-interactivity-name</string>
    </property>
   </widget>
+  <widget class="QCheckBox" name="cb_includeJQueryTouch">
+   <property name="geometry">
+    <rect>
+     <x>410</x>
+     <y>370</y>
+     <width>121</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string> jQuery UI Touch</string>
+   </property>
+  </widget>
+  <widget class="QCheckBox" name="cb_includePaper">
+   <property name="geometry">
+    <rect>
+     <x>410</x>
+     <y>400</y>
+     <width>121</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>PAPER-FULL</string>
+   </property>
+  </widget>
  </widget>
  <tabstops>
   <tabstop>folderNameText</tabstop>

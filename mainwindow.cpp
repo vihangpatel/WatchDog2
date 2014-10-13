@@ -296,11 +296,16 @@ void MainWindow::changeBasePath(QString strBasePath)
 void MainWindow::on_openDialog_clicked()
 {
     deregisterWatcher();
-    QString folderName =  m_qfsModel->itemData(ui->treeView->currentIndex())[Qt::DisplayRole].toString();
-    m_strBasePath = m_strRootPath + "/" + folderName;
+    if(QMessageBox::critical(this,"Are you sure ?","You are about to change interactivity folder."
+                             "If this is not you wanted then click cancel.",QMessageBox::Ok,QMessageBox::Cancel)
+            == QMessageBox::Ok)
+    {
+        QString folderName =  m_qfsModel->itemData(ui->treeView->currentIndex())[Qt::DisplayRole].toString();
+        m_strBasePath = m_strRootPath + "/" + folderName;
 
-    changeBasePath(m_strBasePath);
-    m_form->changeBasePath(m_strRootPath);
+        changeBasePath(m_strBasePath);
+        m_form->changeBasePath(m_strRootPath);
+    }
 }
 
 void MainWindow::updateDirTree(){   

@@ -451,10 +451,26 @@ void NewInterActivityForm::writeConfigJson()
     QJsonObject resourceObj;
     QJsonArray tempArray;    
     resourceObj["isNewJsonType"] = ui->cb_isNewJsonType->isChecked();
-    resourceObj["css"]= tempArray;
-    resourceObj["js"]= tempArray;    
+    resourceObj["css"]= tempArray;        
     resourceObj["templates"]= tempArray;
     resourceObj["json"]= tempArray;
+
+    if(ui->cb_includeJQueryTouch->isChecked())
+    {
+        QJsonObject jObj_jQueryUITouch ;
+        jObj_jQueryUITouch["url"] = "jquery.ui.touch.js";
+        jObj_jQueryUITouch["basePath"] = "JQUERY_JS";
+        tempArray.append(jObj_jQueryUITouch);
+    }
+    if(ui->cb_includePaper->isChecked())
+    {
+        QJsonObject jObj_jPaper ;
+        jObj_jPaper["url"] = "paper-full.js";
+        jObj_jPaper["basePath"] = "PAPER_JS";
+        tempArray.append(jObj_jPaper);
+    }
+    resourceObj["js"]= tempArray;
+    tempArray.empty();
 
     // Insert background-image entry in config
     QJsonArray imageJArray;
