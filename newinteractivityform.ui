@@ -474,9 +474,15 @@
     <rect>
      <x>380</x>
      <y>182</y>
-     <width>161</width>
+     <width>191</width>
      <height>16</height>
     </rect>
+   </property>
+   <property name="font">
+    <font>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
    </property>
    <property name="text">
     <string>Tabs ( other than overview tab )</string>
@@ -485,7 +491,7 @@
   <widget class="QPushButton" name="addTabBtn">
    <property name="geometry">
     <rect>
-     <x>580</x>
+     <x>620</x>
      <y>180</y>
      <width>81</width>
      <height>23</height>
@@ -498,7 +504,7 @@
   <widget class="QPushButton" name="removeTabBtn">
    <property name="geometry">
     <rect>
-     <x>670</x>
+     <x>710</x>
      <y>180</y>
      <width>81</width>
      <height>23</height>
