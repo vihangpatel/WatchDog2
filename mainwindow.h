@@ -196,6 +196,8 @@ private slots:
 
     void on_updateImgBtn_clicked();
 
+    void on_refreshBtn_clicked();
+
 public slots:
     void updateTemplateList(QFileInfoList);
     void templateFileListClicked(QListWidgetItem *);

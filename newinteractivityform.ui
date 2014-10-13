@@ -612,66 +612,6 @@
     <string>ge-u#-c#-i#-interactivity-name</string>
    </property>
   </widget>
-  <widget class="QLabel" name="label_14">
-   <property name="geometry">
-    <rect>
-     <x>380</x>
-     <y>350</y>
-     <width>161</width>
-     <height>16</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Components :</string>
-   </property>
-  </widget>
-  <widget class="QTableWidget" name="componentTable">
-   <property name="geometry">
-    <rect>
-     <x>380</x>
-     <y>380</y>
-     <width>417</width>
-     <height>101</height>
-    </rect>
-   </property>
-   <column>
-    <property name="text">
-     <string> Component</string>
-    </property>
-    <property name="textAlignment">
-     <set>AlignHCenter|AlignVCenter|AlignCenter</set>
-    </property>
-   </column>
-  </widget>
-  <widget class="QPushButton" name="removeComponentBtn">
-   <property name="geometry">
-    <rect>
-     <x>670</x>
-     <y>350</y>
-     <width>111</width>
-     <height>23</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Remove Component</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="addComponentBtn">
-   <property name="geometry">
-    <rect>
-     <x>550</x>
-     <y>350</y>
-     <width>111</width>
-     <height>23</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true"/>
-   </property>
-   <property name="text">
-    <string>Add Component</string>
-   </property>
-  </widget>
  </widget>
  <tabstops>
   <tabstop>folderNameText</tabstop>
@@ -692,9 +632,6 @@
   <tabstop>addTabBtn</tabstop>
   <tabstop>tableWidget</tabstop>
   <tabstop>removeTabBtn</tabstop>
-  <tabstop>addComponentBtn</tabstop>
-  <tabstop>componentTable</tabstop>
-  <tabstop>removeComponentBtn</tabstop>
   <tabstop>saveBtn</tabstop>
   <tabstop>cancalBtn</tabstop>
  </tabstops>

@@ -1510,3 +1510,8 @@ void MainWindow::on_validateLOCBtn_clicked()
         return;
     }
 }
+
+void MainWindow::on_refreshBtn_clicked()
+{
+    scanChanges();
+}

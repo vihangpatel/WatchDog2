@@ -36,9 +36,7 @@ public:
     void readConfigJson();
     void fillFormData();
     QList<QStringList> getTemplateTableData();
-    QList<QStringList> getComponentTableData();
     void setTemplateTableDate(QList<QStringList>);
-    void setComponentTableDate(QList<QStringList>);
     QJsonArray getTemplateJSON();
     void createFiles();
     void createImageFile();
@@ -65,8 +63,6 @@ private slots:
     void on_removeTabBtn_clicked();
     void on_saveBtn_clicked();
     void on_cancalBtn_clicked();
-    void on_addComponentBtn_clicked();
-    void on_removeComponentBtn_clicked();
 
 signals:
     void newInterActivityCreated(QString);

@@ -401,17 +401,7 @@ void NewInterActivityForm::clearAllFormData()
     foreach(QCheckBox *widget, this->findChildren<QCheckBox*>()) {
         widget->setChecked(false);
     }
-    emptyComponentTable();
     emptyTabsTable();
-}
-
-void NewInterActivityForm::emptyComponentTable()
-{
-    int rows = ui->componentTable->rowCount();
-    for(int i = 0 ; i < rows ; i++ )
-    {
-        ui->componentTable->removeRow(i);
-    }
 }
 
 void NewInterActivityForm::emptyTabsTable()
@@ -426,19 +416,6 @@ void NewInterActivityForm::emptyTabsTable()
 QString  NewInterActivityForm::currentFolderPath()
 {
     return (m_strBasePath + "/" + ui->folderNameText->text());
-}
-
-void NewInterActivityForm::on_addComponentBtn_clicked()
-{
-    int lastRow = ui->componentTable->rowCount();
-    ui->componentTable->insertRow(lastRow);
-    ui->componentTable->setItem(lastRow,0,new QTableWidgetItem("Companent name"));
-}
-
-void NewInterActivityForm::on_removeComponentBtn_clicked()
-{
-    int currentRow = ui->componentTable->currentRow();
-    ui->componentTable->removeRow(currentRow);
 }
 
 void NewInterActivityForm::readConfigJson()
@@ -510,18 +487,6 @@ QList<QStringList> NewInterActivityForm::getTemplateTableData()
                        ui->tableWidget->item(i,2)->text() << ui->tableWidget->item(i,3)->text();
         // qDebug() << currentRow;
         tableData.append(currentRow);
-    }
-    return tableData;
-}
-
-QList<QStringList> NewInterActivityForm::getComponentTableData()
-{
-    QList<QStringList> tableData;
-    int rowCount = ui->componentTable->rowCount();
-    for(int i = 0 ; i < rowCount ; i++){
-        QStringList currentRow ;
-        currentRow << ui->componentTable->item(i,0)->text() ;
-        tableData.insert(i,currentRow);
     }
     return tableData;
 }
