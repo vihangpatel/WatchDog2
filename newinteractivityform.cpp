@@ -437,6 +437,10 @@ void NewInterActivityForm::writeConfigJson()
     jObject["newSaveState"] = ui->cb_newSaveState->isChecked();
     jObject["isTwoStepLoad"] = ui->cb_isTwoStepLoad->isChecked();
     jObject["isSaveStateAllowed"] = ui->cb_isSaveStateAllowed->isChecked();
+    if(ui->cb_showMute->isChecked())
+    {
+        jObject["showMute"] = ui->cb_showMute->isChecked();
+    }
     jObject["tabsData"] = getTemplateJSON();
     jObject["themeType"] = themeType.toInt();
     jObject["playerTheme"] = playerTheme.toInt();

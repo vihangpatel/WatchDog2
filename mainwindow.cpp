@@ -8,6 +8,11 @@ QString MINIFY_PRELOADER = "minify_preloader.bat";
 QString DELETE_ORIG_FILES = "delete-orig-files.bat";
 QString DELETE_UNUSED_BRANCH = "delete-unused-branches.bat";
 
+QString IS_NEXT_STEP_LOAD = "isNextStepLoad";
+QString URL = "url";
+QString ID = "id";
+QString FORCE_LOAD = "forceLoad";
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -323,8 +328,8 @@ void MainWindow::updateTemplateList(QFileInfoList fileList){
     QString currentFileName ;
     for(int i = 0 ; i < fileList.length() ; i++){
         currentFileName = fileList.at(i).fileName().replace(QString(".handlebars"),QString(".js"));
-        obj["url"] = currentFileName;
-        obj["isNextStepLoad"] = true;
+        obj[URL] = currentFileName;
+        obj[IS_NEXT_STEP_LOAD] = true;
         jArray.insert(i,obj);
         ui->templateList->addItem(currentFileName);
         // qDebug() << fileList.at(i).fileName();
@@ -345,8 +350,8 @@ QJsonArray MainWindow::syncTmpltList(QJsonArray newArray)
         for(int j = 0 ; j < templateJArray.count() ; j ++)
         {
             tempOrigObj = templateJArray.at(j).toObject();
-            if(tempNewObj["url"] == tempOrigObj["url"]){
-                tempNewObj["isNextStepLoad"] = tempOrigObj["isNextStepLoad"];
+            if(tempNewObj[URL] == tempOrigObj[URL]){
+                tempNewObj[IS_NEXT_STEP_LOAD] = tempOrigObj[IS_NEXT_STEP_LOAD];
                 newArray.replace(i,tempNewObj);
                 // qDebug() <<"replced";
             }
@@ -368,8 +373,8 @@ void MainWindow::templateFileListClicked(QListWidgetItem *item){
     QString itemText = item->text();
     for(int i = 0; i < tmpltJArray.count() ; i++){
         QJsonObject obj = tmpltJArray.at(i).toObject();
-        if(obj["url"] == itemText){
-            ui->templateNextLoadCheckBox->setChecked(obj["isNextStepLoad"].toBool());
+        if(obj[URL] == itemText){
+            ui->templateNextLoadCheckBox->setChecked(obj[IS_NEXT_STEP_LOAD].toBool());
             ui->label_TemplateFileName->setText(itemText);
             break;
         }
@@ -387,9 +392,9 @@ void MainWindow::on_templateNextLoadCheckBox_clicked()
     for(int i = 0; i < tmpltJArray.count() ; i++){
 
         QJsonObject obj = tmpltJArray.at(i).toObject();
-        if(obj["url"] == currentItem->text())
+        if(obj[URL] == currentItem->text())
         {
-            obj["isNextStepLoad"] = ui->templateNextLoadCheckBox->isChecked();
+            obj[IS_NEXT_STEP_LOAD] = ui->templateNextLoadCheckBox->isChecked();
             tmpltJArray.replace(i,obj);
         }
     }
@@ -420,9 +425,9 @@ void MainWindow::jsFileListClicked(QListWidgetItem *item){
         QJsonObject obj = jsViewJArray.at(i).toObject();
         containsBase = obj.contains("basePath");
         ui->jsViewNextLoadCheckBox->setDisabled(containsBase);
-        if(obj["url"] == itemText)
+        if(obj[URL] == itemText)
         {
-            ui->jsViewNextLoadCheckBox->setChecked(obj["isNextStepLoad"].toBool());
+            ui->jsViewNextLoadCheckBox->setChecked(obj[IS_NEXT_STEP_LOAD].toBool());
             ui->label_JSFileName->setText(itemText);
             break;
         }
@@ -449,24 +454,24 @@ void MainWindow::updateJSList(QFileInfoList fileList){
 
     for(int i = 0 ; i < jsFolderFiles.count() ; i++ ){
         currentFileName = jsFolderFiles.at(i).fileName();
-        obj["url"] = currentFileName;
-        obj["isNextStepLoad"] = false;
+        obj[URL] = currentFileName;
+        obj[IS_NEXT_STEP_LOAD] = false;
         jsViewJArray.insert(i,obj);
     }
 
     int addCnt = jsFolderFiles.length();
     for(int i = 0 ; i < modelFolderFiles.count() ; i++ ){
         currentFileName = "models/" + modelFolderFiles.at(i).fileName();
-        obj["url"] = currentFileName;
-        obj["isNextStepLoad"] = true;
+        obj[URL] = currentFileName;
+        obj[IS_NEXT_STEP_LOAD] = true;
         jsViewJArray.insert(addCnt + i,obj);
     }
 
     addCnt = jsFolderFiles.length() + modelFolderFiles.length();
     for(int i = 0 ; i < viewFolderFiles.count() ; i++ ){
         currentFileName = "views/" + viewFolderFiles.at(i).fileName();
-        obj["url"] = currentFileName;
-        obj["isNextStepLoad"] = true;
+        obj[URL] = currentFileName;
+        obj[IS_NEXT_STEP_LOAD] = true;
         jsViewJArray.insert(addCnt +  i,obj);
     }    
     ui->jsViewList->setCurrentRow(0);
@@ -488,9 +493,9 @@ void MainWindow::on_jsViewNextLoadCheckBox_clicked()
     for(int i = 0; i < jsViewJArray.count() ; i++){
 
         QJsonObject obj = jsViewJArray.at(i).toObject();
-        if( obj["url"] == currentItem->text())
+        if( obj[URL] == currentItem->text())
         {
-            obj["isNextStepLoad"] = ui->jsViewNextLoadCheckBox->isChecked();
+            obj[IS_NEXT_STEP_LOAD] = ui->jsViewNextLoadCheckBox->isChecked();
             jsViewJArray.replace(i,obj);
         }
     }
@@ -513,8 +518,8 @@ QJsonArray MainWindow::syncJSList(QJsonArray newArray)
         for(int j = 0 ; j < newArray.count() ; j ++)
         {
             tempNewObj = newArray.at(j).toObject();
-            if(tempNewObj["url"] == tempOrigObj["url"]){
-                tempNewObj["isNextStepLoad"] = tempOrigObj["isNextStepLoad"];
+            if(tempNewObj[URL] == tempOrigObj[URL]){
+                tempNewObj[IS_NEXT_STEP_LOAD] = tempOrigObj[IS_NEXT_STEP_LOAD];
                 jsOrigArray.replace(i,tempNewObj);
                 // qDebug() <<"replced";
                 isEntryFound = true;
@@ -543,7 +548,7 @@ QJsonArray MainWindow::syncJSList(QJsonArray newArray)
         for(int j = 0 ; j < jsOrigArray.count() ; j++)
         {
             tempOrigObj = jsOrigArray.at(j).toObject();
-            if(tempNewObj["url"] == tempOrigObj["url"])
+            if(tempNewObj[URL] == tempOrigObj[URL])
             {
                 isEntryFound = true;
                 break;
@@ -562,7 +567,7 @@ QJsonArray MainWindow::syncJSList(QJsonArray newArray)
     // Fill the view list of the JS tab
     for(int i = 0 ; i < jsOrigArray.count() ; i++ )
     {
-        QString fileName = jsOrigArray.at(i).toObject()["url"].toString();
+        QString fileName = jsOrigArray.at(i).toObject()[URL].toString();
         ui->jsViewList->addItem(fileName);
     }
     return jsOrigArray;
@@ -628,8 +633,8 @@ void MainWindow::updateCssList(QFileInfoList fileList){
     QString currentFileName ;
     for(int i = 0 ; i < fileList.length() ; i++){
         currentFileName = fileList.at(i).fileName();
-        obj["url"] = currentFileName;
-        obj["isNextStepLoad"] = true;
+        obj[URL] = currentFileName;
+        obj[IS_NEXT_STEP_LOAD] = true;
         cssArray.insert(i,obj);
         ui->cssList->addItem(currentFileName);
         // qDebug() << fileList.at(i).fileName();
@@ -650,8 +655,8 @@ QJsonArray MainWindow::syncCSSList(QJsonArray newArray)
         for(int j = 0 ; j < cssJArray.count() ; j ++)
         {
             tempOrigObj = cssJArray.at(j).toObject();
-            if(tempNewObj["url"] == tempOrigObj["url"]){
-                tempNewObj["isNextStepLoad"] = tempOrigObj["isNextStepLoad"];
+            if(tempNewObj[URL] == tempOrigObj[URL]){
+                tempNewObj[IS_NEXT_STEP_LOAD] = tempOrigObj[IS_NEXT_STEP_LOAD];
                 newArray.replace(i,tempNewObj);
                 // qDebug() <<"replced";
             }
@@ -669,8 +674,8 @@ void MainWindow::cssFileListClicked(QListWidgetItem *item){
     QString itemText = item->text();
     for(int i = 0; i < cssJArray.count() ; i++){
         QJsonObject obj = cssJArray.at(i).toObject();
-        if(obj["url"] == itemText){
-            ui->cssNextLoadCheckBox->setChecked(obj["isNextStepLoad"].toBool());
+        if(obj[URL] == itemText){
+            ui->cssNextLoadCheckBox->setChecked(obj[IS_NEXT_STEP_LOAD].toBool());
             ui->label_CSSFileName->setText(itemText);
             break;
         }
@@ -688,9 +693,9 @@ void MainWindow::on_cssNextLoadCheckBox_clicked()
     for(int i = 0; i < cssJArray.count() ; i++){
 
         QJsonObject obj = cssJArray.at(i).toObject();
-        if(obj["url"] == currentItem->text())
+        if(obj[URL] == currentItem->text())
         {
-            obj["isNextStepLoad"] = ui->cssNextLoadCheckBox->isChecked();
+            obj[IS_NEXT_STEP_LOAD] = ui->cssNextLoadCheckBox->isChecked();
             cssJArray.replace(i,obj);
         }
     }
@@ -719,10 +724,10 @@ void MainWindow::updateMediaList(QFileInfoList fileList){
     QString currentFileName ;
     for(int i = 0 ; i < fileList.length() ; i++){
         currentFileName = fileList.at(i).fileName();
-        obj["id"] = currentFileName.split(".")[0];
-        obj["url"] = currentFileName;
-        obj["isNextStepLoad"] = true;
-        obj["forceLoad"] = false;
+        obj[ID] = currentFileName.split(".")[0];
+        obj[URL] = currentFileName;
+        obj[IS_NEXT_STEP_LOAD] = true;
+        obj[FORCE_LOAD] = false;
         imgesArray.insert(i,obj);
         ui->mediaList->addItem(currentFileName);
         // qDebug() << fileList.at(i).fileName();
@@ -743,9 +748,9 @@ QJsonArray MainWindow::syncImgsList(QJsonArray newArray)
         for(int j = 0 ; j < mediaJArray.count() ; j ++)
         {
             tempOrigObj = mediaJArray.at(j).toObject();
-            if(tempNewObj["url"] == tempOrigObj["url"]){
-                tempNewObj["isNextStepLoad"] = tempOrigObj["isNextStepLoad"];
-                tempNewObj["forceLoad"] = tempOrigObj["forceLoad"];
+            if(tempNewObj[URL] == tempOrigObj[URL]){
+                tempNewObj[IS_NEXT_STEP_LOAD] = tempOrigObj[IS_NEXT_STEP_LOAD];
+                tempNewObj[FORCE_LOAD] = tempOrigObj[FORCE_LOAD];
                 newArray.replace(i,tempNewObj);
                 // qDebug() <<"replced";
             }
@@ -763,10 +768,10 @@ void MainWindow::mediaFileListClicked(QListWidgetItem *item){
     QString itemText = item->text();
     for(int i = 0; i < imagesJArray.count() ; i++){
         QJsonObject obj = imagesJArray.at(i).toObject();
-        if(obj["url"] == itemText){
-            ui->cb_mediaIsNextStopLoad->setChecked(obj["isNextStepLoad"].toBool());
-            ui->cb_mediaForceLoad->setChecked(obj["forceLoad"].toBool());
-            ui->imageIdText->setText(obj["id"].toString());
+        if(obj[URL] == itemText){
+            ui->cb_mediaIsNextStopLoad->setChecked(obj[IS_NEXT_STEP_LOAD].toBool());
+            ui->cb_mediaForceLoad->setChecked(obj[FORCE_LOAD].toBool());
+            ui->imageIdText->setText(obj[ID].toString());
             break;
         }
     }
@@ -783,9 +788,9 @@ void MainWindow::on_cb_mediaForceLoad_clicked()
     for(int i = 0; i < mediaJArray.count() ; i++){
 
         QJsonObject obj = mediaJArray.at(i).toObject();
-        if(obj["url"] == currentItem->text())
+        if(obj[URL] == currentItem->text())
         {
-            obj["forceLoad"] = ui->cb_mediaForceLoad->isChecked();
+            obj[FORCE_LOAD] = ui->cb_mediaForceLoad->isChecked();
             mediaJArray.replace(i,obj);
         }
     }
@@ -804,9 +809,9 @@ void MainWindow::on_cb_mediaIsNextStopLoad_clicked()
     for(int i = 0; i < mediaJArray.count() ; i++){
 
         QJsonObject obj = mediaJArray.at(i).toObject();
-        if(obj["url"] == currentItem->text())
+        if(obj[URL] == currentItem->text())
         {
-            obj["isNextStepLoad"] = ui->cb_mediaIsNextStopLoad->isChecked();
+            obj[IS_NEXT_STEP_LOAD] = ui->cb_mediaIsNextStopLoad->isChecked();
             mediaJArray.replace(i,obj);
         }
     }
@@ -831,9 +836,9 @@ void MainWindow::on_updateImgBtn_clicked()
     for(int i = 0; i < mediaJArray.count() ; i++){
 
         QJsonObject obj = mediaJArray.at(i).toObject();
-        if(obj["url"] == currentItem->text())
+        if(obj[URL] == currentItem->text())
         {
-            obj["id"] = ui->imageIdText->text();
+            obj[ID] = ui->imageIdText->text();
             mediaJArray.replace(i,obj);
         }
     }

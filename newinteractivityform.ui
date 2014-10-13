@@ -141,6 +141,19 @@
      <bool>true</bool>
     </property>
    </widget>
+   <widget class="QCheckBox" name="cb_showMute">
+    <property name="geometry">
+     <rect>
+      <x>160</x>
+      <y>20</y>
+      <width>81</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>showMute</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QLabel" name="label_4">
    <property name="geometry">
@@ -358,7 +371,7 @@
       </rect>
      </property>
      <property name="text">
-      <string>overview-sreen</string>
+      <string>overview-screen</string>
      </property>
     </widget>
     <widget class="QLabel" name="label_11">
@@ -375,6 +388,9 @@
      </property>
     </widget>
     <widget class="QLineEdit" name="leftImageId">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -384,7 +400,10 @@
       </rect>
      </property>
      <property name="text">
-      <string>overview_bg</string>
+      <string>overview-bg</string>
+     </property>
+     <property name="readOnly">
+      <bool>false</bool>
      </property>
     </widget>
    </widget>

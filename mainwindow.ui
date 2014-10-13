@@ -43,7 +43,7 @@
      <string notr="true"/>
     </property>
     <property name="currentIndex">
-     <number>6</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="tab">
      <attribute name="icon">
@@ -342,6 +342,10 @@ font-weight:bold;</string>
       </property>
       <property name="text">
        <string>Refresh</string>
+      </property>
+      <property name="icon">
+       <iconset resource="resources.qrc">
+        <normaloff>:/images/refresh-48.png</normaloff>:/images/refresh-48.png</iconset>
       </property>
      </widget>
     </widget>
