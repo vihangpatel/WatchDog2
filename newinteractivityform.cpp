@@ -69,7 +69,7 @@ void NewInterActivityForm::on_saveBtn_clicked()
         return ;
     }
 
-    emit newInterActivityCreated(currentFolderPath());
+    //emit newInterActivityCreated(currentFolderPath());
     writeConfigJson();
     emit newJSONPrepared(m_jsonMainObject);
     emit newInterActivityCreated(currentFolderPath());
