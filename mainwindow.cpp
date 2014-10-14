@@ -304,7 +304,7 @@ void MainWindow::on_openDialog_clicked()
         m_strBasePath = m_strRootPath + "/" + folderName;
 
         changeBasePath(m_strBasePath);
-        m_form->changeBasePath(m_strRootPath);
+        m_form->changeBasePath(m_strRootPath);        
     }
 }
 
@@ -1231,6 +1231,7 @@ void MainWindow::on_browsePathBtn_clicked()
     ui->treeView->setModel(m_qfsModel);
     ui->treeView->setRootIndex(m_qfsModel->index(m_strRootPath));
     ui->DEpathText->setText(m_strRootPath);
+    m_form->changeBasePath(m_strRootPath);
 }
 
 /****************************************************************

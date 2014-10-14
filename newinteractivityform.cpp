@@ -69,7 +69,7 @@ void NewInterActivityForm::on_saveBtn_clicked()
         return ;
     }
 
-    //emit newInterActivityCreated(currentFolderPath());
+    emit newInterActivityCreated(currentFolderPath());
     writeConfigJson();
     emit newJSONPrepared(m_jsonMainObject);
     emit newInterActivityCreated(currentFolderPath());
@@ -469,8 +469,7 @@ void NewInterActivityForm::writeConfigJson()
         jObj_jPaper["basePath"] = "PAPER_JS";
         tempArray.append(jObj_jPaper);
     }
-    resourceObj["js"]= tempArray;
-    tempArray.empty();
+    resourceObj["js"]= tempArray;    
 
     // Insert background-image entry in config
     QJsonArray imageJArray;

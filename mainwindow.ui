@@ -105,6 +105,13 @@ font-weight:bold;</string>
         <height>61</height>
        </rect>
       </property>
+      <property name="font">
+       <font>
+        <pointsize>7</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
       <property name="styleSheet">
        <string notr="true">
 font-weight:bold;</string>
@@ -185,7 +192,7 @@ font-weight:bold;</string>
      <widget class="QLabel" name="label_interActiveName">
       <property name="geometry">
        <rect>
-        <x>660</x>
+        <x>680</x>
         <y>170</y>
         <width>211</width>
         <height>16</height>
@@ -420,7 +427,7 @@ font-weight:bold;</string>
        <rect>
         <x>320</x>
         <y>40</y>
-        <width>111</width>
+        <width>131</width>
         <height>16</height>
        </rect>
       </property>
@@ -431,7 +438,7 @@ font-weight:bold;</string>
      <widget class="QLabel" name="label_JSFileName">
       <property name="geometry">
        <rect>
-        <x>440</x>
+        <x>460</x>
         <y>40</y>
         <width>241</width>
         <height>16</height>
@@ -552,7 +559,7 @@ font-weight:bold;</string>
      <widget class="QLabel" name="label_TemplateFileName">
       <property name="geometry">
        <rect>
-        <x>460</x>
+        <x>500</x>
         <y>40</y>
         <width>241</width>
         <height>16</height>
@@ -567,7 +574,7 @@ font-weight:bold;</string>
        <rect>
         <x>320</x>
         <y>40</y>
-        <width>151</width>
+        <width>171</width>
         <height>16</height>
        </rect>
       </property>
@@ -665,7 +672,7 @@ font-weight:bold;</string>
      <widget class="QLabel" name="label_CSSFileName">
       <property name="geometry">
        <rect>
-        <x>440</x>
+        <x>470</x>
         <y>40</y>
         <width>211</width>
         <height>16</height>
@@ -2158,7 +2165,7 @@ font-weight:bold;</string>
        <rect>
         <x>10</x>
         <y>340</y>
-        <width>91</width>
+        <width>101</width>
         <height>16</height>
        </rect>
       </property>
@@ -2169,9 +2176,9 @@ font-weight:bold;</string>
      <widget class="QLineEdit" name="locSearchText">
       <property name="geometry">
        <rect>
-        <x>100</x>
+        <x>120</x>
         <y>340</y>
-        <width>251</width>
+        <width>231</width>
         <height>20</height>
        </rect>
       </property>
@@ -2562,7 +2569,7 @@ font-weight:bold;</string>
         <rect>
          <x>590</x>
          <y>20</y>
-         <width>101</width>
+         <width>111</width>
          <height>23</height>
         </rect>
        </property>
@@ -2595,7 +2602,7 @@ font-weight:bold;</string>
         <rect>
          <x>590</x>
          <y>50</y>
-         <width>101</width>
+         <width>111</width>
          <height>23</height>
         </rect>
        </property>
@@ -2612,7 +2619,7 @@ font-weight:bold;</string>
         <rect>
          <x>590</x>
          <y>80</y>
-         <width>101</width>
+         <width>111</width>
          <height>23</height>
         </rect>
        </property>
@@ -2655,7 +2662,7 @@ font-weight:bold;</string>
         <rect>
          <x>590</x>
          <y>20</y>
-         <width>101</width>
+         <width>111</width>
          <height>23</height>
         </rect>
        </property>
@@ -2698,7 +2705,7 @@ font-weight:bold;</string>
         <rect>
          <x>590</x>
          <y>50</y>
-         <width>101</width>
+         <width>111</width>
          <height>23</height>
         </rect>
        </property>
@@ -2725,7 +2732,7 @@ font-weight:bold;</string>
        <rect>
         <x>20</x>
         <y>20</y>
-        <width>721</width>
+        <width>841</width>
         <height>101</height>
        </rect>
       </property>
@@ -2737,7 +2744,7 @@ font-weight:bold;</string>
         <rect>
          <x>20</x>
          <y>30</y>
-         <width>141</width>
+         <width>151</width>
          <height>16</height>
         </rect>
        </property>
@@ -2748,7 +2755,7 @@ font-weight:bold;</string>
       <widget class="QLineEdit" name="DEpathText">
        <property name="geometry">
         <rect>
-         <x>160</x>
+         <x>180</x>
          <y>30</y>
          <width>451</width>
          <height>20</height>
@@ -2758,7 +2765,7 @@ font-weight:bold;</string>
       <widget class="QPushButton" name="browsePathBtn">
        <property name="geometry">
         <rect>
-         <x>620</x>
+         <x>640</x>
          <y>30</y>
          <width>75</width>
          <height>23</height>
@@ -2778,7 +2785,7 @@ font-weight:bold;</string>
      <x>0</x>
      <y>0</y>
      <width>937</width>
-     <height>21</height>
+     <height>26</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
