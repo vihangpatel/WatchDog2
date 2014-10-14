@@ -663,6 +663,19 @@
     <string>PAPER-FULL</string>
    </property>
   </widget>
+  <widget class="QLabel" name="label_14">
+   <property name="geometry">
+    <rect>
+     <x>380</x>
+     <y>350</y>
+     <width>191</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Include Vendor Specific Libraries :</string>
+   </property>
+  </widget>
  </widget>
  <tabstops>
   <tabstop>folderNameText</tabstop>

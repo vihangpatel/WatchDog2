@@ -40,7 +40,9 @@ FORMS    += \
     newinteractivityform.ui \
     mainwindow.ui
 
-OTHER_FILES +=
+win32:RC_ICONS += tray_icon.ico
 
 RESOURCES += \
     resources.qrc
+
+
