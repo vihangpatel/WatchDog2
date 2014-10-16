@@ -287,7 +287,7 @@ void NewInterActivityForm::createJSs()
 
 bool NewInterActivityForm::createJSFile(QStringList tableEntry, int fileType)
 {
-    QString viewFilePath = getJSViewFolderPath() + "/" + tableEntry.at(1) + ".js";
+    QString viewFilePath = getJSViewFolderPath() + "/" + tableEntry.at(4) + ".js";
     QFile newJsFile(viewFilePath);
     if(newJsFile.exists())
     {
@@ -497,13 +497,15 @@ QList<QStringList> NewInterActivityForm::getTemplateTableData()
 
     QStringList overViewTab;
     overViewTab << "Overview" << ui->overViewTabTemplateText->text()
-                << ui->overViewTabClass->text() << ui->overViewTabEL->text();
+                << ui->overViewTabClass->text() << ui->overViewTabEL->text()
+                << "overview-tab";
     tableData.append(overViewTab);
 
     for(int i = 0 ; i < rowCount ; i++){
         QStringList currentRow ;
         currentRow <<  ui->tableWidget->item(i,0)->text() <<  ui->tableWidget->item(i,1)->text() <<
-                       ui->tableWidget->item(i,2)->text() << ui->tableWidget->item(i,3)->text();
+                       ui->tableWidget->item(i,2)->text() << ui->tableWidget->item(i,3)->text() <<
+                       ui->tableWidget->item(i,4)->text() ;
         // qDebug() << currentRow;
         tableData.append(currentRow);
     }
