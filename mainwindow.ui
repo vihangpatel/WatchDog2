@@ -39,7 +39,7 @@
      <string notr="true"/>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>5</number>
     </property>
     <widget class="QWidget" name="tab">
      <attribute name="icon">
@@ -839,7 +839,7 @@ font-weight:bold;</string>
        </rect>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="tab_9">
        <attribute name="title">
@@ -963,6 +963,19 @@ font-weight:bold;</string>
          </property>
          <property name="text">
           <string>Acc :</string>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="addPlaceHolderBtn">
+         <property name="geometry">
+          <rect>
+           <x>280</x>
+           <y>30</y>
+           <width>75</width>
+           <height>23</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Place holder</string>
          </property>
         </widget>
        </widget>
@@ -1977,6 +1990,19 @@ font-weight:bold;</string>
          </property>
          <property name="text">
           <string>Contains commonId</string>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="updtPlaceHolderBtn">
+         <property name="geometry">
+          <rect>
+           <x>280</x>
+           <y>20</y>
+           <width>75</width>
+           <height>23</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Place holder</string>
          </property>
         </widget>
        </widget>

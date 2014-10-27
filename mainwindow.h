@@ -204,6 +204,10 @@ private slots:
 
     void on_removeComponentBtn_clicked();
 
+    void on_addPlaceHolderBtn_clicked();
+
+    void on_updtPlaceHolderBtn_clicked();
+
 public slots:
     void updateTemplateList(QFileInfoList);
     void templateFileListClicked(QListWidgetItem *);

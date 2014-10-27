@@ -7,6 +7,7 @@ QString MINIFY_INTERACTIVITY = "minify_interactive.bat";
 QString MINIFY_PRELOADER = "minify_preloader.bat";
 QString DELETE_ORIG_FILES = "delete-orig-files.bat";
 QString DELETE_UNUSED_BRANCH = "delete-unused-branches.bat";
+QString LOC_ACC_PLACE_HOLDER = "%@$%";
 
 QString IS_NEXT_STEP_LOAD = "isNextStepLoad";
 QString URL = "url";
@@ -1569,5 +1570,25 @@ void MainWindow::on_removeComponentBtn_clicked()
     if(ui->usedCompList->count() > 0)
     {
         m_components->removeComponent(currentSelectedCompIndex);
+    }
+}
+
+void MainWindow::on_addPlaceHolderBtn_clicked()
+{
+    QString newText = ui->locMsgText->text() + " " + LOC_ACC_PLACE_HOLDER;
+    ui->locMsgText->setText(newText);
+    if(ui->cb_isAccTextSame->isChecked())
+    {
+        ui->accMsgText->setText(newText);
+    }
+}
+
+void MainWindow::on_updtPlaceHolderBtn_clicked()
+{
+    QString newText = ui->updtLocMsgText->text() + " " + LOC_ACC_PLACE_HOLDER;
+    ui->updtLocMsgText->setText(newText);
+    if(ui->cb_isAccTextSameUpdt->isChecked())
+    {
+        ui->updtAccMsgText->setText(newText);
     }
 }
