@@ -839,7 +839,7 @@ font-weight:bold;</string>
        </rect>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="tab_9">
        <attribute name="title">
@@ -970,12 +970,28 @@ font-weight:bold;</string>
           <rect>
            <x>280</x>
            <y>30</y>
-           <width>75</width>
+           <width>100</width>
            <height>23</height>
           </rect>
          </property>
          <property name="text">
-          <string>Place holder</string>
+          <string>Add Place holder</string>
+         </property>
+         <property name="shortcut">
+          <string>Ctrl+D</string>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_51">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>158</y>
+           <width>271</width>
+           <height>16</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Use Ctrl + D to add place holder.</string>
          </property>
         </widget>
        </widget>
@@ -1997,12 +2013,31 @@ font-weight:bold;</string>
           <rect>
            <x>280</x>
            <y>20</y>
-           <width>75</width>
+           <width>100</width>
            <height>23</height>
           </rect>
          </property>
+         <property name="toolTip">
+          <string>Adds place holder in the loc text.</string>
+         </property>
          <property name="text">
-          <string>Place holder</string>
+          <string>Add Place holder</string>
+         </property>
+         <property name="shortcut">
+          <string>Ctrl+D</string>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_52">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>159</y>
+           <width>271</width>
+           <height>16</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Use Ctrl + D to add place holder.</string>
          </property>
         </widget>
        </widget>

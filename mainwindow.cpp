@@ -1575,20 +1575,51 @@ void MainWindow::on_removeComponentBtn_clicked()
 
 void MainWindow::on_addPlaceHolderBtn_clicked()
 {
-    QString newText = ui->locMsgText->text() + " " + LOC_ACC_PLACE_HOLDER;
-    ui->locMsgText->setText(newText);
-    if(ui->cb_isAccTextSame->isChecked())
+    if(ui->locMsgText->hasFocus())
     {
+        int cursorPosition = ui->locMsgText->cursorPosition();
+        QString newText = ui->locMsgText->text();
+        newText.insert(cursorPosition,LOC_ACC_PLACE_HOLDER);
+        ui->locMsgText->setText(newText);
+        if(ui->cb_isAccTextSame->isChecked())
+        {
+            ui->accMsgText->setText(newText);
+        }
+
+        ui->locMsgText->setCursorPosition(cursorPosition + LOC_ACC_PLACE_HOLDER.length());
+    }
+    else if(ui->accMsgText->hasFocus())
+    {
+        int cursorPosition = ui->accMsgText->cursorPosition();
+        QString newText = ui->accMsgText->text();
+        newText.insert(cursorPosition,LOC_ACC_PLACE_HOLDER);
         ui->accMsgText->setText(newText);
+
+        ui->accMsgText->setCursorPosition(cursorPosition + LOC_ACC_PLACE_HOLDER.length());
     }
 }
 
 void MainWindow::on_updtPlaceHolderBtn_clicked()
 {
-    QString newText = ui->updtLocMsgText->text() + " " + LOC_ACC_PLACE_HOLDER;
-    ui->updtLocMsgText->setText(newText);
-    if(ui->cb_isAccTextSameUpdt->isChecked())
+    if(ui->updtLocMsgText->hasFocus())
     {
+        int cursorPosition = ui->updtLocMsgText->cursorPosition();
+        QString newText = ui->updtLocMsgText->text();
+        newText.insert(cursorPosition,LOC_ACC_PLACE_HOLDER);
+        ui->updtLocMsgText->setText(newText);
+        if(ui->cb_isAccTextSameUpdt->isChecked())
+        {
+            ui->updtAccMsgText->setText(newText);
+        }
+        ui->updtLocMsgText->setCursorPosition(cursorPosition + LOC_ACC_PLACE_HOLDER.length());
+     }
+    else if(ui->updtAccMsgText->hasFocus())
+    {
+        int cursorPosition = ui->updtAccMsgText->cursorPosition();
+        QString newText = ui->updtAccMsgText->text();
+        newText.insert(cursorPosition,LOC_ACC_PLACE_HOLDER);
         ui->updtAccMsgText->setText(newText);
+
+        ui->updtAccMsgText->setCursorPosition(cursorPosition + LOC_ACC_PLACE_HOLDER.length());
     }
 }
