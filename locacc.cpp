@@ -785,6 +785,7 @@ void LOCACC :: writeFile()
         // qDebug() << " LOC ACC DO NOT EXIST . NEW WILL BE CREATED :" << getLocAccFilePath();
     }
     // qDebug() << "WRITE : \n" << masterJObj;
+    m_jsonMasterObj["id"] = getInteractivityName();
     QJsonDocument doc(m_jsonMasterObj);
     m_fileLocAcc.write(doc.toJson());
     m_fileLocAcc.close();
