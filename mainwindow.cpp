@@ -208,6 +208,8 @@ void MainWindow::connectSignals(){
 
     connect(ui->locTreeWidget,SIGNAL(customContextMenuRequested(QPoint)),this,SLOT(onCustomContextMenuRequested(QPoint)));
     connect(m_components,SIGNAL(componentsChanged()),this,SLOT(componentsChanged()));
+
+    connect(ui->actionHelp_File,SIGNAL(triggered()),this,SLOT(on_helpActionTriggered()));
 }
 
 void MainWindow::onCustomContextMenuRequested(const QPoint &pos)
@@ -1622,4 +1624,11 @@ void MainWindow::on_updtPlaceHolderBtn_clicked()
 
         ui->updtAccMsgText->setCursorPosition(cursorPosition + LOC_ACC_PLACE_HOLDER.length());
     }
+}
+
+
+void MainWindow::on_helpActionTriggered()
+{
+    QUrl url("de-oneclick-away.chm");
+    QDesktopServices::openUrl(url);
 }

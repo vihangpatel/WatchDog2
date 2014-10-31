@@ -229,6 +229,7 @@ public slots:
     void compileAllHandleBars();
     void newInterActivityCreated(QString path);
     void componentsChanged();
+    void on_helpActionTriggered();
 
 private:
     Ui::MainWindow *ui;
