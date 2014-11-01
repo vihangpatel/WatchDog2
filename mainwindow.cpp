@@ -102,7 +102,7 @@ void MainWindow::initialize(){
 void MainWindow::initTrayIcon()
 {
     m_trayIcon = new QSystemTrayIcon(this);
-    QIcon icon(":/images/tray_icon.ico");
+    QIcon icon("tray_icon.png");
     m_trayIcon->setIcon(icon);
     m_qmTrayMenu = new QMenu(this);
     m_qmTrayMenu->addAction("Show",this,SLOT(showApp()));
@@ -120,10 +120,16 @@ void MainWindow::initTrayIcon()
     m_qmTrayMenu->addAction(QIcon(":/images/unlock-48.png"),"Start monitoring",this,SLOT(startMonitoring()))->setEnabled(false);
     m_qmTrayMenu->addAction("Open Loc-acc Tab",this,SLOT(openLocAccTab()));
     m_qmTrayMenu->addAction("Open Folder Location",this,SLOT(on_openIntrFolderBtn_clicked()));
-    m_qmTrayMenu->addAction("Exit",this,SLOT(close()));
+    m_qmTrayMenu->addAction("Exit",qApp,SLOT(quit()));
     m_trayIcon->setContextMenu(m_qmTrayMenu);
     m_trayIcon->show();
     showApp();    
+}
+
+void MainWindow::closeEvent(QCloseEvent *closeEvent)
+{
+    closeEvent->ignore();
+    hideApp();
 }
 
 void MainWindow::compileAllHandleBars()

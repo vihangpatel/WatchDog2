@@ -58,6 +58,7 @@ private :
     void initTrayIcon();
 
 public:
+    void closeEvent(QCloseEvent *closeEvent);
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
     void resetAll();
