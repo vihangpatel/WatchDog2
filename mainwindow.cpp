@@ -121,13 +121,13 @@ void MainWindow::initTrayIcon()
     m_qmTrayMenu->addAction("Open Loc-acc Tab",this,SLOT(openLocAccTab()));
     m_qmTrayMenu->addAction("Open Folder Location",this,SLOT(on_openIntrFolderBtn_clicked()));
     m_qmTrayMenu->addAction("Exit",qApp,SLOT(quit()));
-    m_trayIcon->setContextMenu(m_qmTrayMenu);
+    m_trayIcon->setContextMenu(m_qmTrayMenu);    
     m_trayIcon->show();
     showApp();    
 }
 
 void MainWindow::closeEvent(QCloseEvent *closeEvent)
-{
+{    
     closeEvent->ignore();
     hideApp();
 }
@@ -181,7 +181,8 @@ void MainWindow::setCheckBoxStatus(bool checked)
     ui->cb_stopCSSMonitor->setChecked(checked);
     ui->cb_stopJSMonitor->setChecked(checked);
     ui->cb_stopTmpltMonitir->setChecked(checked);
-    ui->cb_stopMediaMonitor->setChecked(checked);  
+    ui->cb_stopMediaMonitor->setChecked(checked);
+    ui->cb_stopConfigModification->setChecked(checked);
     refreshTabStatus();
 }
 
@@ -216,6 +217,7 @@ void MainWindow::connectSignals(){
     connect(m_components,SIGNAL(componentsChanged()),this,SLOT(componentsChanged()));
 
     connect(ui->actionHelp_File,SIGNAL(triggered()),this,SLOT(on_helpActionTriggered()));
+    connect(m_trayIcon,SIGNAL(activated(QSystemTrayIcon::DoubleClick)),this,SLOT(showApp()));
 }
 
 void MainWindow::onCustomContextMenuRequested(const QPoint &pos)
@@ -305,10 +307,14 @@ void MainWindow::changeBasePath(QString strBasePath)
 void MainWindow::on_openDialog_clicked()
 {
     deregisterWatcher();
-    if(QMessageBox::critical(this,"Are you sure ?","You are about to change interactivity folder."
-                             "If this is not you wanted then click cancel.",QMessageBox::Ok,QMessageBox::Cancel)
+    if(QMessageBox::warning(this,"Are you sure ?","You are about to change interactivity folder. "
+                             "If this is not you wanted then click cancel."
+                            "\nAll the monitoring will be stopped on clicking Ok."
+                            " \n\nNote : You need to uncheck check boxes to start monitoring."
+                            ,QMessageBox::Ok,QMessageBox::Cancel)
             == QMessageBox::Ok)
     {
+        stopMonitoring();
         QString folderName =  m_qfsModel->itemData(ui->treeView->currentIndex())[Qt::DisplayRole].toString();
         m_strBasePath = m_strRootPath + "/" + folderName;
 
