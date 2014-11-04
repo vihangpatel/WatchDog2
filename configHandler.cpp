@@ -24,7 +24,7 @@ void ConfigHandler::changeBasePath(QString strPath)
 {
     m_strBasePath = strPath;
     readConfigJson();
-    setFileSystemWatcher();
+    //setFileSystemWatcher();
 }
 
 QString ConfigHandler::getConfigJSONFilePath()
