@@ -19,6 +19,7 @@ public:
     QFile m_fileConfigJson;
     QJsonObject m_jsonMasterObj;
     QString m_strBasePath;
+    QFileSystemWatcher *m_qfswConfigFile;
     bool m_bStopUpdating;
 
     explicit ConfigHandler(QString);
@@ -44,10 +45,14 @@ public:
     void changeLoadStepOfFiles();
     void readConfigJson();
     void writeConfigJson();
+    void setFileSystemWatcher();
 
 public slots:
     void newInteractivityCreated(QJsonObject);
+    void configFileChanged(QString filepath);
 
+signals:
+    void configManuallyModified(QString filePath);
 };
 
 #endif // CONFIGHANDLER_H

@@ -20,6 +20,8 @@ public:
     const int CSS_TRUE = 4;
     const int MEDIA_TRUE = 8;
     const int CONFIG_STOP = 16;
+    const int SHOW_TIPS = 32;
+    int tipIndex = 0;
     QString str_rootPath;
     QString m_strCurIntrctvPath;
     QFile m_fileAppConfig;
@@ -41,12 +43,16 @@ public:
     bool monitorTemplates();
     bool monitorMedia();
     bool monitorConfig();
+    bool showTipsOnStartup();
+    int getTipIndex();
     
     void setJSFlag(bool isTrue);
     void setCSSFlag(bool isTrue);
     void setTemplateFlag(bool isTrue);
     void setMediaFlag(bool isTrue);
     void setConfigModificationFlag(bool isStop);
+    void setShowTipsOnStartup(bool show);
+    void setTipIndex(int index);
 
 signals:
     

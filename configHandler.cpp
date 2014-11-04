@@ -16,6 +16,7 @@ QString C_CONFIG_FILE_NAME = "interactivity-config.json";
 
 ConfigHandler::ConfigHandler(QString strPath)
 {
+    m_qfswConfigFile = NULL;
     changeBasePath(strPath);
 }
 
@@ -23,6 +24,7 @@ void ConfigHandler::changeBasePath(QString strPath)
 {
     m_strBasePath = strPath;
     readConfigJson();
+    setFileSystemWatcher();
 }
 
 QString ConfigHandler::getConfigJSONFilePath()
@@ -133,6 +135,23 @@ void ConfigHandler::readConfigJson()
     m_jsonMasterObj = doc.object();
     // qDebug() << "READ : " << masterJObj;
     m_fileConfigJson.close();
+}
+
+void ConfigHandler::setFileSystemWatcher()
+{
+    if(m_qfswConfigFile != NULL)
+    {
+        disconnect(m_qfswConfigFile,SIGNAL(fileChanged(QString)),this,SLOT(configFileChanged(QString)));
+        delete m_qfswConfigFile;
+    }
+    m_qfswConfigFile = new QFileSystemWatcher(this);
+    connect(m_qfswConfigFile,SIGNAL(fileChanged(QString)),this,SLOT(configFileChanged(QString)));
+    m_qfswConfigFile->addPath(getConfigJSONFilePath());
+}
+
+void ConfigHandler::configFileChanged(QString filepath)
+{
+    emit configManuallyModified(m_strBasePath);
 }
 
 void ConfigHandler::writeConfigJson()

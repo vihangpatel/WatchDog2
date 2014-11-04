@@ -39,7 +39,7 @@
      <string notr="true"/>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>8</number>
     </property>
     <widget class="QWidget" name="tab">
      <attribute name="icon">
@@ -2794,7 +2794,7 @@ font-weight:bold;</string>
         <x>20</x>
         <y>20</y>
         <width>841</width>
-        <height>101</height>
+        <height>81</height>
        </rect>
       </property>
       <property name="title">
@@ -2834,6 +2834,32 @@ font-weight:bold;</string>
        </property>
        <property name="text">
         <string>Browse</string>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QGroupBox" name="groupBox_7">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>110</y>
+        <width>841</width>
+        <height>51</height>
+       </rect>
+      </property>
+      <property name="title">
+       <string> Other settings </string>
+      </property>
+      <widget class="QCheckBox" name="cb_showTips">
+       <property name="geometry">
+        <rect>
+         <x>30</x>
+         <y>20</y>
+         <width>261</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Show Tips on start up</string>
        </property>
       </widget>
      </widget>

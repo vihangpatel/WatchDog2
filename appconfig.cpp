@@ -104,6 +104,30 @@ void AppConfig::setConfigModificationFlag(bool isStop)
     }
 }
 
+void AppConfig::setShowTipsOnStartup(bool show)
+{
+    if(show)
+    {
+        m_bflagStatus = m_bflagStatus | SHOW_TIPS;
+    }
+}
+
+void AppConfig::setTipIndex(int index)
+{
+    tipIndex = index;
+    m_jsonMasterObj["currentTipIndex"] = QString::number(index);
+}
+
+int AppConfig::getTipIndex()
+{
+    return m_jsonMasterObj.value("currentTipIndex").toString().toInt();
+}
+
+bool AppConfig::showTipsOnStartup()
+{
+    return (m_bflagStatus & SHOW_TIPS) == SHOW_TIPS;
+}
+
 QString AppConfig::getCurrentInteractivity()
 {
     return m_jsonMasterObj.value("currentFolder").toString();

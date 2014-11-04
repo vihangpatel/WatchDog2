@@ -20,6 +20,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     initialize();
+    showTipDialog();
 }
 
 void MainWindow::loadSavedSettings()
@@ -30,9 +31,10 @@ void MainWindow::loadSavedSettings()
     ui->cb_stopJSMonitor->setChecked(m_appConfig->monitorJS());
     ui->cb_stopMediaMonitor->setChecked(m_appConfig->monitorMedia());
     ui->cb_stopTmpltMonitir->setChecked(m_appConfig->monitorTemplates());
+    ui->cb_showTips->setChecked(m_appConfig->showTipsOnStartup());
     ui->statusBar->showMessage("Current interactivity : " + getCurrentInteractivityName());
     ui->cb_stopConfigModification->setChecked(m_appConfig->monitorConfig());
-    ui->label_interActiveName->setText(getCurrentInteractivityName());        
+    ui->label_interActiveName->setText(getCurrentInteractivityName());
 }
 
 QString MainWindow::getCurrentInteractivityName()
@@ -51,7 +53,34 @@ void MainWindow::storeSetting()
     m_appConfig->setTemplateFlag(ui->cb_stopTmpltMonitir->isChecked());
     m_appConfig->setMediaFlag(ui->cb_stopMediaMonitor->isChecked());
     m_appConfig->setConfigModificationFlag(ui->cb_stopConfigModification->isChecked());
+    m_appConfig->setShowTipsOnStartup(ui->cb_showTips->isChecked());
     m_appConfig->writeSettings();
+}
+
+void MainWindow::showTipDialog()
+{
+    if(!ui->cb_showTips->isChecked())
+    {
+        return;
+    }
+    int index = m_appConfig->getTipIndex();
+    QFile tipsJsonFile("startupTips.json");
+    if(!tipsJsonFile.exists())
+    {
+        return;
+    }
+    tipsJsonFile.open(QIODevice::ReadOnly | QIODevice::Text);
+    QByteArray rawData = tipsJsonFile.readAll();
+    QJsonDocument doc(QJsonDocument::fromJson(rawData));
+    QJsonObject tipsObj = doc.object();
+    index = index >= tipsObj.keys().length() ? 0 : index;
+    QMessageBox::information(this,"Did you know ?"
+                             ,tipsObj.value(QString::number(index)).toString()
+                             + "\n\n Note : You can disable startup tips by unchecking 'Show Tips on start up' checkbox in settings tab."
+                             ,QMessageBox::Ok);
+    index++;
+    m_appConfig->setTipIndex(index);
+    tipsJsonFile.close();
 }
 
 void MainWindow::initialize(){
@@ -218,6 +247,8 @@ void MainWindow::connectSignals(){
 
     connect(ui->actionHelp_File,SIGNAL(triggered()),this,SLOT(on_helpActionTriggered()));
     connect(m_trayIcon,SIGNAL(activated(QSystemTrayIcon::DoubleClick)),this,SLOT(showApp()));
+
+    connect(m_config,SIGNAL(configManuallyModified(QString)),this,SLOT(on_configManuallyModified(QString)));
 }
 
 void MainWindow::onCustomContextMenuRequested(const QPoint &pos)
@@ -1643,4 +1674,17 @@ void MainWindow::on_helpActionTriggered()
 {
     QUrl url("de-oneclick-away.chm");
     QDesktopServices::openUrl(url);
+}
+
+
+void MainWindow::on_configManuallyModified(QString path)
+{
+    if(QMessageBox::information(this
+                             ,"Do you want to reload ??"
+                             ,"Config has been modified manually. Do you want to reload ?"
+                             ,QMessageBox::Ok,QMessageBox::Cancel) == QMessageBox::Ok)
+    {
+        changeBasePath(m_strBasePath);
+    }
+    showApp();
 }

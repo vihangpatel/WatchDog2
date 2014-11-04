@@ -66,6 +66,7 @@ public:
     void deregisterWatcher();
     void loadSavedSettings();
     void storeSetting();
+    void showTipDialog();
     void updateDirTree();
     void connectSignals();
     int getTreeItemIndentationLevel(QTreeWidgetItem *,int count=0);
@@ -231,6 +232,7 @@ public slots:
     void newInterActivityCreated(QString path);
     void componentsChanged();
     void on_helpActionTriggered();
+    void on_configManuallyModified(QString path);
 
 private:
     Ui::MainWindow *ui;
