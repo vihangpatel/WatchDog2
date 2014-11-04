@@ -21,6 +21,7 @@ public:
     const int MEDIA_TRUE = 8;
     const int CONFIG_STOP = 16;
     const int SHOW_TIPS = 32;
+    const int LAUNCH_ON_STARTUP = 64;
     int tipIndex = 0;
     QString str_rootPath;
     QString m_strCurIntrctvPath;
@@ -44,6 +45,7 @@ public:
     bool monitorMedia();
     bool monitorConfig();
     bool showTipsOnStartup();
+    bool startUpLaunch();
     int getTipIndex();
     
     void setJSFlag(bool isTrue);
@@ -53,6 +55,8 @@ public:
     void setConfigModificationFlag(bool isStop);
     void setShowTipsOnStartup(bool show);
     void setTipIndex(int index);
+    void setStartUpLaunch(bool launch);
+
 
 signals:
     

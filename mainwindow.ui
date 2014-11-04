@@ -2843,7 +2843,7 @@ font-weight:bold;</string>
         <x>20</x>
         <y>110</y>
         <width>841</width>
-        <height>51</height>
+        <height>81</height>
        </rect>
       </property>
       <property name="title">
@@ -2860,6 +2860,19 @@ font-weight:bold;</string>
        </property>
        <property name="text">
         <string>Show Tips on start up</string>
+       </property>
+      </widget>
+      <widget class="QCheckBox" name="cb_launchOnStartup">
+       <property name="geometry">
+        <rect>
+         <x>30</x>
+         <y>50</y>
+         <width>151</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Launch on Start up</string>
        </property>
       </widget>
      </widget>

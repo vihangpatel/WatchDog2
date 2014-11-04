@@ -21,6 +21,7 @@
 #include "appconfig.h"
 #include "components.h"
 #include <QBrush>
+#include <QSettings>
 
 namespace Ui {
     class MainWindow;
@@ -209,6 +210,8 @@ private slots:
     void on_addPlaceHolderBtn_clicked();
 
     void on_updtPlaceHolderBtn_clicked();
+
+    void on_cb_launchOnStartup_clicked();
 
 public slots:
     void updateTemplateList(QFileInfoList);

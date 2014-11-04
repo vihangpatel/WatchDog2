@@ -8,6 +8,7 @@ QString MINIFY_PRELOADER = "minify_preloader.bat";
 QString DELETE_ORIG_FILES = "delete-orig-files.bat";
 QString DELETE_UNUSED_BRANCH = "delete-unused-branches.bat";
 QString LOC_ACC_PLACE_HOLDER = "%@$%";
+QString APP_NAME = "WatchDog2";
 
 QString IS_NEXT_STEP_LOAD = "isNextStepLoad";
 QString URL = "url";
@@ -34,6 +35,7 @@ void MainWindow::loadSavedSettings()
     ui->cb_showTips->setChecked(m_appConfig->showTipsOnStartup());
     ui->statusBar->showMessage("Current interactivity : " + getCurrentInteractivityName());
     ui->cb_stopConfigModification->setChecked(m_appConfig->monitorConfig());
+    ui->cb_launchOnStartup->setChecked(m_appConfig->startUpLaunch());
     ui->label_interActiveName->setText(getCurrentInteractivityName());
 }
 
@@ -54,6 +56,7 @@ void MainWindow::storeSetting()
     m_appConfig->setMediaFlag(ui->cb_stopMediaMonitor->isChecked());
     m_appConfig->setConfigModificationFlag(ui->cb_stopConfigModification->isChecked());
     m_appConfig->setShowTipsOnStartup(ui->cb_showTips->isChecked());
+    m_appConfig->setStartUpLaunch(ui->cb_launchOnStartup);
     m_appConfig->writeSettings();
 }
 
@@ -178,6 +181,7 @@ void MainWindow::showApp()
     actions.at(0)->setEnabled(false);
     actions.at(1)->setEnabled(true);
     this->show();
+    qApp->setActiveWindow(this);
 }
 
 void MainWindow::hideApp()
@@ -1679,12 +1683,25 @@ void MainWindow::on_helpActionTriggered()
 
 void MainWindow::on_configManuallyModified(QString path)
 {
+    showApp();
     if(QMessageBox::information(this
                              ,"Do you want to reload ??"
                              ,"Config has been modified manually. Do you want to reload ?"
                              ,QMessageBox::Ok,QMessageBox::Cancel) == QMessageBox::Ok)
     {
-        changeBasePath(m_strBasePath);
+        m_config->readConfigJson();
+        m_locAcc->readFile();
     }
-    showApp();
+}
+
+void MainWindow::on_cb_launchOnStartup_clicked()
+{
+       QSettings settings("HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run",QSettings::NativeFormat);
+       bool startupEnabled = ui->cb_launchOnStartup->isChecked();
+       if (startupEnabled) {
+           settings.setValue(APP_NAME, QCoreApplication::applicationFilePath().replace("/","\\"));
+           qDebug() << settings.value("Skype");
+       } else {
+           settings.remove(APP_NAME);
+       }
 }

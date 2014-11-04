@@ -145,6 +145,19 @@ void AppConfig::resetFlag()
     m_bflagStatus = 0;
 }
 
+void AppConfig::setStartUpLaunch(bool launch)
+{
+    if(launch)
+    {
+        m_bflagStatus = m_bflagStatus | LAUNCH_ON_STARTUP;
+    }
+}
+
+bool AppConfig::startUpLaunch()
+{
+    return (m_bflagStatus & LAUNCH_ON_STARTUP) == LAUNCH_ON_STARTUP;
+}
+
 void AppConfig::readSettings()
 {
     m_fileAppConfig.setFileName(getConfigFileName());

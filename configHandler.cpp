@@ -151,6 +151,7 @@ void ConfigHandler::setFileSystemWatcher()
 
 void ConfigHandler::configFileChanged(QString filepath)
 {
+    qDebug() << "event fired";
     emit configManuallyModified(m_strBasePath);
 }
 
