@@ -34,9 +34,11 @@ public slots:
     void on_dir_changed(QString path);
     void changeBasePath(QString);
     void compileAllHandleBars();
+    void checkBatchFilesExistance();
 
 signals:
     void filesChanged(QFileInfoList);
+    void batchDoNotExists();
 
 };
 

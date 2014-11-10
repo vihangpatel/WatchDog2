@@ -236,6 +236,7 @@ public slots:
     void componentsChanged();
     void on_helpActionTriggered();
     void on_configManuallyModified(QString path);
+    void createTemplateBatchFiles();
 
 private:
     Ui::MainWindow *ui;

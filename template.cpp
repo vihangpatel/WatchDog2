@@ -76,6 +76,7 @@ void Templates::on_file_changed(QString strFilePath){
     fileName = fileName.replace("/","\\");
     compilePath.replace("/","\\");
     args << fileName;
+    checkBatchFilesExistance();
     process->startDetached(compilePath,args);
 }
 
@@ -93,6 +94,7 @@ void Templates::on_dir_changed(QString strDirPath){
 
 void Templates::compileAllHandleBars()
 {
+    checkBatchFilesExistance();
     QString compilePath = getAllTemplateCompilePath();
     compilePath.replace("/","\\");
     process->startDetached(compilePath,QStringList(),str_basePath.replace("/","\\"));
@@ -114,6 +116,16 @@ void Templates::deregisterFiles(){
 
 void Templates :: deregisterDirs(){
     qfsw_tmplt->removePaths(qfsw_tmplt->directories());
+}
+
+void Templates::checkBatchFilesExistance()
+{
+    QFile indi_batch(getIndividualTemplateCompilePath());
+    QFile all_batch(getAllTemplateCompilePath());
+    if(!indi_batch.exists() || !all_batch.exists())
+    {
+        emit batchDoNotExists();
+    }
 }
 
 Templates::~Templates()

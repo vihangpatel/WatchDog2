@@ -253,6 +253,7 @@ void MainWindow::connectSignals(){
     connect(m_trayIcon,SIGNAL(activated(QSystemTrayIcon::DoubleClick)),this,SLOT(showApp()));
 
     connect(m_config,SIGNAL(configManuallyModified(QString)),this,SLOT(on_configManuallyModified(QString)));
+    connect(m_template,SIGNAL(batchDoNotExists()),this,SLOT(createTemplateBatchFiles()));
 }
 
 void MainWindow::onCustomContextMenuRequested(const QPoint &pos)
@@ -1704,4 +1705,10 @@ void MainWindow::on_cb_launchOnStartup_clicked()
        } else {
            settings.remove(APP_NAME);
        }
+}
+
+void MainWindow::createTemplateBatchFiles()
+{
+    QString moduleName = m_config->getModuleName();
+    m_form->createTemplateBatchFiles(m_strBasePath + "/templates", moduleName);
 }

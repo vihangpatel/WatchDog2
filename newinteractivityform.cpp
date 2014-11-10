@@ -4,6 +4,7 @@
 #include "locacc.h"
 #include <QTableWidgetItem>
 
+QString INTERACTIVITY_CONFIG_FILE_NAME = "interactivity-config.json";
 QString TEMPLATE_FOLDER = "templates";
 QString JS_FOLDER = "js";
 QString JS_VIEW_FOLDER = "views";
@@ -323,41 +324,8 @@ void NewInterActivityForm::createHandleBars()
     for(int i = 0 ; i < tableEntries.length() ; i++ )
     {
         createHandleBarFile(tableEntries.at(i));
-    }
-
-    // Create inidividual compiler file for handlebar to support automatic compilation of the handlebar.
-    QFile indiCompilerSampleFile("individual_compilation.bat");
-    if(indiCompilerSampleFile.exists())
-    {
-        indiCompilerSampleFile.open(QIODevice::ReadOnly | QIODevice::Text);
-        QByteArray byteArrayData= indiCompilerSampleFile.readAll();
-        QString stringData(byteArrayData);
-        stringData.replace(MODULE_PLACE_HOLDER,ui->moduleText->text());
-        QString filePath = getTemplateFolderPath() + "/" + "individual_compilation.bat";
-        QFile handleBarCompiler(filePath);
-        handleBarCompiler.open(QIODevice::ReadWrite | QIODevice::Text);
-        QTextStream stream(&handleBarCompiler);
-        stream << stringData;;
-        handleBarCompiler.close();
-        indiCompilerSampleFile.close();
-    }
-
-    // Create compiler file for handlebar to compile all the handlebars in the templates folder.
-    QFile handlebarCompilerSampleFile("compile_handlebars_in_folder.bat");
-    if(handlebarCompilerSampleFile.exists())
-    {
-        handlebarCompilerSampleFile.open(QIODevice::ReadOnly | QIODevice::Text);
-        QByteArray byteArrayData= handlebarCompilerSampleFile.readAll();
-        QString stringData(byteArrayData);
-        stringData.replace(MODULE_PLACE_HOLDER,ui->moduleText->text());
-        QString filePath = getTemplateFolderPath() + "/" + "compile_handlebars_in_folder.bat";
-        QFile handleBarCompiler(filePath);
-        handleBarCompiler.open(QIODevice::ReadWrite | QIODevice::Text);
-        QTextStream stream(&handleBarCompiler);
-        stream << stringData;;
-        handleBarCompiler.close();
-        handlebarCompilerSampleFile.close();
-    }
+    }   
+    createTemplateBatchFiles(getTemplateFolderPath(), ui->moduleText->text());
 }
 
 bool NewInterActivityForm::createHandleBarFile(QStringList tableEntry)
@@ -420,7 +388,21 @@ QString  NewInterActivityForm::currentFolderPath()
 
 void NewInterActivityForm::readConfigJson()
 {
-
+    QString filePath = m_strBasePath + "/" + DATA_FOLDER + "/" + INTERACTIVITY_CONFIG_FILE_NAME;
+    QFile file_interConfig(filePath);
+    if(!file_interConfig.exists())
+    {
+        qDebug() << "INteractivity config couldn't be located . Reading failed.";
+        return;
+    }
+    file_interConfig.close();
+    file_interConfig.open(QIODevice::ReadOnly | QIODevice::Text);
+    // qDebug() << " LOC ACC READING  :" << getLocAccFilePath();
+    QByteArray rawData = file_interConfig.readAll();
+    QJsonDocument doc(QJsonDocument::fromJson(rawData));
+    m_jsonMainObject = doc.object();
+    // qDebug() << "READ : " << masterJObj;
+    file_interConfig.close();
 }
 
 void NewInterActivityForm::writeConfigJson()
@@ -545,12 +527,48 @@ QJsonArray NewInterActivityForm::getTemplateJSON()
     viewData["class"] = overViewClass;
     dataEl["el"] = overVIewTabEL;
     viewData["data"] = dataEl;
-    tabsData["view"] = viewData;
-    overViewTabImageJson["leftImageContainerID"] = leftContainerImageId;
+    tabsData["view"] = viewData;    overViewTabImageJson["leftImageContainerID"] = leftContainerImageId;
     overViewTabImageJson["screenID"] = overViewScreenId;
     tabsData["overviewTabData"] = overViewTabImageJson;
     tabsJArray.insert(0,tabsData);
     return tabsJArray;
+}
+
+void NewInterActivityForm::createTemplateBatchFiles(QString targetPath , QString moduleName)
+{
+    // Create inidividual compiler file for handlebar to support automatic compilation of the handlebar.
+    QFile indiCompilerSampleFile("individual_compilation.bat");
+    if(indiCompilerSampleFile.exists())
+    {
+        indiCompilerSampleFile.open(QIODevice::ReadOnly | QIODevice::Text);
+        QByteArray byteArrayData= indiCompilerSampleFile.readAll();
+        QString stringData(byteArrayData);
+        stringData.replace(MODULE_PLACE_HOLDER,moduleName);
+        QString filePath = targetPath + "/" + "individual_compilation.bat";
+        QFile handleBarCompiler(filePath);
+        handleBarCompiler.open(QIODevice::ReadWrite | QIODevice::Text);
+        QTextStream stream(&handleBarCompiler);
+        stream << stringData;;
+        handleBarCompiler.close();
+        indiCompilerSampleFile.close();
+    }
+
+    // Create compiler file for handlebar to compile all the handlebars in the templates folder.
+    QFile handlebarCompilerSampleFile("compile_handlebars_in_folder.bat");
+    if(handlebarCompilerSampleFile.exists())
+    {
+        handlebarCompilerSampleFile.open(QIODevice::ReadOnly | QIODevice::Text);
+        QByteArray byteArrayData= handlebarCompilerSampleFile.readAll();
+        QString stringData(byteArrayData);
+        stringData.replace(MODULE_PLACE_HOLDER,moduleName);
+        QString filePath = targetPath + "/" + "compile_handlebars_in_folder.bat";
+        QFile handleBarCompiler(filePath);
+        handleBarCompiler.open(QIODevice::ReadWrite | QIODevice::Text);
+        QTextStream stream(&handleBarCompiler);
+        stream << stringData;;
+        handleBarCompiler.close();
+        handlebarCompilerSampleFile.close();
+    }
 }
 
 

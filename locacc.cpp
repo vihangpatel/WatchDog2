@@ -146,10 +146,16 @@ QJsonObject LOCACC::getMessageJson(QStringList msgData,bool isAccTextSame)
     newMsgObj["id"] = msgData.at(0);
     newMsgObj["isAccTextSame"] = isAccTextSame;
     QJsonObject locAccObj;
-    locAccObj["loc"] = msgData.at(1);
+    if(msgData.at(1).length() != 0)
+    {
+        locAccObj["loc"] = msgData.at(1);
+    }
     if(!isAccTextSame)
     {
-        locAccObj["acc"] = msgData.at(2);
+        if(msgData.at(2).length() !=0)
+        {
+            locAccObj["acc"] = msgData.at(2);
+        }
     }
     newMsgObj["message"] = locAccObj;
     return newMsgObj;
@@ -310,8 +316,14 @@ QJsonObject LOCACC::getElementJson(QStringList elementData)
     QJsonArray tempMsgArray;
     QJsonObject eleObj ;
     eleObj["id"] = elementData.at(0);
-    eleObj["accId"] =  elementData.at(1);    
-    eleObj["type"] = elementData.at(2);
+    if(elementData.at(1).length() != 0 )
+    {
+        eleObj["accId"] =  elementData.at(1);
+    }
+    if(elementData.at(2).length() !=0 )
+    {
+        eleObj["type"] = elementData.at(2);
+    }
     if(elementData.at(3).length() != 0)
     {
         eleObj["role"] =  elementData.at(3);

@@ -129,6 +129,7 @@ void ConfigHandler::readConfigJson()
     {
         // qDebug() << " CONFIG READING FAILED :" << getConfigJSONFilePath();
        // QMessageBox::critical(this,"Config File Not Found","Config File doesn't exist",QMessageBox::Cancel);
+        return;
     }
     QByteArray rawData = m_fileConfigJson.readAll();
     QJsonDocument doc(QJsonDocument::fromJson(rawData));
@@ -198,6 +199,16 @@ void ConfigHandler::setComponentList(QList<QString> components)
     jObj_resources["components"] = jarray;
     m_jsonMasterObj["resources"] = jObj_resources;
     qDebug() << jarray;
+}
+
+QString ConfigHandler::getIdPrefix()
+{
+    return m_jsonMasterObj["config"].toObject().value("idPrefix").toString();
+}
+
+QString ConfigHandler::getModuleName()
+{
+    return m_jsonMasterObj["config"].toObject().value("module").toString();
 }
 
 ConfigHandler::~ConfigHandler()

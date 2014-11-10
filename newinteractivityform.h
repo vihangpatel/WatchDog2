@@ -46,6 +46,7 @@ public:
     void createJSs();
     bool createJSFile(QStringList tableEntry,int fileType);
     void createCSS();
+    void createTemplateBatchFiles(QString targetPath ,QString moduleName);
 
     QString getJSFolderPath();
     QString getJSViewFolderPath();
@@ -54,7 +55,7 @@ public:
     QString getMediaFolderPath();
     QString getTemplateFolderPath();
     QString getImageFolderPath();
-    QString getLocAccFolderPath();
+    QString getLocAccFolderPath();    
 
     ~NewInterActivityForm();
     
@@ -62,7 +63,7 @@ private slots:
     void on_addTabBtn_clicked();
     void on_removeTabBtn_clicked();
     void on_saveBtn_clicked();
-    void on_cancalBtn_clicked();
+    void on_cancalBtn_clicked();    
 
 signals:
     void newInterActivityCreated(QString);

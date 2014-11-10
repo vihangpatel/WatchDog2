@@ -31,6 +31,8 @@ public:
     QJsonArray getCssJArray();
     QJsonObject getConfigModule();
     QList<QString> getComponentList();
+    QString getIdPrefix();
+    QString getModuleName();
 
     void setTemplateJArray(QJsonArray);
     void setJSJArray(QJsonArray);
