@@ -1115,6 +1115,8 @@ bool LOCACC::validateLocAccJson()
     missingScreenLog += "</table>";
     logText += messageLogText + "</br>" + elementLogText + "<br>" + missingScreenLog;
 
+    logText += isMessagesArray();
+
     QString str_htmlFilePath = getLogFilePath() + "-validation.htm";
     QFile htmlLogFile(str_htmlFilePath);
     htmlLogFile.remove();
@@ -1124,6 +1126,37 @@ bool LOCACC::validateLocAccJson()
     htmlLogFile.close();
     QDesktopServices::openUrl(QUrl(str_htmlFilePath.replace("\\","/")));
     return returnFlag;
+}
+
+QString LOCACC::isMessagesArray()
+{
+    QString messagesObj = "<h3 style = 'text-align : center'>Following message list has problem</h3>"
+            "<table border='1' style='text-align: center;margin: auto'>"
+            "<thead><tr><th>Index</th><th>Screen Id</th><th>Element Id</th></tr></thead>";
+
+    QTreeWidgetItem *screenItem,*elementItem;
+    int count=0;
+    QJsonObject jo_screen,jo_element;
+    for(int i = 0 ; i < m_qtwiRoot->childCount(); i++)
+    {
+        screenItem = m_qtwiRoot->child(i);
+        jo_screen = fetchScreenJObject(QStringList(screenItem->text(0)));
+        // Scan each element for duplicate ID entry
+        for(int j = 0 ; j < screenItem->childCount() ; j++)
+        {
+            elementItem = screenItem->child(j);
+            jo_element = fetchElementJObject(QStringList(elementItem->text(0)),jo_screen.value("elements").toArray());
+            if(!jo_element.value("messages").isArray())
+            {
+                count++;
+                messagesObj += "<tr><td>" + QString::number(count) + "</td><td>" +
+                        screenItem->text(0) + "</td><td>" + elementItem->text(0) + "</td></tr>";
+            }
+        }
+    }
+
+    messagesObj += "</table>";
+    return messagesObj;
 }
 
 LOCACC::~LOCACC()

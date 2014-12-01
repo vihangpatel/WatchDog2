@@ -102,6 +102,8 @@ public:
     QString getLogFilePath();
     QString getInteractivityName();
 
+    QString isMessagesArray();
+
  signals:
     void treeUpdated(QTreeWidgetItem *);
 };
