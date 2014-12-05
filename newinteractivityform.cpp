@@ -170,7 +170,7 @@ void NewInterActivityForm::createLocAccFile()
         data << QString("player-tab-" + QString::number(i));
         data << QString("text");
         data << QString("");
-        data << QString("1002");
+        data << QString("");
         QTreeWidgetItem *tabItem = locAcc->addElement(data,tabContentsScr);
 
         data.clear();
@@ -186,7 +186,7 @@ void NewInterActivityForm::createLocAccFile()
     data << "title-screen" << "title-screen";
     QTreeWidgetItem *titleScreen = locAcc->addScreen(data);
     data.clear();
-    data << "heading" << "heading" << "text" << "" << "1002";
+    data << "heading" << "heading" << "text" << "" << "";
     QTreeWidgetItem *headingEle = locAcc->addElement(data,titleScreen);
     data.clear();
     data << "0" << "UpdateHeader" << "UpdateHeader";
