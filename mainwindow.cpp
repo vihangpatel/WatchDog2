@@ -37,6 +37,7 @@ void MainWindow::loadSavedSettings()
     ui->cb_stopConfigModification->setChecked(m_appConfig->monitorConfig());
     ui->cb_launchOnStartup->setChecked(m_appConfig->startUpLaunch());
     ui->label_interActiveName->setText(getCurrentInteractivityName());
+    ui->cb_stopAutoCompile->setChecked(m_appConfig->getAutoCompile());
 }
 
 QString MainWindow::getCurrentInteractivityName()
@@ -56,7 +57,8 @@ void MainWindow::storeSetting()
     m_appConfig->setMediaFlag(ui->cb_stopMediaMonitor->isChecked());
     m_appConfig->setConfigModificationFlag(ui->cb_stopConfigModification->isChecked());
     m_appConfig->setShowTipsOnStartup(ui->cb_showTips->isChecked());
-    m_appConfig->setStartUpLaunch(ui->cb_launchOnStartup);
+    m_appConfig->setStartUpLaunch(ui->cb_launchOnStartup->isChecked());
+    m_appConfig->setAutoCompile(ui->cb_stopAutoCompile->isChecked());
     m_appConfig->writeSettings();
 }
 
@@ -216,6 +218,7 @@ void MainWindow::setCheckBoxStatus(bool checked)
     ui->cb_stopTmpltMonitir->setChecked(checked);
     ui->cb_stopMediaMonitor->setChecked(checked);
     ui->cb_stopConfigModification->setChecked(checked);
+    ui->cb_stopAutoCompile->setChecked(checked);
     refreshTabStatus();
 }
 
@@ -226,6 +229,7 @@ void MainWindow::refreshTabStatus()
     on_cb_stopTmpltMonitir_clicked();
     on_cb_stopMediaMonitor_clicked();
     on_cb_stopConfigModification_clicked();
+    on_cb_stopAutoCompile_clicked();
 }
 
 // ////////////////////////////////////////////////////////////////////////////////////
@@ -1411,8 +1415,9 @@ void MainWindow::on_cb_stopJSMonitor_clicked()
     if(flagStatus)
     {
         m_js->scanChanges();
-    }
+    }   
     ui->tabWidget->setTabEnabled(1,flagStatus);
+    changeIcon(ui->cb_stopJSMonitor);
 }
 
 void MainWindow::on_cb_stopTmpltMonitir_clicked()
@@ -1423,6 +1428,7 @@ void MainWindow::on_cb_stopTmpltMonitir_clicked()
        m_template->scanChanges();
     }
     ui->tabWidget->setTabEnabled(2,flagStatus);
+    changeIcon(ui->cb_stopTmpltMonitir);
 }
 
 void MainWindow::on_cb_stopCSSMonitor_clicked()
@@ -1433,6 +1439,7 @@ void MainWindow::on_cb_stopCSSMonitor_clicked()
        m_css->scanChanges();
     }
     ui->tabWidget->setTabEnabled(3,flagStatus);
+    changeIcon(ui->cb_stopCSSMonitor);
 }
 
 void MainWindow::on_cb_stopMediaMonitor_clicked()
@@ -1443,6 +1450,7 @@ void MainWindow::on_cb_stopMediaMonitor_clicked()
        m_images->scanChanges();
     }
     ui->tabWidget->setTabEnabled(4,flagStatus);
+    changeIcon(ui->cb_stopMediaMonitor);
 }
 
 /*****************************************************
@@ -1556,6 +1564,13 @@ void MainWindow::on_cb_stopConfigModification_clicked()
 {
     m_config->setConfigUpdateFlag(ui->cb_stopConfigModification->isChecked());
     m_config->writeConfigJson();
+    changeIcon(ui->cb_stopConfigModification);
+}
+
+void MainWindow::on_cb_stopAutoCompile_clicked()
+{
+    m_template->setAutoCompile(ui->cb_stopAutoCompile->isChecked());
+    changeIcon(ui->cb_stopAutoCompile);
 }
 
 void MainWindow::on_saveLocAccBtn_clicked()
@@ -1711,4 +1726,11 @@ void MainWindow::createTemplateBatchFiles()
 {
     QString moduleName = m_config->getModuleName();
     m_form->createTemplateBatchFiles(m_strBasePath + "/templates", moduleName);
+}
+
+void MainWindow::changeIcon(QCheckBox *widget)
+{
+    bool checkedStatus = widget->isChecked();
+    QString iconSource = QString(":/images/") + ( !checkedStatus ? "unlock-48.png" : "lock-48.png");
+    widget->setIcon(QIcon(iconSource));
 }

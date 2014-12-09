@@ -211,7 +211,9 @@ private slots:
 
     void on_updtPlaceHolderBtn_clicked();
 
-    void on_cb_launchOnStartup_clicked();
+    void on_cb_launchOnStartup_clicked();    
+
+    void on_cb_stopAutoCompile_clicked();
 
 public slots:
     void updateTemplateList(QFileInfoList);
@@ -237,6 +239,7 @@ public slots:
     void on_helpActionTriggered();
     void on_configManuallyModified(QString path);
     void createTemplateBatchFiles();
+    void changeIcon(QCheckBox *widget);
 
 private:
     Ui::MainWindow *ui;

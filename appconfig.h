@@ -22,6 +22,7 @@ public:
     const int CONFIG_STOP = 16;
     const int SHOW_TIPS = 32;
     const int LAUNCH_ON_STARTUP = 64;
+    const int AUTO_COMPILE_ON = 128;
     int tipIndex = 0;
     QString str_rootPath;
     QString m_strCurIntrctvPath;
@@ -47,6 +48,7 @@ public:
     bool showTipsOnStartup();
     bool startUpLaunch();
     int getTipIndex();
+    bool getAutoCompile();
     
     void setJSFlag(bool isTrue);
     void setCSSFlag(bool isTrue);
@@ -56,6 +58,7 @@ public:
     void setShowTipsOnStartup(bool show);
     void setTipIndex(int index);
     void setStartUpLaunch(bool launch);
+    void setAutoCompile(bool on);
 
 
 signals:

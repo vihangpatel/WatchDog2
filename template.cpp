@@ -70,14 +70,17 @@ void Templates::on_file_changed(QString strFilePath){
          emit filesChanged(getFileInfoList());
         return;
     }
-    QStringList args ;
-    QString compilePath = getIndividualTemplateCompilePath();
-    QString fileName = strFilePath.replace(TEMPLATE_FILE_EXTENSION,"");
-    fileName = fileName.replace("/","\\");
-    compilePath.replace("/","\\");
-    args << fileName;
-    checkBatchFilesExistance();
-    process->startDetached(compilePath,args);
+    if(!m_bAutoCompile)
+    {
+        QStringList args ;
+        QString compilePath = getIndividualTemplateCompilePath();
+        QString fileName = strFilePath.replace(TEMPLATE_FILE_EXTENSION,"");
+        fileName = fileName.replace("/","\\");
+        compilePath.replace("/","\\");
+        args << fileName;
+        checkBatchFilesExistance();
+        process->startDetached(compilePath,args);
+    }
 }
 
 QString Templates::getIndividualTemplateCompilePath()
@@ -116,6 +119,16 @@ void Templates::deregisterFiles(){
 
 void Templates :: deregisterDirs(){
     qfsw_tmplt->removePaths(qfsw_tmplt->directories());
+}
+
+void Templates::setAutoCompile(bool flag)
+{
+    m_bAutoCompile = flag;
+}
+
+bool Templates::getAutoCompile()
+{
+    return m_bAutoCompile ;
 }
 
 void Templates::checkBatchFilesExistance()

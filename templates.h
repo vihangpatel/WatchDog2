@@ -18,6 +18,7 @@ public:
     int fileCount ;
     QDir *tmpltDir;
     QProcess *process;
+    bool m_bAutoCompile;
 
     void scanChanges();
     bool registerWatcher();
@@ -25,6 +26,8 @@ public:
     void deregisterFiles();
     void deregisterDirs();
     void connectSignals();
+    void setAutoCompile(bool flag);
+    bool getAutoCompile();
     QString getIndividualTemplateCompilePath();
     QString getAllTemplateCompilePath();
     QFileInfoList getFileInfoList();

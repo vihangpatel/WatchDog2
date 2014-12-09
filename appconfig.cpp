@@ -158,6 +158,19 @@ bool AppConfig::startUpLaunch()
     return (m_bflagStatus & LAUNCH_ON_STARTUP) == LAUNCH_ON_STARTUP;
 }
 
+void AppConfig::setAutoCompile(bool on)
+{
+    if(on)
+    {
+        m_bflagStatus = m_bflagStatus | AUTO_COMPILE_ON;
+    }
+}
+
+bool AppConfig::getAutoCompile()
+{
+    return (m_bflagStatus & AUTO_COMPILE_ON) == AUTO_COMPILE_ON;
+}
+
 void AppConfig::readSettings()
 {
     m_fileAppConfig.setFileName(getConfigFileName());
