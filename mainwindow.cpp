@@ -1734,3 +1734,48 @@ void MainWindow::changeIcon(QCheckBox *widget)
     QString iconSource = QString(":/images/") + ( !checkedStatus ? "unlock-48.png" : "lock-48.png");
     widget->setIcon(QIcon(iconSource));
 }
+
+void MainWindow::on_le_folderSearch_textEdited(const QString &arg1)
+{
+    QModelIndex index = m_qfsModel->index(m_strRootPath);
+    int rowCount = m_qfsModel->rowCount(index);
+    QString folderName;
+    m_listMatchedFolders.clear();
+    for(int i = 0 ;i < rowCount; i++)
+    {
+        QModelIndex mi = m_qfsModel->index(i,0,index);
+        folderName = m_qfsModel->itemData(mi)[Qt::DisplayRole].toString();
+        if(folderName.contains(arg1)){
+            m_listMatchedFolders.append(mi);
+        }
+    }
+    QString style = QString("background-color : ") +
+            ( m_listMatchedFolders.length() != 0 ? "white" : "pink") + QString(";opacity : 0.5;");
+    ui->le_folderSearch->setStyleSheet(style);
+    m_iMatchedId = 0;
+    on_btn_searchUp_clicked();
+}
+
+void MainWindow::on_btn_searchUp_clicked()
+{
+    if(m_listMatchedFolders.length() == 0){
+        return;
+    }
+    m_iMatchedId = m_iMatchedId <= 0 ? 0 : (m_iMatchedId - 1);
+    ui->treeView->setCurrentIndex(m_listMatchedFolders.at(m_iMatchedId));
+}
+
+void MainWindow::on_btn_searchDown_clicked()
+{
+    if(m_listMatchedFolders.length() == 0){
+        return;
+    }
+    m_iMatchedId = (m_iMatchedId > m_listMatchedFolders.length() - 2) ? (m_listMatchedFolders.length() - 1)
+                                                                      : (m_iMatchedId + 1);
+    ui->treeView->setCurrentIndex(m_listMatchedFolders.at(m_iMatchedId));
+}
+
+void MainWindow::on_locSearchText_textEdited(const QString &arg1)
+{
+    on_searchLocBtn_clicked();
+}

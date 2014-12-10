@@ -53,6 +53,8 @@ public:
     enum OperationType{ O_CUT , O_COPY  ,O_PASTE , O_DELETE} m_eOperation;
     QTreeWidgetItem *m_qtwiSource;
     QTreeWidgetItem *m_qtwiDestination;
+    QModelIndexList m_listMatchedFolders;
+    int m_iMatchedId;
 
 private :
     void initialize();    
@@ -214,6 +216,14 @@ private slots:
     void on_cb_launchOnStartup_clicked();    
 
     void on_cb_stopAutoCompile_clicked();
+
+    void on_le_folderSearch_textEdited(const QString &arg1);
+
+    void on_btn_searchUp_clicked();
+
+    void on_btn_searchDown_clicked();
+
+    void on_locSearchText_textEdited(const QString &arg1);
 
 public slots:
     void updateTemplateList(QFileInfoList);
