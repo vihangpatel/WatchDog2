@@ -127,6 +127,9 @@ void MainWindow::initialize(){
     changeBasePath(m_strBasePath);
 
     refreshTabStatus();
+
+    m_exportHelpDialog = new ExportHelp(this);
+    m_exportHelpDialog->hide();
 }
 
 /*****************************************************************
@@ -1778,4 +1781,11 @@ void MainWindow::on_btn_searchDown_clicked()
 void MainWindow::on_locSearchText_textEdited(const QString &arg1)
 {
     on_searchLocBtn_clicked();
+}
+
+void MainWindow::on_exportHelpBtn_clicked()
+{
+    QString fnText = m_locAcc->exportHelpFunction();
+    m_exportHelpDialog->setText(fnText);
+    m_exportHelpDialog->show();
 }

@@ -22,7 +22,8 @@ SOURCES +=  main.cpp\
     locacc.cpp \
     appconfig.cpp \
     mediaimages.cpp \
-    components.cpp
+    components.cpp \
+    exporthelp.cpp
 
 HEADERS  += mainwindow.h \
     templates.h \
@@ -34,11 +35,13 @@ HEADERS  += mainwindow.h \
     messages.h \
     appconfig.h \
     mediaimages.h \
-    components.h
+    components.h \
+    exporthelp.h
 
 FORMS    += \
     newinteractivityform.ui \
-    mainwindow.ui
+    mainwindow.ui \
+    exporthelp.ui
 
 win32:RC_ICONS += tray_icon.ico
 

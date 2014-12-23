@@ -103,6 +103,7 @@ public:
     QString getInteractivityName();
 
     QString isMessagesArray();
+    QString exportHelpFunction();
 
  signals:
     void treeUpdated(QTreeWidgetItem *);

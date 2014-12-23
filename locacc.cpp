@@ -5,6 +5,7 @@ QString LOC_EN_FOLDER = "en";
 QString LOC_DATA_FOLDER = "data";
 QString LOC_FILE_NAME = "loc-acc.json";
 QString STR_MISCCEL_SCREEN = "miscellaneous-screen";
+QString STR_HELP_SCREEN_NAME = "help-screen";
 
 LOCACC::LOCACC(QString strPath)
 {
@@ -1029,6 +1030,7 @@ QString LOCACC::getLogFilePath()
 QString LOCACC::getInteractivityName()
 {
     QDir dir(m_strBasePath);
+
     dir.mkpath("D:\\DE-ReplaceLog");
 
     return dir.dirName();
@@ -1157,6 +1159,54 @@ QString LOCACC::isMessagesArray()
 
     messagesObj += "</table>";
     return messagesObj;
+}
+
+QString LOCACC::exportHelpFunction()
+{
+    QJsonArray jArray;
+    QJsonObject funObj;
+    if(m_qtwiRoot == NULL)
+    {
+        return "";
+    }
+    QTreeWidgetItem *helpScreen = NULL;
+    for(int i = 0 ; m_qtwiRoot->childCount() ; i++)
+    {
+        if(m_qtwiRoot->child(i)->text(0) == STR_HELP_SCREEN_NAME)
+        {
+            helpScreen = m_qtwiRoot->child(i);
+            break;
+        }
+    }
+
+    if(helpScreen == NULL)
+    {
+        return "";
+    }
+
+    QTreeWidgetItem *eleItem,*msgItem;
+    for(int i = 0 ; i < helpScreen->childCount() ; i++)
+    {
+        eleItem = helpScreen->child(i);
+        for(int j = 0 ; j < eleItem->childCount() ; j++){
+            msgItem = eleItem->child(j);
+
+            funObj["elementId"] = eleItem->text(0).replace("-help","");
+            funObj["helpId"] = eleItem->text(0);
+            funObj["position"] = "top";
+            funObj["msgId"] = msgItem->text(0);
+            funObj["dynamicArrowPosition"] = true;
+
+            jArray.append(funObj);
+        }
+    }
+
+    QJsonDocument doc(jArray);
+
+    QString fnText = "_setHelpElements : function _setHelpElements() {\n"
+            "    var elements = " + QString(doc.toJson()) + ";\n this.model.set('helpElements',elements);\n}";
+
+    return fnText;
 }
 
 LOCACC::~LOCACC()

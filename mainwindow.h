@@ -20,6 +20,7 @@
 #include "mediaimages.h"
 #include "appconfig.h"
 #include "components.h"
+#include "exporthelp.h"
 #include <QBrush>
 #include <QSettings>
 
@@ -55,6 +56,7 @@ public:
     QTreeWidgetItem *m_qtwiDestination;
     QModelIndexList m_listMatchedFolders;
     int m_iMatchedId;
+    ExportHelp *m_exportHelpDialog;
 
 private :
     void initialize();    
@@ -224,6 +226,8 @@ private slots:
     void on_btn_searchDown_clicked();
 
     void on_locSearchText_textEdited(const QString &arg1);
+
+    void on_exportHelpBtn_clicked();
 
 public slots:
     void updateTemplateList(QFileInfoList);

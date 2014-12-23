@@ -1006,7 +1006,7 @@ font-weight:bold;</string>
        </rect>
       </property>
       <property name="currentIndex">
-       <number>2</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="tab_9">
        <attribute name="title">
@@ -3637,7 +3637,7 @@ font-weight:bold;</string>
       <widget class="QPushButton" name="miniFyCommonBtn">
        <property name="geometry">
         <rect>
-         <x>590</x>
+         <x>740</x>
          <y>20</y>
          <width>111</width>
          <height>23</height>
@@ -3670,7 +3670,7 @@ font-weight:bold;</string>
       <widget class="QPushButton" name="minifyInterActBtn">
        <property name="geometry">
         <rect>
-         <x>590</x>
+         <x>740</x>
          <y>50</y>
          <width>111</width>
          <height>23</height>
@@ -3687,7 +3687,7 @@ font-weight:bold;</string>
       <widget class="QPushButton" name="minifyPreLoadBtn">
        <property name="geometry">
         <rect>
-         <x>590</x>
+         <x>740</x>
          <y>80</y>
          <width>111</width>
          <height>23</height>
@@ -3730,7 +3730,7 @@ font-weight:bold;</string>
       <widget class="QPushButton" name="deleteOrigFilesBtn">
        <property name="geometry">
         <rect>
-         <x>590</x>
+         <x>740</x>
          <y>20</y>
          <width>111</width>
          <height>23</height>
@@ -3773,7 +3773,7 @@ font-weight:bold;</string>
       <widget class="QPushButton" name="deleteBranchesBtn">
        <property name="geometry">
         <rect>
-         <x>590</x>
+         <x>740</x>
          <y>50</y>
          <width>111</width>
          <height>23</height>
@@ -3785,6 +3785,62 @@ font-weight:bold;</string>
        <property name="icon">
         <iconset resource="resources.qrc">
          <normaloff>:/images/broom-48.png</normaloff>:/images/broom-48.png</iconset>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QGroupBox" name="groupBox_8">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>260</y>
+        <width>871</width>
+        <height>71</height>
+       </rect>
+      </property>
+      <property name="title">
+       <string> Export Help Elements </string>
+      </property>
+      <widget class="QPushButton" name="exportHelpBtn">
+       <property name="geometry">
+        <rect>
+         <x>740</x>
+         <y>20</y>
+         <width>111</width>
+         <height>23</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Export Help</string>
+       </property>
+       <property name="icon">
+        <iconset resource="resources.qrc">
+         <normaloff>:/images/download-48.png</normaloff>:/images/download-48.png</iconset>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_53">
+       <property name="geometry">
+        <rect>
+         <x>30</x>
+         <y>20</y>
+         <width>481</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Export help elements from your LOC ACC json File .</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_54">
+       <property name="geometry">
+        <rect>
+         <x>30</x>
+         <y>40</y>
+         <width>701</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Make sure you append '-help' after every element id on which you plan to show help. Make sure you have 'help-screen' in LOC ACC json.</string>
        </property>
       </widget>
      </widget>
