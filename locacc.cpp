@@ -1167,10 +1167,10 @@ QString LOCACC::exportHelpFunction()
     QJsonObject funObj;
     if(m_qtwiRoot == NULL)
     {
-        return "";
+        return "It seems like you have not selected any interactivity. Follow the steps to change interactivity.";
     }
     QTreeWidgetItem *helpScreen = NULL;
-    for(int i = 0 ; m_qtwiRoot->childCount() ; i++)
+    for(int i = 0 ; i < m_qtwiRoot->childCount() ; i++)
     {
         if(m_qtwiRoot->child(i)->text(0) == STR_HELP_SCREEN_NAME)
         {
@@ -1179,11 +1179,14 @@ QString LOCACC::exportHelpFunction()
         }
     }
 
+    qDebug() << "before check";
     if(helpScreen == NULL)
     {
-        return "";
+        qDebug() << "help screen null";
+        return "No Help Screen in your LOCACC json.";
     }
 
+    qDebug() << "came here";
     QTreeWidgetItem *eleItem,*msgItem;
     for(int i = 0 ; i < helpScreen->childCount() ; i++)
     {
