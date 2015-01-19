@@ -23,6 +23,8 @@
 #include "exporthelp.h"
 #include <QBrush>
 #include <QSettings>
+#include <QLocalSocket>
+#include <QLocalServer>
 
 namespace Ui {
     class MainWindow;
@@ -57,6 +59,7 @@ public:
     QModelIndexList m_listMatchedFolders;
     int m_iMatchedId;
     ExportHelp *m_exportHelpDialog;
+    bool m_isRunning;
 
 private :
     void initialize();    
@@ -95,6 +98,7 @@ public:
     void fillMessageDetail(QStringList data);
     void createLOCTreeContext();
     void contextMenuVisibility();
+    void instanceCheck();
 
 private slots:
     void on_openDialog_clicked();
@@ -253,7 +257,7 @@ public slots:
     void on_helpActionTriggered();
     void on_configManuallyModified(QString path);
     void createTemplateBatchFiles();
-    void changeIcon(QCheckBox *widget);
+    void changeIcon(QCheckBox *widget);    
 
 private:
     Ui::MainWindow *ui;

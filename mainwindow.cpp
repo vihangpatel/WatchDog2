@@ -18,8 +18,9 @@ QString FORCE_LOAD = "forceLoad";
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
-{
+{    
     ui->setupUi(this);
+    instanceCheck();
     initialize();
     showTipDialog();
 }
@@ -130,6 +131,7 @@ void MainWindow::initialize(){
 
     m_exportHelpDialog = new ExportHelp(this);
     m_exportHelpDialog->hide();
+
 }
 
 /*****************************************************************
@@ -280,7 +282,7 @@ void MainWindow::showLocTreeCustomMenu(QTreeWidgetItem *item, const QPoint &glob
 
 MainWindow::~MainWindow()
 {
-    storeSetting();
+    storeSetting();    
 
     delete m_locAcc;
     delete m_appConfig;
@@ -364,6 +366,7 @@ void MainWindow::on_openDialog_clicked()
         changeBasePath(m_strBasePath);
         m_form->changeBasePath(m_strRootPath);        
     }
+    storeSetting();
 }
 
 void MainWindow::updateDirTree(){   
@@ -1421,6 +1424,7 @@ void MainWindow::on_cb_stopJSMonitor_clicked()
     }   
     ui->tabWidget->setTabEnabled(1,flagStatus);
     changeIcon(ui->cb_stopJSMonitor);
+    storeSetting();
 }
 
 void MainWindow::on_cb_stopTmpltMonitir_clicked()
@@ -1432,6 +1436,7 @@ void MainWindow::on_cb_stopTmpltMonitir_clicked()
     }
     ui->tabWidget->setTabEnabled(2,flagStatus);
     changeIcon(ui->cb_stopTmpltMonitir);
+    storeSetting();
 }
 
 void MainWindow::on_cb_stopCSSMonitor_clicked()
@@ -1443,6 +1448,7 @@ void MainWindow::on_cb_stopCSSMonitor_clicked()
     }
     ui->tabWidget->setTabEnabled(3,flagStatus);
     changeIcon(ui->cb_stopCSSMonitor);
+    storeSetting();
 }
 
 void MainWindow::on_cb_stopMediaMonitor_clicked()
@@ -1454,6 +1460,7 @@ void MainWindow::on_cb_stopMediaMonitor_clicked()
     }
     ui->tabWidget->setTabEnabled(4,flagStatus);
     changeIcon(ui->cb_stopMediaMonitor);
+    storeSetting();
 }
 
 /*****************************************************
@@ -1568,12 +1575,14 @@ void MainWindow::on_cb_stopConfigModification_clicked()
     m_config->setConfigUpdateFlag(ui->cb_stopConfigModification->isChecked());
     m_config->writeConfigJson();
     changeIcon(ui->cb_stopConfigModification);
+    storeSetting();
 }
 
 void MainWindow::on_cb_stopAutoCompile_clicked()
 {
     m_template->setAutoCompile(ui->cb_stopAutoCompile->isChecked());
     changeIcon(ui->cb_stopAutoCompile);
+    storeSetting();
 }
 
 void MainWindow::on_saveLocAccBtn_clicked()
@@ -1723,6 +1732,7 @@ void MainWindow::on_cb_launchOnStartup_clicked()
        } else {
            settings.remove(APP_NAME);
        }
+       storeSetting();
 }
 
 void MainWindow::createTemplateBatchFiles()
@@ -1788,4 +1798,23 @@ void MainWindow::on_exportHelpBtn_clicked()
     QString fnText = m_locAcc->exportHelpFunction();
     m_exportHelpDialog->setText(fnText);
     m_exportHelpDialog->show();
+}
+
+void MainWindow::instanceCheck()
+{
+    QLocalSocket socket;
+    socket.connectToServer("serverName");
+    if (socket.waitForConnected(500)){
+        QMessageBox::critical(this,"WatchDog2 is already running.",
+                             "You are trying to open another instance of the WatchDog2.\n"
+                              "Newely created instance will be terminated.\n"
+                              "Note : Check your system notification area."
+                                ,QMessageBox::Ok) ;
+        close();
+        qApp->quit();
+        return;
+    }
+
+    QLocalServer *m_localServer = new QLocalServer(this);
+    m_localServer->listen("serverName");
 }
