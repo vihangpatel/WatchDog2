@@ -98,7 +98,7 @@ public:
     void fillMessageDetail(QStringList data);
     void createLOCTreeContext();
     void contextMenuVisibility();
-    void instanceCheck();
+    void instanceCheck();    
 
 private slots:
     void on_openDialog_clicked();
@@ -233,6 +233,8 @@ private slots:
 
     void on_exportHelpBtn_clicked();
 
+    void on_btn_checkUpdates_clicked();
+
 public slots:
     void updateTemplateList(QFileInfoList);
     void templateFileListClicked(QListWidgetItem *);
@@ -258,6 +260,7 @@ public slots:
     void on_configManuallyModified(QString path);
     void createTemplateBatchFiles();
     void changeIcon(QCheckBox *widget);    
+    void checkForUpdates();
 
 private:
     Ui::MainWindow *ui;

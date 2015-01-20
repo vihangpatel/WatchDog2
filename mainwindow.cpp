@@ -21,6 +21,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {    
     ui->setupUi(this);
     instanceCheck();
+    checkForUpdates();
     initialize();
     showTipDialog();
 }
@@ -1817,4 +1818,15 @@ void MainWindow::instanceCheck()
 
     QLocalServer *m_localServer = new QLocalServer(this);
     m_localServer->listen("serverName");
+}
+
+void MainWindow::checkForUpdates()
+{
+    QProcess *updater = new QProcess();
+    qDebug() << updater->startDetached("WatchDog2Updater.exe");
+}
+
+void MainWindow::on_btn_checkUpdates_clicked()
+{
+    checkForUpdates();
 }

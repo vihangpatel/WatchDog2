@@ -45,6 +45,8 @@ FORMS    += \
 
 win32:RC_ICONS += tray_icon.ico
 
+RC_FILE = watchdog2.rc
+
 RESOURCES += \
     resources.qrc
 
