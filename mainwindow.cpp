@@ -1830,3 +1830,9 @@ void MainWindow::on_btn_checkUpdates_clicked()
 {
     checkForUpdates();
 }
+
+void MainWindow::on_yuiDoc_btn_clicked()
+{
+    QProcess *lazyYUI = new QProcess();
+    qDebug() << lazyYUI->startDetached("LazyYUIDesk.exe");
+}

@@ -235,6 +235,8 @@ private slots:
 
     void on_btn_checkUpdates_clicked();
 
+    void on_yuiDoc_btn_clicked();
+
 public slots:
     void updateTemplateList(QFileInfoList);
     void templateFileListClicked(QListWidgetItem *);
