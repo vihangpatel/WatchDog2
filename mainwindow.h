@@ -237,6 +237,20 @@ private slots:
 
     void on_yuiDoc_btn_clicked();
 
+    void on_eleNameText_textChanged(const QString &arg1);
+
+    void on_screenNameText_textChanged(const QString &arg1);
+
+    void on_updtEleIdText_textChanged(const QString &arg1);
+
+    void on_updtScreenIdText_textChanged(const QString &arg1);
+
+    void on_refresh_expBtn_clicked();
+
+    void on_minify_expBtn_clicked();
+
+    void on_quit_expBtn_clicked();
+
 public slots:
     void updateTemplateList(QFileInfoList);
     void templateFileListClicked(QListWidgetItem *);

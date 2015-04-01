@@ -1,0 +1,24 @@
+{
+    "files" : [
+		{
+			"url" : "file://ws-02-01-015/DE-OneClick Away/pristineInitialize.txt",
+			"target" : "pristineInitialize.txt",
+			"version" : 1203
+		},
+		{
+			"url" : "file://ws-02-01-015/DE-OneClick Away/pristineJsSample.txt",
+			"target" : "pristineJsSample.txt",
+			"version" : 1203
+		},
+		{
+			"url" : "file://ws-02-01-015/DE-OneClick Away/pristineMainModel.txt",
+			"target" : "pristineMainModel.txt",
+			"version" : 1203
+		},
+		{
+			"url" : "file://ws-02-01-015/DE-OneClick Away/pristineOverViewSample.txt",
+			"target" : "pristineOverViewSample.txt",
+			"version" : 1203
+		}
+	]
+}

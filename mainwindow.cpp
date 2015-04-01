@@ -1309,6 +1309,7 @@ void MainWindow::createLOCTreeContext()
     QAction *copyAction = m_qmTreeMenu->addAction("Copy",mapper,SLOT(map()));
     QAction *pasteAction = m_qmTreeMenu->addAction("Paste",mapper,SLOT(map()));
     QAction *deleteAction = m_qmTreeMenu->addAction("Delete",mapper,SLOT(map()));
+    QAction *copyItemAction = m_qmTreeMenu->addAction("Copy ID",mapper,SLOT(map()));
 
     cutAction->setEnabled(false);
     copyAction->setEnabled(false);
@@ -1319,6 +1320,7 @@ void MainWindow::createLOCTreeContext()
     mapper->setMapping(copyAction,1);
     mapper->setMapping(pasteAction,2);
     mapper->setMapping(deleteAction,3);
+    mapper->setMapping(copyItemAction,4);
 
     connect(mapper,SIGNAL(mapped(int)),this,SLOT(performLocOpertions(int)));
 
@@ -1382,11 +1384,15 @@ void MainWindow::performLocOpertions(int operation)
                         }
                     m_qmTreeMenu->actions()[2]->setEnabled(false);                    
                     break;
+        case 4:
+                    QClipboard *board = QApplication::clipboard();
+                    board->setText(currentItem->text(0));
+                    break;
     }
 }
 
 void MainWindow::contextMenuVisibility()
-{
+{    
     QTreeWidgetItem *currentItem = ui->locTreeWidget->currentItem();
     if(currentItem == NULL)
     {
@@ -1835,4 +1841,41 @@ void MainWindow::on_yuiDoc_btn_clicked()
 {
     QProcess *lazyYUI = new QProcess();
     qDebug() << lazyYUI->startDetached("LazyYUIDesk.exe");
+}
+
+void MainWindow::on_eleNameText_textChanged(const QString &arg1)
+{
+    //ui->eleAccIdText->setText(arg1);
+}
+
+void MainWindow::on_screenNameText_textChanged(const QString &arg1)
+{
+    //ui->screenNameText_2->setText(arg1);
+}
+
+void MainWindow::on_updtEleIdText_textChanged(const QString &arg1)
+{
+    //ui->updtEleAccIdText->setText(arg1);
+}
+
+void MainWindow::on_updtScreenIdText_textChanged(const QString &arg1)
+{
+    //ui->updtScreenNameText->setText(arg1);
+}
+
+
+void MainWindow::on_refresh_expBtn_clicked()
+{
+    on_refreshBtn_clicked();
+}
+
+void MainWindow::on_minify_expBtn_clicked()
+{
+    on_minifyInterActBtn_clicked();
+}
+
+void MainWindow::on_quit_expBtn_clicked()
+{
+    storeSetting();
+    qApp->quit();
 }

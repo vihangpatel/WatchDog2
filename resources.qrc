@@ -27,5 +27,6 @@
         <file>refresh-48.png</file>
         <file>collapse_arrow-48.png</file>
         <file>expand_arrow-48.png</file>
+        <file>download.png</file>
     </qresource>
 </RCC>
